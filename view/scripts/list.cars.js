@@ -389,6 +389,7 @@ function remove(id) {
 			url: "../services/car.services.php",
 			data: data,
 			success: function(response){
+				
 				makeTable();
 			},
 			error: function(error){
