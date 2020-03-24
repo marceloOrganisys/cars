@@ -33,7 +33,6 @@ function getComponents() {
 		url: '../services/accessorie.services.php',
 		data: { operation : 'selectAcessories' },
 		success: function(data) {
-			console.log(data);
 			data = data != '' ? JSON.parse(data) : '';
 			mountTable(data);
 		},
