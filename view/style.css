@@ -1,0 +1,93 @@
+.component{
+	float:left;
+	padding-left:60px;
+	paddind-right:60px;
+}
+.accessorie{
+	margin:10px;
+}
+h4{
+	padding-bottom:30px;
+}
+#tableb{
+	margin-top:10px;
+	width:70%;
+	text-aling:center;
+}
+#tablec{
+	width:60%;
+	text-aling:center;
+}
+.btn1{
+	height:40px;
+	width:40px;
+}
+img{
+	height: 15px;
+	width:15px;
+}
+h1{
+	padding-top:15px;
+}
+#homeButtons{
+	position: absolute; 
+	top: 20px; 
+	right:15px;
+}
+.align{
+	width:140px;
+	display: inline;
+}
+.backButton{
+	width:100px;
+}
+#submitButton{
+	width:100px;
+}
+#formCadastro{
+	width:100%;
+	text-align: center;
+}
+.alignCenter{
+	width:80%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+.errorMessage{
+	padding:0;
+	margin-bottom:-5px;
+	margin-top:-20px;
+	font-size:15px;
+	color:red;
+}
+.errorBox{
+	text-align: left;
+}
+#navBar{
+	margin-right: auto;
+	margin-legt: auto;
+}
+footer{
+	margin-bottom:50px;
+}
+#marca{
+	font-size:15px;
+	height:38px;
+}
+#accForm{
+	border:0px;
+	margin:0px;
+	padding: 20px;
+	width:100%;
+}
+.gimmeSomeSpace{
+	margin-left:25px;
+	margin-right:25px;
+}
+#accName{
+	width:700px;
+}
+#accTitle{
+	margin-top:-20px;
+}
