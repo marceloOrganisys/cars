@@ -155,7 +155,6 @@ function makeTable(page) {
 		url: "../services/car.services.php",
 		data: {'operation' : 'listCars', 'page' : page},
 		success: function(response) {
-			// console.log(response);
 			var carsData = JSON.parse(response);
 			mountTable(carsData);
 		},
@@ -254,85 +253,39 @@ function getComponents(op) {
 	return op == 1 ?  promise : '';
 }
 
-function getLastId() {
-	var promise = $.Deferred();
-	$.ajax({
-		type: 'GET',
-		url: '../services/car.services.php',
-		data: {operation: 'getLastId'},
-		success: function(response) {
-			data = JSON.parse(response);
-			promise.resolve(parseInt(JSON.parse(data.id)));
-		},
-		error: function(error){
-			alert('Ocorreu um erro');
-			promise.reject(error);
-		}
-	});
-	return promise;
-}
-
 function cad(dados) {
 
-	data = {
-		operation : 'cadastro', 
-		carData: dados
-	}
+	accessories = [];
+	size = 0;
+	getComponents(1).done(function(response){
 
-	// Ajax cadastro de carro
-	$.ajax({
-		type: 'POST',
-		url: '../services/car.services.php',
-		data: data,
-		success: function(response) {
+		data = response;
+		data = data != '' ? JSON.parse(data) : '';
+		for (x = 0, size = data.length; x < size; x++) {
+			accessories.push({id : data[x].id, checked : $("#cb"+data[x].id).prop('checked') ? 1 : 0});
+		}
 
-			if ( dados.carId != "" && dados.carId != null ) {
-				carId = dados['carId'];
-			} else {
-				getLastId().done(function(response){
-					carId = response;
-				});
+			data = {
+				operation : 'cadastro', 
+				carData: dados,
+				accessories: accessories
 			}
 
-			accessories = [];
-			size = 0;
-			
-			// Pega os acessórios e checa quais estão checados
-			getComponents(1).done(function(response){
-				data = response;
-				data = data != '' ? JSON.parse(data) : '';
-				// monta array dos acessórios checados
-				for (x = 0, size = data.length; x < size; x++) {
-					accessories.push({id : data[x].id, checked : $("#cb"+data[x].id).prop('checked') ? 1 : 0});
+			$.ajax({
+				type: 'POST',
+				url: '../services/car.services.php',
+				data: data,
+				success: function(response){
+					console.log(response)
+				},
+				error: function(error){
+					alert('Ocorreu um erro');
+					console.log(error);
 				}
-
-				data = {
-					operation: 'newAccCar',
-					carId: carId,
-					accessories: accessories
-				}
-
-				$.ajax({
-					type: 'POST',
-					url: '../services/accessorie.services.php',
-					data: data,
-					success: function(response) {
-					},
-					error: function(error){
-						alert('Ocorreu um erro');
-						console.log(error);
-					}
-				});
-
 			});
 			changeScreen(1);
-			makeTable();
+			cleanForm();
 
-		},
-		error: function(error){
-			alert('Ocorreu um erro');
-			console.log(error);
-		}
 	});
 }
 
@@ -389,7 +342,7 @@ function remove(id) {
 			url: "../services/car.services.php",
 			data: data,
 			success: function(response){
-				
+				console.log(response);
 				makeTable();
 			},
 			error: function(error){

@@ -5,71 +5,11 @@
 	require_once("../classes/car.class.php");
 
 	$acc = new Accessorie();
-
-	function execute($carId, $accessorie){
-		$carAcc = new CarAcc();
-		$params['tabela'] = $carAcc->tabela;
-		$params['dados']['carId'] = $carId;
-		$params['dados']['accessorieId'] = $accessorie;
-		$carAcc->add($params);
-	}
-
-	function deleteCarAcc($carId){
-		$carAcc = new CarAcc();
-		$params = array(
-			'tabela' => $carAcc->tabela,
-			'row' => 'carId',
-			'id' => intval($carId)
-		);
-		return $carAcc->remove($params);
-	}
-
-	function cadCarAcc($carId, $accessories){
-		for ($i = 0; $a = count($accessories), $i < $a; $i++) {
-			if ( $accessories[$i]['checked'] == 1 ){
-				execute($carId, $accessories[$i]['id']);	
-			}	
-		}
-	}
-
-
+	
 	switch ($_SERVER["REQUEST_METHOD"]) {
 		case 'POST':
 			switch ($_POST['operation']) {
-				// ACCESÓRIOS E CARROS
-				case 'newAccCar':
-					$params['tabela'] = 'carAccessorie';
-					// Checa os accessórios
-					$carId = $_POST['carId'];
-					$accessories = $_POST['accessories'];
-					$carData['carId'] = $carId;
-					$car = new Car($carData);
-					$carAcc = $car->accessories;
-
-					$accCheck = [];
-					for ( $i = 0; $a = count($accessories), $i < $a; $i++ ) {
-						if ( $accessories[$i]['checked'] == 1 ) {
-							$accCheck[] = intval($accessories[$i]['id']);
-						} 
-					}
-
-					$accCompare = [];
-					for ( $i = 0; $a = count($carAcc), $i < $a; $i++ ) {
-						$accCompare[] = intval($carAcc[$i]['accessorieId']);
-					}
-
-					if ( $accCompare  != $accCheck ) {
-
-						// deleta os acessórios atuais do carro
-						deleteCarAcc($carId);
-
-						// cadastra os novos acessórios
-						cadCarAcc($carId, $accessories);
-
-					}
-
-					break;
-
+				// ACCESÓRIOS E CARRO
 				case 'addCarAccessories':
 					if (isset($_POST['accessories'])) {
 						cadCarAcc($_POST['carId'], $_POST['accessories']);
