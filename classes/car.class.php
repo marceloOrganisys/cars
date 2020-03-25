@@ -44,7 +44,7 @@
 					$this->preco = $carData['dados']['preco'];
 					$this->precoFipe = $carData['dados']['precoFipe'];
 				} else {
-					if ( isset($carData['carId']) ) {
+					if (isset($carData['carId'])) {
 						$this->accessorieClass = new Accessorie();
 						$params = array(
 							'table' => 'carAccessorie',
@@ -60,7 +60,6 @@
 		public function remove(array $params) {
 			parent::remove(array('tabela' => 'carAccessorie', 'row' => 'carId', 'id' => $params['id']));
 			parent::remove(array('tabela' => 'car', 'row' => 'id', 'id' => $params['id']));
-
 		}
 
 		public function validate(array $data) {

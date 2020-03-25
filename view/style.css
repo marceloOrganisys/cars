@@ -81,11 +81,14 @@ footer{
 	padding: 20px;
 	width:100%;
 }
-.gimmeSomeSpace{
+.margin_{
 	margin-left:25px;
 	margin-right:25px;
 }
 #accName{
+	width:700px;
+}
+#searchInput{
 	width:700px;
 }
 #accTitle{

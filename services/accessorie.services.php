@@ -46,7 +46,7 @@
 					$params = array(
 						'table' => 'carAccessorie',
 						'rows' => 'carId',
-						'complement' => "WHERE accessorieId = ".$_POST['acc']
+						'complement' => 'WHERE accessorieId = ' .$_POST['acc']
 					);
 					if (empty($acc->select($params))) {
 						echo json_encode(['status' => true]);

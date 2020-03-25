@@ -24,7 +24,7 @@
 
 	function cadCarAcc($carId, $accessories){
 		for ($i = 0; $a = count($accessories), $i < $a; $i++) {
-			if ( $accessories[$i]['checked'] == 1 ){
+			if ( $accessories[$i]['checked'] == 1 ) {
 				execute($carId, $accessories[$i]['id']);	
 			}	
 		}
@@ -112,20 +112,15 @@
 						'rows' => '*',
 						'complement' => "ORDER BY id desc LIMIT " . $_GET['page']*10 . ", 10;"
 					);
-					$data = $cars->select($params);
-					echo json_encode($data);
-					http_response_code(200);
-					break;
-
-				case 'cars':
-					$cars = new Car();
+					$data['dados'] = $cars->select($params);
 					$params = array(
 						'table' => $cars->tabela,
 						'rows' => 'count(id) AS cars',
-						'complement' => null
+						'complement' => ''
 					);
-					$data = $cars->select($params);
-					echo json_encode($data[0]);
+					$data['cars'] = $cars->select($params);
+					$data['cars'] = $data['cars'][0]['cars'];
+					echo json_encode($data);
 					http_response_code(200);
 					break;
 
@@ -149,21 +144,15 @@
 						'rows' => '*', 
 						'complement' => " WHERE descricao like '%" . $search . "%' or placa like '%" . $search . "%' ORDER BY id desc LIMIT ". ($_GET['page']*10) . ", 10"
 					);
-					$data = $cars->select($params);
-					echo json_encode($data);
-					http_response_code(200);
-					break;
-
-				case 'searchNumber':
-					$search = trim($_GET['search']);
-					$cars = new Car();
+					$data['dados'] = $cars->select($params);
 					$params = array(
 						'table' => $cars->tabela, 
-						'rows' => 'count(id) as numb', 
+						'rows' => 'count(id) AS cars', 
 						'complement' => " WHERE descricao like '%" . $search . "%' or placa like '%" . $search . "%'"
 					);
-					$data = $cars->select($params);
-					echo json_encode($data[0]);
+					$data['cars'] = $cars->select($params);
+					$data['cars'] = $data['cars'][0]['cars'];
+					echo json_encode($data);
 					http_response_code(200);
 					break;
 			}

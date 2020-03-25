@@ -1,24 +1,22 @@
 $(document).ready(function() {
 
-	$("#listCars").fadeIn();
-
+	$('#listCars').fadeIn();
 	makeTable();
+	$('#title').html('Home');
 
-	$("#title").html("Home");
-
-	$("#submitButton").on('click', function(e) {
+	$('#submitButton').on('click', function(e) {
 		e.preventDefault();
-		carId = $("#carId").val();
-		descricao = $("#descricao").val();
-		placa = $("#placa").val();
-		codRenavam = $("#codRenavam").val();
-		anoModelo = $("#anoModelo").val();
-		anoFabricacao = $("#anoFabricacao").val();
-		cor = $("#cor").val();
-		km = $("#km").val();
-		marca = $("#marca").val();
-		preco = $("#preco").val();
-		precoFipe = $("#precoFipe").val();
+		carId = $('#carId').val();
+		descricao = $('#descricao').val();
+		placa = $('#placa').val();
+		codRenavam = $('#codRenavam').val();
+		anoModelo = $('#anoModelo').val();
+		anoFabricacao = $('#anoFabricacao').val();
+		cor = $('#cor').val();
+		km = $('#km').val();
+		marca = $('#marca').val();
+		preco = $('#preco').val();
+		precoFipe = $('#precoFipe').val();
 
 		dados = {
 			carId : carId, 
@@ -37,14 +35,13 @@ $(document).ready(function() {
 		if (validate(dados)) {
 			cad(dados);
 		}
-
-
 	});	
-	$("#formCadastro").hide();
 
-	$("#accNameBtn").click(function(){ 
-		search = $("#accName").val();
-		if(search == ""){
+	$('#formCadastro').hide();
+
+	$('#accNameBtn').click(function() { 
+		search = $('#accName').val();
+		if (search == '') {
 			makeTable();
 		} else {
 			pesquisaCar(search, 0);
@@ -52,30 +49,19 @@ $(document).ready(function() {
 	});
 });
 
-function pesquisaCar(pesquisa, page = 0){
+function pesquisaCar(pesquisa, page) {
+	page = page || 0;
 	$.ajax({
-		type: "GET",
-		url: "../services/car.services.php",
-		data: {'operation' : 'searchCar', search : search, page: page},
+		type: 'GET',
+		url: '../services/car.services.php',
+		data: {operation: 'searchCar', search: search, page: page},
 		success: function(response) {
 			var carsData = JSON.parse(response);
-			mountTable(carsData);
-			$.ajax({
-				type: "GET",
-				url: "../services/car.services.php",
-				data: {'operation' : 'searchNumber', search : search},
-				success: function(response) {
-					var number = JSON.parse(response);
-					if(page == 0){
-						cars(0, number.numb, search);
-					}
-				},
-				error: function(){
-				}
-			});
+			mountTable(carsData['dados']);
+			mountButtons(page, carsData.cars, search);
 		},
 		error: function(error) {
-			alert("Ocorreu um erro");
+			alert('Ocorreu um erro');
 			console.log(error);
 		}
 	});
@@ -85,96 +71,67 @@ function changeScreen(op) {
 	if (op == 0) {
 		cleanForm();
 		getComponents();
-		$("#listCars").hide();
-		$("#formCadastro").fadeIn();
+		$('#listCars').hide();
+		$('#formCadastro').fadeIn();
 	} else if ( op == 1) {
-		$("#formCadastro").hide();
-		$("#listCars").fadeIn();
 		makeTable();
-		$("#title").html('Home');
+		$('#formCadastro').hide();
+		$('#listCars').fadeIn();
+		$('#title').html('Home');
+		$('searchInput').val();
 	}
 }
 
 function cleanForm() {
-	$("#title").html("Adicionar registro");
-	$("#pageTitle").html("Incluir automóvel");
-	$("#submitButton").html("Cadastrar");
-	$("#subPlaca").hide();
-
-	$("#carId, #descricao, #placa").val('');
-	$("#codRenavam").val('');
-	$("#anoModelo").val('');
-	$("#anoFabricacao").val('');
-	$("#cor").val('');
-	$("#km").val('');
-	$("#marca").val('');
-	$("#preco").val('');
-	$("#precoFipe").val('');
+	$('#title').html('Adicionar registro');
+	$('#pageTitle').html('Incluir automóvel');
+	$('#submitButton').html('Cadastrar');
+	$('#subPlaca').hide();
+	$('#carId, #descricao, #placa, #codRenavam, #anoModelo, #anoFabricacao, #cor, #km, #marca, #preco, #precoFipe').val('');
 }
 
-function cars(page, number, search) {
+function mountButtons(page, number, search) {
 	number = number || null;
 	search = search || null;
-	if (number != null) {
-		$("#paginationButtons").empty();
-		for (i = 0; i < number/10; i++) {
-			$("#paginationButtons").append(
-				$('<li>', {class: 'page-item'}).append(
-					$('<button>', {class: 'page-link navItem', id: 'btn'+i, onclick: "pesquisaCar('"+search+"',"+i+")"}).append(i+1)
-					)
-				)
-		}
-		$("#btn"+(page-1)).css({'background-color': 'grey', 'color': 'white'});
-	} else {
-		$.ajax({
-			type: "GET",
-			url: "../services/car.services.php",
-			data: {'operation' : 'cars'},
-			success: function(response) {
-				data = JSON.parse(response);
-				// console.log(data);
-				numPages = data.cars;			
-				$("#paginationButtons").empty();
-				for (i = 0; i < numPages/10; i++) {
-					$("#paginationButtons").append("<li class='page-item'><button class='page-link navItem'id='btn"+i+"' onclick='makeTable("+i+")'>"+(i+1)+"</button></li>");
-				}
-				$("#btn"+page).css({'background-color': 'grey', 'color': 'white'});
-			},
-			error: function(error){
-				alert("Ocorreu um erro");
-				console.log(error);
-			}
-		});
+	$('#paginationButtons').empty();
+	for (i = 0; i < number/10; i++) {
+		$('#paginationButtons').append($('<li>', {class: 'page-item'}).append(
+			$('<li>', {class: 'page-item'}).append(
+				$('<button>', {class: 'page-link navItem', id: 'btn'+i, onclick: search == null ? "makeTable(" + i + ")" : "pesquisaCar('" + search + "', " + i + ")"}).append(i+1)
+			)
+		))
 	}
+	$('#btn'+(page)).css({'background-color': 'grey', 'color': 'white'});
 }
 
 function makeTable(page) {
-	page = typeof(page) == 'undefined' || page == null ? 0 : page;
+	page = page || 0;
 	$.ajax({
-		type: "GET",
-		url: "../services/car.services.php",
-		data: {'operation' : 'listCars', 'page' : page},
+		type: 'GET',
+		url: '../services/car.services.php',
+		data: {operation: 'listCars', page: page},
 		success: function(response) {
 			var carsData = JSON.parse(response);
-			mountTable(carsData);
+			mountTable(carsData.dados);
+			mountButtons(page, carsData.cars);
 		},
 		error: function(error) {
-			alert("Ocorreu um erro");
+			alert('Ocorreu um erro');
 			console.log(error);
 		}
 	});
-	cars(page);
 }
 
 function mountTable(data) {
-	$("#table").empty();
-	table = document.getElementById("table");
+	console.log(data);
+	$('#table').empty();
+	table = document.getElementById('table');
 	var positions = ['descricao', 'placa', 'marca'];
-	if(data.length == 0 || data[0] == null){
+	if (data.length == 0 || data[0] == null) {
 		linha = document.createElement('tr');
 		cell = document.createElement('td');
 		cell.setAttribute('colspan', '5')
-		cellText = document.createTextNode("Nenhum registro encontrado!");
+		cellText = document.createTextNode('Nenhum registro encontrado!');
 		cell.setAttribute('style', 'text-align:center; padding:25px;')
 		cell.appendChild(cellText);
 		linha.appendChild(cell);
@@ -182,26 +139,26 @@ function mountTable(data) {
 		data = null;
 	}
 
-	$(data).each(function(key, value){
+	$(data).each(function(key, value) {
 		linha = document.createElement('tr');
 		linha.setAttribute('data-id', value['id']);
-		for(i = 0; i < 3; i++) {
+		for (i = 0; i < 3; i++) {
 			cell = document.createElement('td');
 			cellText = document.createTextNode(value[positions[i]]);
 			cell.appendChild(cellText);
 			linha.appendChild(cell);
-			// create buttons
-			if(i == 2) {
-				buttons = ['edit', 'remove',['btn-outline-info', 'btn-outline-danger']];
-				for(i = 0; i < 2 ; i++){
+
+			if (i == 2) {
+				buttons = ['edit', 'remove', ['btn-outline-info', 'btn-outline-danger']];
+				for (i = 0; i < 2 ; i++) {
 					cell = document.createElement('td');
 					cell.setAttribute('style', 'width:70px;');
 					button = document.createElement('button');
 					buttonImage = document.createElement('img');
 					buttonImage.setAttribute('src', '../icons/'+buttons[i]+'.png');
 					button.appendChild(buttonImage);
-					button.setAttribute('onclick', buttons[i]+'('+value['id']+')');
-					button.setAttribute('class', 'btn1 btn '+buttons[2][i]);
+					button.setAttribute('onclick', buttons[i] + '(' + value['id'] + ')');
+					button.setAttribute('class', 'btn1 btn ' + buttons[2][i]);
 					cell.appendChild(button);
 					linha.appendChild(cell);
 				}
@@ -212,17 +169,17 @@ function mountTable(data) {
 }
 
 function mountCheckboxes(data) {
-	$("#components").empty();
-	data = data != '' ? JSON.parse(data) : '';
+	$('#components').empty();
+	data = JSON.parse(data) || '';
 	div = document.getElementById('components');
-	for (i = 0 ;i < data.length ;i++) {
+	for (i = 0; i < data.length; i++) {
 		unic = document.createElement('div');
-		unic.setAttribute('class', "component");
+		unic.setAttribute('class', 'component');
 		input = document.createElement('input');
 		input.setAttribute('type', 'checkbox');
-		input.id = "cb"+data[i].id;
+		input.id = 'cb' + data[i].id;
 		input.setAttribute('class', 'accessorie form-check-input');
-		input.class = "accessorie";
+		input.class = 'accessorie';
 		label = document.createElement('label');
 		labelTxt = document.createTextNode(data[i]['name']);
 		label.appendChild(labelTxt);
@@ -234,13 +191,12 @@ function mountCheckboxes(data) {
 
 function getComponents(op) {
 	var promise = op == 1 ? $.Deferred() : null;
-	op = typeof(op) == 'undefined' || op == null ? 0 : 1;
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: { 'operation' : 'selectAcessories' },
+		data: {operation: 'selectAcessories'},
 		success: function(data) {
-			if ( op == 1 ) {
+			if (op == 1) {
 				promise.resolve(data)
 			} else {
 				mountCheckboxes(data);
@@ -254,74 +210,64 @@ function getComponents(op) {
 }
 
 function cad(dados) {
-
 	accessories = [];
 	size = 0;
-	getComponents(1).done(function(response){
-
+	getComponents(1).done(function(response) {
 		data = response;
-		data = data != '' ? JSON.parse(data) : '';
+		data = JSON.parse(data) || '';
+
 		for (x = 0, size = data.length; x < size; x++) {
-			accessories.push({id : data[x].id, checked : $("#cb"+data[x].id).prop('checked') ? 1 : 0});
+			accessories.push({id : data[x].id, checked : $('#cb' + data[x].id).prop('checked') ? 1 : 0});
 		}
 
-			data = {
-				operation : 'cadastro', 
-				carData: dados,
-				accessories: accessories
+		data = {operation: 'cadastro', carData: dados, accessories: accessories}
+
+		$.ajax({
+			type: 'POST',
+			url: '../services/car.services.php',
+			data: data,
+			error: function(error) {
+				alert('Ocorreu um erro');
+				console.log(error);
 			}
-
-			$.ajax({
-				type: 'POST',
-				url: '../services/car.services.php',
-				data: data,
-				success: function(response){
-					console.log(response)
-				},
-				error: function(error){
-					alert('Ocorreu um erro');
-					console.log(error);
-				}
-			});
-			changeScreen(1);
-			cleanForm();
-
+		});
+		changeScreen(1);
+		cleanForm();
 	});
 }
 
 function edit(id) {
 	getComponents();
-	$("#listCars").hide();
-	$("#formCadastro").fadeIn();
-	$("#subPlaca").show();
-	
-	$("#title").html("Alterar Registro");
-	$("#pageTitle").html("Alterar registro de automóvel");
+	$('#listCars').hide();
+	$('#formCadastro').fadeIn();
+	$('#subPlaca').show();
+	$('#title').html('Alterar Registro');
+	$('#pageTitle').html('Alterar registro de automóvel');
 
 	$.ajax({
 		method: 'GET',
 		dataType: 'json',
 		url: '../services/car.services.php',
-		data: { operation : 'getCar', id : id },
+		data: { operation: 'getCar', id: id },
 		success: function(data) {
-			$("#carId").val(data.id);
-			$("#descricao").val(data.descricao);
-			$("#placa").val(data.placa);
-			$("#codRenavam").val(data.codRenavam);
-			$("#anoModelo").val(data.anoModelo);
-			$("#anoFabricacao").val(data.anoFabricacao);
-			$("#cor").val(data.cor);
-			$("#km").val(data.km);
-			$("option[value='"+data.marca+"']").prop('selected', true);
-			$("#preco").val(data.preco);
-			$("#precoFipe").val(data.precoFipe);
-			$("#submitButton").html("Salvar");
-			$("#subPlaca").html("Placa: "+data.placa);
-			$("#subPlaca").attr('style', 'display:inline; color:red;');
+			$('#carId').val(data.id);
+			$('#descricao').val(data.descricao);
+			$('#placa').val(data.placa);
+			$('#codRenavam').val(data.codRenavam);
+			$('#anoModelo').val(data.anoModelo);
+			$('#anoFabricacao').val(data.anoFabricacao);
+			$('#cor').val(data.cor);
+			$('#km').val(data.km);
+			$('option[value=' + data.marca + ']').prop('selected', true);
+			$('#preco').val(data.preco);
+			$('#precoFipe').val(data.precoFipe);
+			$('#submitButton').html('Salvar');
+			$('#subPlaca').html('Placa: ' + data.placa);
+			$('#subPlaca').attr('style', 'display: inline; color: red;');
 
 			if (data.accessories[0] != null && data.accessories.length > 0) {
 				for (i = 0; i < data.accessories.length; i++) {
-					$("#cb"+data.accessories[i].accessorieId).prop('checked', true);
+					$('#cb' + data.accessories[i].accessorieId).prop('checked', true);
 				}
 			}		
 		},
@@ -332,21 +278,18 @@ function edit(id) {
 }
 
 function remove(id) {
-	data = {
-		'operation' : 'remove',
-		'id' : id
-	}
-	if(confirm("Deseja mesmo apagar este registro?")){
+	data = {operation: 'remove', id: id}
+	if (confirm('Deseja mesmo apagar este registro?')) {
 		$.ajax({
-			type: "POST",
-			url: "../services/car.services.php",
+			type: 'POST',
+			url: '../services/car.services.php',
 			data: data,
-			success: function(response){
+			success: function(response) {
 				console.log(response);
 				makeTable();
 			},
-			error: function(error){
-				alert("Ocorreu um erro");
+			error: function(error) {
+				alert('Ocorreu um erro');
 				console.log(error);
 			}
 		});
@@ -355,131 +298,131 @@ function remove(id) {
 
 function validate(dados) {
 	error = [];
-	if(dados.descricao == ""){
-		$("label[for='descricaoError']").html("<qwerty class='MsgColor'> O campo não pode ser nulo</qwerty>");
+	if (dados.descricao == '') {
+		$('label[for=descricaoError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
 		error[1] = true;
-	}else{
-		if(dados.descricao.length > 60){
-			$("label[for='descricaoError']").html("<qwerty class='MsgColor'> A descrição deve ter no máximo 60 caracteres</qwerty>");
+	} else {
+		if (dados.descricao.length > 60) {
+			$('label[for=descricaoError]').html('<qwerty> A descrição deve ter no máximo 60 caracteres</qwerty>');
 			error[1] = true;
-		}else{
-			$("label[for='descricaoError']").html("");
+		} else {
+			$('label[for=descricaoError]').html('');
 			error[1] = false;
 		}
 	}
 
-	if(dados.placa == ""){
-		$("label[for='placaError']").html("<qwerty class='MsgColor'> O campo não pode ser nulo</qwerty>");
+	if (dados.placa == '') {
+		$('label[for=placaError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
 		error[2] = true;
-	}else{
+	} else {
 		var regex = /^[a-z]{3}\-[0-9]{4}$/i;
-		if(!regex.test(dados.placa)){
-			$("label[for='placaError']").html("<qwerty class='MsgColor'> Placa inválida</qwerty>");
+		if (!regex.test(dados.placa)) {
+			$('label[for=placaError]').html('<qwerty> Placa inválida</qwerty>');
 			error[2] = true;
-		}else{
-			$("label[for='placaError']").html("");
+		} else {
+			$('label[for=placaError]').html('');
 			error[2] = false;
 		}
 	}
 
-	if(dados.codRenavam == ""){
-		$("label[for='codRenavamError']").html("<qwerty class='MsgColor'> O campo não pode ser nulo</qwerty>");
+	if (dados.codRenavam == '') {
+		$('label[for=codRenavamError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
 		error[3] = true;
-	}else{
+	} else {
 		var regex = /^[0-9]{11}$/;
-		if(!regex.test(dados.codRenavam)){
-			$("label[for='codRenavamError']").html("<qwerty class='MsgColor'> Código inválido</qwerty>");
+		if (!regex.test(dados.codRenavam)) {
+			$('label[for=codRenavamError]').html('<qwerty> Código inválido</qwerty>');
 			error[3] = true;
-		}else{
-			$("label[for='codRenavamError']").html("");
+		} else {
+			$('label[for=codRenavamError]').html('');
 			error[3] = false;
 		}
 	}
 
-	if(dados.anoModelo == ""){
-		$("label[for='anoModeloError']").html("<qwerty class='MsgColor'> O campo não pode ser nulo</qwerty>");
+	if (dados.anoModelo == '') {
+		$('label[for=anoModeloError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
 		error[4] = true;
-	}else{
-		if(dados.anoModelo.length != 4){
-			$("label[for='anoModeloError']").html("<qwerty class='MsgColor'> Ano inválido</qwerty>");
+	} else {
+		if (dados.anoModelo.length != 4) {
+			$('label[for=anoModeloError]').html('<qwerty> Ano inválido</qwerty>');
 			error[4] = true;
-		}else{
-			$("label[for='anoModeloError']").html("");
+		} else {
+			$('label[for=anoModeloError]').html('');
 			error[4] = false;
 		}
 	}
 
-	if(dados.anoFabricacao == ""){
-		$("label[for='anoFabricacaoError']").html("<qwerty class='MsgColor'> O campo não pode ser nulo</qwerty>");
+	if (dados.anoFabricacao == '') {
+		$('label[for=anoFabricacaoError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
 		error[5] = true;
-	}else{
-		if(dados.anoModelo < dados.anoFabricacao){
-			$("label[for='anoFabricacaoError']").html("<qwerty class='MsgColor'> Ano inválido</qwerty>");
+	} else {
+		if (dados.anoModelo < dados.anoFabricacao) {
+			$('label[for=anoFabricacaoError]').html('<qwerty> Ano inválido</qwerty>');
 			error[5] = true;
-		}else{
-			$("label[for='anoFabricacaoError']").html("");
+		} else {
+			$('label[for=anoFabricacaoError]').html('');
 			error[5] = false;
 		}
 	}
 
-	if(dados.cor == ""){
-		$("label[for='corError']").html("<qwerty class='MsgColor'> O campo não pode ser nulo</qwerty>");
+	if (dados.cor == '') {
+		$('label[for=corError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
 		error[6] = true;
-	}else{
-		if(dados.cor.length > 20){
-			$("label[for='corError']").html("<qwerty class='MsgColor'> O campo deve possuir menos de 20 caracteres</qwerty>");
+	} else {
+		if (dados.cor.length > 20) {
+			$('label[for=corError]').html('<qwerty> O campo deve possuir menos de 20 caracteres</qwerty>');
 			error[6] = true;
-		}else{
-			$("label[for='corError']").html("");
+		} else {
+			$('label[for=corError]').html('');
 			error[6] = false;
 		}
 	}
 	
-	if(dados.km == ""){
-		$("label[for='kmError']").html("<qwerty class='MsgColor'> O campo não pode ser nulo</qwerty>");
+	if (dados.km == '') {
+		$('label[for=kmError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
 		error[7] = true;
-	}else{
-		$("label[for='kmError']").html("");
+	} else {
+		$('label[for=kmError]').html('');
 		error[7] = false;
 	}
 
-	if(dados.marca == "" || dados.marca == null){
-		$("label[for='marcaError']").html("<qwerty class='MsgColor'> O campo não pode ser nulo</qwerty>");
+	if (dados.marca == '' || dados.marca == null) {
+		$('label[for=marcaError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
 		error[8] = true;
-	}else{
-		if(dados.marca.length > 20){
-			$("label[for='marcaError']").html("<qwerty class='MsgColor'> O campo deve possuir menos de 20 caracteres</qwerty>");
+	} else {
+		if (dados.marca.length > 20) {
+			$('label[for=marcaError]').html('<qwerty> O campo deve possuir menos de 20 caracteres</qwerty>');
 			error[8] = true;
-		}else{
-			$("label[for='marcaError']").html("");
+		} else {
+			$('label[for=marcaError]').html('');
 			error[8] = false;
 		}
 	}
 
-	if(dados.preco == ""){
-		$("label[for='precoError']").html("<qwerty class='MsgColor'> O campo não pode ser nulo</qwerty>");
+	if (dados.preco == '') {
+		$('label[for=precoError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
 		error[9] = true;
-	}else{
-		$("label[for='precoError']").html("");
+	} else {
+		$('label[for=precoError]').html('');
 		error[9] = false;
 	}
 
-	if(dados.precoFipe == ""){
-		$("label[for='precoFipeError']").html("<qwerty class='MsgColor'> O campo não pode ser nulo</qwerty>");
+	if (dados.precoFipe == '') {
+		$('label[for=precoFipeError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
 		error[10] = true;
-	}else{
-		$("label[for='precoFipeError']").html("");
+	} else {
+		$('label[for=precoFipeError]').html('');
 		error[10] = false;
 	}
 
 	send = true;
-	$.each(error, function(key, value){
-		if(value === true){
+	$.each(error, function(key, value) {
+		if (value === true) {
 			send = false;
 		}
 	});
 
-	if(send){
+	if (send) {
 		return true;
 	}
 }
