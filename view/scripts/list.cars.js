@@ -39,8 +39,8 @@ $(document).ready(function() {
 
 	$('#formCadastro').hide();
 
-	$('#accNameBtn').click(function() { 
-		search = $('#accName').val();
+	$('#searchButton').click(function() { 
+		search = $('#searchInput').val();
 		if (search == '') {
 			makeTable();
 		} else {
@@ -49,7 +49,7 @@ $(document).ready(function() {
 	});
 });
 
-function pesquisaCar(pesquisa, page) {
+function pesquisaCar(search, page) {
 	page = page || 0;
 	$.ajax({
 		type: 'GET',
@@ -57,7 +57,7 @@ function pesquisaCar(pesquisa, page) {
 		data: {operation: 'searchCar', search: search, page: page},
 		success: function(response) {
 			var carsData = JSON.parse(response);
-			mountTable(carsData['dados']);
+			mountTable(carsData.dados);
 			mountButtons(page, carsData.cars, search);
 		},
 		error: function(error) {
@@ -86,6 +86,7 @@ function cleanForm() {
 	$('#title').html('Adicionar registro');
 	$('#pageTitle').html('Incluir automóvel');
 	$('#submitButton').html('Cadastrar');
+	$('.errorBox').empty()
 	$('#subPlaca').hide();
 	$('#carId, #descricao, #placa, #codRenavam, #anoModelo, #anoFabricacao, #cor, #km, #marca, #preco, #precoFipe').val('');
 }
@@ -111,6 +112,7 @@ function makeTable(page) {
 		url: '../services/car.services.php',
 		data: {operation: 'listCars', page: page},
 		success: function(response) {
+			console.log(response);
 			var carsData = JSON.parse(response);
 			mountTable(carsData.dados);
 			mountButtons(page, carsData.cars);
@@ -123,7 +125,6 @@ function makeTable(page) {
 }
 
 function mountTable(data) {
-	console.log(data);
 	$('#table').empty();
 	table = document.getElementById('table');
 	var positions = ['descricao', 'placa', 'marca'];
@@ -221,7 +222,7 @@ function cad(dados) {
 		}
 
 		data = {operation: 'cadastro', carData: dados, accessories: accessories}
-
+		console.log(data);
 		$.ajax({
 			type: 'POST',
 			url: '../services/car.services.php',

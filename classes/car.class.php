@@ -32,6 +32,7 @@
 		public function __construct($carData = null) {
 			parent::__construct();
 			if (!empty($carData)) {
+				$this->carId = !empty($carData['carId']) ? $carData['carId'] : null; 
 				if (isset($carData['dados']['descricao'])) {
 					$this->descricao = $carData['dados']['descricao'];
 					$this->placa = $carData['dados']['placa'];
@@ -57,50 +58,74 @@
 			}
 		}
 
-		public function remove(array $params) {
-			parent::remove(array('tabela' => 'carAccessorie', 'row' => 'carId', 'id' => $params['id']));
-			parent::remove(array('tabela' => 'car', 'row' => 'id', 'id' => $params['id']));
+		public function removeCar() {
+			parent::remove(array('tabela' => 'carAccessorie', 'row' => 'carId', 'id' => $this->id));
+			parent::remove(array('tabela' => 'car', 'row' => 'id', 'id' => $this->id));
 		}
 
-		public function validate(array $data) {
+		public function save() {
+			$params = array(
+				'tabela' => $this->tabela,
+				'carId' => $this->carId,
+				'dados' => array(
+					'descricao' => $this->descricao,
+					'placa' => $this->placa,
+					'codRenavam' => $this->codRenavam,
+					'anoModelo' => $this->anoFabricacao,
+					'anoFabricacao' => $this->anoFabricacao,
+					'cor' => $this->cor,
+					'km' => $this->km,
+					'marca' => $this->marca,
+					'preco' => $this->preco,
+					'precoFipe' => $this->precoFipe
+				) 
+			);
+			if (!empty($this->carId)) {
+				return $this->update($params);
+			} else {
+				return $this->add($params);
+			}
+		}
+
+		public function validate() {
 			$error = [];
-			if (empty($data['descricao']) || strlen($data['descricao']) > 60) {
+			if (empty($this->descricao) || strlen($this->descricao) > 60) {
 				$error['descricao'] = true;
 			}
 			
-			if (empty($data['placa']) || strlen($data['placa']) != 8) {
+			if (empty($this->placa) || strlen($this->placa) != 8) {
 				$error['placa'] = true;
 			}
 
-			if (empty($data['codRenavam']) || strlen($data['codRenavam']) != 11) {
+			if (empty($this->codRenavam) || strlen($this->codRenavam) != 11) {
 				$error['codRenavam'] = true;
 			}
 
-			if (empty($data['anoModelo']) || strlen($data['anoModelo']) != 4) {
+			if (empty($this->anoModelo) || strlen($this->anoModelo) != 4) {
 				$error['anoModelo'] = true;
 			}
 
-			if (empty($data['anoFabricacao']) || strlen($data['anoFabricacao']) != 4) {
+			if (empty($this->anoFabricacao) || strlen($this->anoFabricacao) != 4) {
 				$error['anoFabricacao'] = true;
 			}
 
-			if (empty($data['cor']) || strlen($data['cor']) > 20) {
+			if (empty($this->cor) || strlen($this->cor) > 20) {
 				$error['cor'] = true;
 			}
 
-			if (empty($data['km'])) {
+			if (empty($this->km)) {
 				$error['km'] = true;	
 			}
 
-			if (empty($data['marca'])) {
+			if (empty($this->marca)) {
 				$error['marca'] = true;	
 			} 
 
-			if (empty($data['preco'])) {
+			if (empty($this->preco)) {
 				$error['preco'] = true;	
 			}
 		
-			if (empty($data['precoFipe'])) {
+			if (empty($this->precoFipe)) {
 				$error['precoFipe'] = true;	
 			}
 			

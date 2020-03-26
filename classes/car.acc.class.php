@@ -5,7 +5,7 @@
 		
 		protected $carId;
 		protected $accessorieId;
-		private $tabela = 'carAccessorie';
+		public $tabela = 'carAccessorie';
 
 		public function __set($name, $value) {
 			$this->$name .= $value;

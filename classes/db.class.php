@@ -27,14 +27,6 @@
 			}
 		}
 
-		public function save(array $params) {
-			if (!empty($params['carId'])) {
-				return $this->update($params);
-			} else {
-				return $this->add($params);
-			}
-		}
-
 		public function add(array $params) {
 			$query = 'INSERT INTO '. $params['tabela'].' '.$this->prepareInsert($params['dados']).';';
 			echo $this->execute($query);

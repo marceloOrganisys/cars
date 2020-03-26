@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <link rel='stylesheet' type='text/css' href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
@@ -17,7 +17,7 @@
             </div><br>
         </div>
         <div class="d-flex justify-content-center" style="margin-top:20px;">
-            <form class="form-inline" id='accFormName'>
+            <form class="form-inline" id="accFormName">
                 <div class="form-group">
                     <label for="inputPassword2" class=" margin_">Novo Acessório</label>
                     <input type="text" class="form-control margin_" id="accName" placeholder="Nome">

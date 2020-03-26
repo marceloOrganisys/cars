@@ -15,7 +15,7 @@ $(document).ready(function() {
 				addAcc(name);
 			}
 		} else {
-			alert('O nome não pode ser nulo');
+			alert('O nome deve possuir mais de 3 caracteres');
 		}
 	}
 
