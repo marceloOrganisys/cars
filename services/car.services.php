@@ -6,7 +6,6 @@ require_once('../classes/accessorie.class.php');
 
 function execute($carId, $accessorie){
 	$carAcc = new CarAcc();
-	$params['tabela'] = $carAcc->tabela;
 	$params['dados']['carId'] = $carId;
 	$params['dados']['accessorieId'] = $accessorie;
 	$carAcc->add($params);
@@ -15,7 +14,6 @@ function execute($carId, $accessorie){
 function deleteCarAcc($carId){
 	$carAcc = new CarAcc();
 	$params = array(
-		'tabela' => $carAcc->tabela,
 		'row' => 'carId',
 		'id' => intval($carId)
 	);
@@ -46,7 +44,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 		if ( empty($_POST['carData']['carId']) ) {
 			$car = new Car();
 			$params = array(
-				'table' => 'car',
 				'rows' => 'id',
 				'complement' => 'ORDER BY id DESC LIMIT 1'
 			);
@@ -94,7 +91,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 		$carData['carId'] = $id;
 		$cars = new Car($carData);
 		$params = array(
-			'table' => $cars->tabela, 
 			'rows' => '*', 
 			'complement' => " WHERE id = $id "
 		);
@@ -107,13 +103,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 		case 'listCars':
 		$cars = new Car();
 		$params = array(
-			'table' => $cars->tabela,
 			'rows' => '*',
 			'complement' => "ORDER BY id desc LIMIT " . $_GET['page']*10 . ", 10;"
 		);
 		$data['dados'] = $cars->select($params);
 		$params = array(
-			'table' => $cars->tabela,
 			'rows' => 'count(id) AS cars',
 			'complement' => ''
 		);
@@ -126,7 +120,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 		case 'getLastId':
 		$cars = new Car();
 		$params = array(
-			'table' => $cars->tabela,
 			'rows' => 'id',
 			'complement' => " ORDER BY id desc LIMIT 1;"
 		);
@@ -139,13 +132,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 		$search = isset($_GET['search']) ? trim($_GET['search']) : '';
 		$cars = new Car();
 		$params = array(
-			'table' => $cars->tabela, 
 			'rows' => '*', 
 			'complement' => " WHERE descricao like '%" . $search . "%' or placa like '%" . $search . "%' ORDER BY id desc LIMIT ". ($_GET['page']*10) . ", 10"
 		);
 		$data['dados'] = $cars->select($params);
 		$params = array(
-			'table' => $cars->tabela, 
 			'rows' => 'count(id) AS cars', 
 			'complement' => " WHERE descricao like '%" . $search . "%' or placa like '%" . $search . "%'"
 		);
@@ -161,7 +152,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 function insert() {
 	$car = new Car();
 	$carData = array(
-		'tabela' => $car->tabela, 
 		'carId' => intval($_POST['carData']['carId']), 
 		'dados' => array(
 			'descricao' => $_POST['carData']['descricao'], 

@@ -30,7 +30,7 @@ function getComponents() {
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: { operation : 'selectAcessories' },
+		data: {operation: 'selectAcessories'},
 		success: function(data) {
 			data = data != '' ? JSON.parse(data) : '';
 			mountTable(data);
@@ -72,7 +72,7 @@ function mountTable(data) {
 				buttonImage.setAttribute('src', '../icons/' + buttons[i] + '.png');
 				button.appendChild(buttonImage);
 				button.setAttribute('onclick', buttons[i] + '(' + value['id'] + ')');
-				button.setAttribute('class', 'btn1 btn '+buttons[2][i]);
+				button.setAttribute('class', 'btn1 btn ' + buttons[2][i]);
 				cell.appendChild(button);
 				linha.appendChild(cell);
 			}
@@ -104,8 +104,9 @@ function remove(id) {
 	.done(function(response) {
 		if (response) {
 			if (confirm('Deseja excluir esse acessório?')) {
-				deleteAcc(id);
-				getComponents();
+				deleteAcc(id).done(function(){
+					getComponents();
+				});
 			}
 		} else {
 			alert('Acessório não pode ser removido');
@@ -117,14 +118,19 @@ function remove(id) {
 }
 
 function deleteAcc(id) {
+	var promise = $.Deferred();
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
 		data: {operation: 'deleteAcc', acc: id},
+		success: function() {
+			promise.resolve();
+		},
 		error: function(error) {
 			console.log(error);
 		}
 	});	
+	return promise;
 }
 
 function addAcc(name) {

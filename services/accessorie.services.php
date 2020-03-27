@@ -5,7 +5,8 @@
 	require_once("../classes/car.class.php");
 
 	$acc = new Accessorie();
-	
+	$carAcc = new CarAcc();
+
 	switch ($_SERVER["REQUEST_METHOD"]) {
 		case 'POST':
 			switch ($_POST['operation']) {
@@ -23,18 +24,16 @@
 				case 'getCarAccessories':
 					$id = $_POST['id'];
 					$params = array(
-						'table' => 'carAccessorie',
 						'rows' => 'accessorieId',
 						'complement' => "WHERE carId = " . $id
 					);
-					$data = $acc->select($params);
+					$data = $carAcc->select($params);
 					echo json_encode($data);
 					break;
 
 				// ACESSÓRIOS
 				case 'selectAcessories':
 					$params = array(
-						'table' => $acc->tabela,
 						'rows' => '*',
 						'complement' => ""
 					);
@@ -44,11 +43,10 @@
 
 				case 'checkDelete':
 					$params = array(
-						'table' => 'carAccessorie',
 						'rows' => 'carId',
 						'complement' => 'WHERE accessorieId = ' .$_POST['acc']
 					);
-					if (empty($acc->select($params))) {
+					if (empty($carAcc->select($params))) {
 						echo json_encode(['status' => true]);
 					} else {
 						echo json_encode(['status' => false]);
@@ -57,7 +55,6 @@
 
 				case 'deleteAcc':
 					$params = array(
-						'tabela' => $acc->tabela,
 						'row' => 'id',
 						'id' => $_POST['acc']
 					);
@@ -69,13 +66,11 @@
 					break;
 
 				case 'addAcc':
-					$params['tabela'] = 'accessorie';
 					$params['dados']['name'] = $_POST['name'];
 					echo $acc->add($params);
 					break;
 
 				case 'alterAcc':
-					$params['tabela'] = 'accessorie';
 					$params['carId'] = $_POST['id'];
 					$params['dados']['name'] = $_POST['name'];
 					echo $acc->update($params);

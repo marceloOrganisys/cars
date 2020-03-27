@@ -1,8 +1,9 @@
 $(document).ready(function() {
 
-	$('#listCars').fadeIn();
-	makeTable();
-	$('#title').html('Home');
+	makeTable().done(function() {
+		$('#listCars').fadeIn();
+		$('#title').html('Home');
+	})
 
 	$('#submitButton').on('click', function(e) {
 		e.preventDefault();
@@ -36,8 +37,6 @@ $(document).ready(function() {
 			cad(dados);
 		}
 	});	
-
-	$('#formCadastro').hide();
 
 	$('#searchButton').click(function() { 
 		search = $('#searchInput').val();
@@ -74,11 +73,13 @@ function changeScreen(op) {
 		$('#listCars').hide();
 		$('#formCadastro').fadeIn();
 	} else if ( op == 1) {
-		makeTable();
-		$('#formCadastro').hide();
-		$('#listCars').fadeIn();
-		$('#title').html('Home');
-		$('searchInput').val();
+		makeTable().done(function(){
+			$('qwerty').html('');
+			$('#formCadastro').hide();
+			$('#listCars').fadeIn();
+			$('#title').html('Home');
+			$('searchInput').val('');
+		});
 	}
 }
 
@@ -86,7 +87,6 @@ function cleanForm() {
 	$('#title').html('Adicionar registro');
 	$('#pageTitle').html('Incluir automóvel');
 	$('#submitButton').html('Cadastrar');
-	$('.errorBox').empty()
 	$('#subPlaca').hide();
 	$('#carId, #descricao, #placa, #codRenavam, #anoModelo, #anoFabricacao, #cor, #km, #marca, #preco, #precoFipe').val('');
 }
@@ -99,36 +99,38 @@ function mountButtons(page, number, search) {
 		$('#paginationButtons').append($('<li>', {class: 'page-item'}).append(
 			$('<li>', {class: 'page-item'}).append(
 				$('<button>', {class: 'page-link navItem', id: 'btn'+i, onclick: search == null ? "makeTable(" + i + ")" : "pesquisaCar('" + search + "', " + i + ")"}).append(i+1)
-			)
-		))
+				)
+			))
 	}
 	$('#btn'+(page)).css({'background-color': 'grey', 'color': 'white'});
 }
 
 function makeTable(page) {
+	var promise = $.Deferred();
 	page = page || 0;
 	$.ajax({
 		type: 'GET',
 		url: '../services/car.services.php',
 		data: {operation: 'listCars', page: page},
 		success: function(response) {
-			console.log(response);
 			var carsData = JSON.parse(response);
 			mountTable(carsData.dados);
 			mountButtons(page, carsData.cars);
+			promise.resolve();
 		},
 		error: function(error) {
 			alert('Ocorreu um erro');
 			console.log(error);
 		}
 	});
+	return promise;
 }
 
 function mountTable(data) {
 	$('#table').empty();
 	table = document.getElementById('table');
 	var positions = ['descricao', 'placa', 'marca'];
-	if (data.length == 0 || data[0] == null) {
+	if (data.length == 0) {
 		linha = document.createElement('tr');
 		cell = document.createElement('td');
 		cell.setAttribute('colspan', '5')
@@ -287,7 +289,7 @@ function remove(id) {
 			data: data,
 			success: function(response) {
 				console.log(response);
-				makeTable();
+				pesquisaCar($('#searchInput').val(), 0);
 			},
 			error: function(error) {
 				alert('Ocorreu um erro');

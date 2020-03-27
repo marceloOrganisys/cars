@@ -4,6 +4,7 @@
 
 		protected $mysqli;
 		public $result;
+		public $tabela;
 
 		function __construct() {
 			$this->connect();
@@ -28,23 +29,23 @@
 		}
 
 		public function add(array $params) {
-			$query = 'INSERT INTO '. $params['tabela'].' '.$this->prepareInsert($params['dados']).';';
+			$query = 'INSERT INTO ' . $this->tabela . ' ' . $this->prepareInsert($params['dados'])  .';';
 			echo $this->execute($query);
 		}
 
 		public function update(array $params) {
-			$query = 'UPDATE '.$params['tabela'].' SET '.$this->prepareUpdate($params['dados']).' WHERE id = '.$params['carId'].';';
+			$query = 'UPDATE ' . $this->tabela . ' SET ' . $this->prepareUpdate($params['dados']).' WHERE id = ' . $params['carId'] . ';';
 			echo $this->execute($query);
 		}
 
 		public function remove(array $params) {
-			$query = "DELETE FROM " . $params['tabela'] . " WHERE " . $params['row'] . " = " . $params['id'];
+			$query = "DELETE FROM " . $this->tabela . " WHERE " . $params['row'] . " = " . $params['id'];
 			$this->execute($query);
 		}
 
 		public function select(array $params) {
 			$dados = [];
-			$query = "SELECT ". $params['rows'] . " FROM " . $params['table'] . " " . $params['complement'];
+			$query = "SELECT ". $params['rows'] . " FROM " . $this->tabela . " " . $params['complement'];
 			if ($result = $this->execute($query, 1)) {
 				for ($i = 0; $i < $result['linhas']; $i++) {
 					$dados[] = $result['dados']->fetch_assoc(); 
@@ -76,7 +77,7 @@
 			$i = 1;
 			for($i = 1; $i <= count($values); $i++){
 				$value = $this->mysqli->real_escape_string($values[$i-1]);
-				$str .= $columns[$i-1].'='. "'$value'";
+				$str .= $columns[$i-1] . '=' . "'$value'";
 				$str .= $i < count($values) ?  ',' : null; 
 			}
 			return $str;

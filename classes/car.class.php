@@ -5,6 +5,7 @@
 	require_once('car.acc.class.php');
 	require_once('accessorie.class.php');
 
+
 	final class Car extends Db {
 		protected $carId;
 		private $descricao;
@@ -17,7 +18,6 @@
 		private $marca;
 		private $preco;
 		private $precoFipe;
-		public $tabela = 'car';
 		private $accessories;
 		private $accessorieClass;
 
@@ -30,6 +30,8 @@
 		}
 
 		public function __construct($carData = null) {
+			$this->accessorieClass = new CarAcc();
+			$this->tabela = 'car';
 			parent::__construct();
 			if (!empty($carData)) {
 				$this->carId = !empty($carData['carId']) ? $carData['carId'] : null; 
@@ -46,9 +48,7 @@
 					$this->precoFipe = $carData['dados']['precoFipe'];
 				} else {
 					if (isset($carData['carId'])) {
-						$this->accessorieClass = new Accessorie();
 						$params = array(
-							'table' => 'carAccessorie',
 							'rows' => 'accessorieId',
 							'complement' => 'WHERE carId = ' . $carData['carId']
 						);
@@ -59,13 +59,12 @@
 		}
 
 		public function removeCar() {
-			parent::remove(array('tabela' => 'carAccessorie', 'row' => 'carId', 'id' => $this->id));
-			parent::remove(array('tabela' => 'car', 'row' => 'id', 'id' => $this->id));
+			$this->accessorieClass->remove(array('row' => 'carId', 'id' => $this->carId));
+			$this->remove(array('row' => 'id', 'id' => $this->carId));
 		}
 
 		public function save() {
 			$params = array(
-				'tabela' => $this->tabela,
 				'carId' => $this->carId,
 				'dados' => array(
 					'descricao' => $this->descricao,
