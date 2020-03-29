@@ -21,7 +21,7 @@
 			$this->mysqli->set_charset("utf8");
 
 			if ($this->mysqli->connect_errno) {
-				echo 'Failed to connect to MySQL: ' . $this->mysqli->connect_error;
+				echo 'Failed to connect to MySQL: '.$this->mysqli->connect_error;
 			 	die();
 			} else {
 				return $this->mysqli;
@@ -29,23 +29,23 @@
 		}
 
 		public function add(array $params) {
-			$query = 'INSERT INTO ' . $this->tabela . ' ' . $this->prepareInsert($params['dados'])  .';';
+			$query = 'INSERT INTO '.$this->tabela.' '.$this->prepareInsert($params['dados']).';';
 			echo $this->execute($query);
 		}
 
 		public function update(array $params) {
-			$query = 'UPDATE ' . $this->tabela . ' SET ' . $this->prepareUpdate($params['dados']).' WHERE id = ' . $params['carId'] . ';';
+			$query = 'UPDATE '.$this->tabela.' SET '.$this->prepareUpdate($params['dados']).' WHERE id = '.$params['carId'].';';
 			echo $this->execute($query);
 		}
 
 		public function remove(array $params) {
-			$query = "DELETE FROM " . $this->tabela . " WHERE " . $params['row'] . " = " . $params['id'];
+			$query = "DELETE FROM ".$this->tabela." WHERE ".$params['row']." = ".$params['id'];
 			$this->execute($query);
 		}
 
 		public function select(array $params) {
 			$dados = [];
-			$query = "SELECT ". $params['rows'] . " FROM " . $this->tabela . " " . $params['complement'];
+			$query = "SELECT ".$params['rows']." FROM ".$this->tabela." ".$params['complement'];
 			if ($result = $this->execute($query, 1)) {
 				for ($i = 0; $i < $result['linhas']; $i++) {
 					$dados[] = $result['dados']->fetch_assoc(); 
@@ -65,7 +65,7 @@
 				$values .= $i == count($params) ? '' : ", ";
 			}
 			$columns = array_keys($params);
-			$str = '('. implode(',', $columns) .') VALUES ('.  $values .')';
+			$str = '('.implode(',', $columns) .') VALUES ('. $values .')';
 			//id, nome
 			return $str;
 		}
@@ -77,18 +77,17 @@
 			$i = 1;
 			for($i = 1; $i <= count($values); $i++){
 				$value = $this->mysqli->real_escape_string($values[$i-1]);
-				$str .= $columns[$i-1] . '=' . "'$value'";
+				$str .= $columns[$i-1].'='."'$value'";
 				$str .= $i < count($values) ?  ',' : null; 
 			}
 			return $str;
 		}
 
-		public function execute(string $stmt, int $op = 0) {
-			if ( $result = $this->mysqli->query($stmt) ) {
-				return empty($op) || !isset($op) ?  true : array('dados' => $result, 'linhas' => $result->num_rows); 
+		public function execute(string $stmt, int $response = 0) {
+			if ($result = $this->mysqli->query($stmt)) {
+				return empty($response) ?  true : array('dados' => $result, 'linhas' => $result->num_rows); 
 			} else {
 				return $this->mysqli->error;
 			}
 		}
 	}
-?>

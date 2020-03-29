@@ -30,8 +30,9 @@ function getComponents() {
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: {operation: 'selectAcessories'},
+		data: {operation: 'getAcessories'},
 		success: function(data) {
+			console.log(data)
 			data = data != '' ? JSON.parse(data) : '';
 			mountTable(data);
 		},
@@ -104,7 +105,7 @@ function remove(id) {
 	.done(function(response) {
 		if (response) {
 			if (confirm('Deseja excluir esse acessório?')) {
-				deleteAcc(id).done(function(){
+				removeAcc(id).done(function(){
 					getComponents();
 				});
 			}
@@ -117,12 +118,12 @@ function remove(id) {
 	});
 }
 
-function deleteAcc(id) {
+function removeAcc(id) {
 	var promise = $.Deferred();
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: {operation: 'deleteAcc', acc: id},
+		data: {operation: 'removeAcc', acc: id},
 		success: function() {
 			promise.resolve();
 		},
@@ -174,7 +175,7 @@ function editAcc(name, id) {
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: {operation: 'alterAcc', name: name, id: id},
+		data: {operation: 'updateAcc', name: name, id: id},
 		success: function(response) {
 			if (response == 1) {
 				getComponents();

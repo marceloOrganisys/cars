@@ -72,7 +72,7 @@ function changeScreen(op) {
 		getComponents();
 		$('#listCars').hide();
 		$('#formCadastro').fadeIn();
-	} else if ( op == 1) {
+	} else {
 		makeTable().done(function(){
 			$('qwerty').html('');
 			$('#formCadastro').hide();
@@ -111,12 +111,13 @@ function makeTable(page) {
 	$.ajax({
 		type: 'GET',
 		url: '../services/car.services.php',
-		data: {operation: 'listCars', page: page},
+		data: {operation: 'getCars', page: page},
 		success: function(response) {
 			var carsData = JSON.parse(response);
-			mountTable(carsData.dados);
-			mountButtons(page, carsData.cars);
-			promise.resolve();
+			mountTable(carsData.dados).done(function() {
+				mountButtons(page, carsData.cars);
+				promise.resolve();
+			});
 		},
 		error: function(error) {
 			alert('Ocorreu um erro');
@@ -127,6 +128,7 @@ function makeTable(page) {
 }
 
 function mountTable(data) {
+	var promise = $.Deferred();
 	$('#table').empty();
 	table = document.getElementById('table');
 	var positions = ['descricao', 'placa', 'marca'];
@@ -169,6 +171,8 @@ function mountTable(data) {
 		}
 		table.appendChild(linha);
 	});
+	promise.resolve();
+	return promise;
 }
 
 function mountCheckboxes(data) {
@@ -197,7 +201,7 @@ function getComponents(op) {
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: {operation: 'selectAcessories'},
+		data: {operation: 'getAcessories'},
 		success: function(data) {
 			if (op == 1) {
 				promise.resolve(data)

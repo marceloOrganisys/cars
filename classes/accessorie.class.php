@@ -20,5 +20,3 @@ final class Accessorie extends Db {
 		parent::__construct();
 	}
 }
-
-?>
