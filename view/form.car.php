@@ -95,7 +95,7 @@
 		<div class="form-row">
 			<div id="components" class="form-group" style="margin-left:-60px;"></div>
 		</div><br>
-		<button id="submitButton" class="btn btn-outline-success"/>Cadastrar</button>
+		<button id="submitButton" class="btn btn-outline-success" />Cadastrar</button>
 		<button class="btn btn-outline-secondary" class="backButton" onclick="changeScreen(1);">Voltar</button>
 	</div>
 </div>

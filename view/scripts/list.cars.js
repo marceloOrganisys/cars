@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+	routie('list');
 	makeTable().done(function() {
 		$('#listCars').fadeIn();
 		$('#title').html('Home');
@@ -16,8 +16,8 @@ $(document).ready(function() {
 		cor = $('#cor').val();
 		km = $('#km').val();
 		marca = $('#marca').val();
-		preco = $('#preco').val();
-		precoFipe = $('#precoFipe').val();
+		preco = formatAdd($('#preco').val());
+		precoFipe = formatAdd($('#precoFipe').val());
 
 		dados = {
 			carId : carId, 
@@ -68,11 +68,13 @@ function pesquisaCar(search, page) {
 
 function changeScreen(op) {
 	if (op == 0) {
+		routie('new');
 		cleanForm();
 		getComponents();
 		$('#listCars').hide();
 		$('#formCadastro').fadeIn();
 	} else {
+		routie('list');
 		makeTable().done(function(){
 			$('qwerty').html('');
 			$('#formCadastro').hide();
@@ -244,6 +246,7 @@ function cad(dados) {
 }
 
 function edit(id) {
+	routie('edit/'+id);
 	getComponents();
 	$('#listCars').hide();
 	$('#formCadastro').fadeIn();
@@ -266,8 +269,8 @@ function edit(id) {
 			$('#cor').val(data.cor);
 			$('#km').val(data.km);
 			$('option[value=' + data.marca + ']').prop('selected', true);
-			$('#preco').val(data.preco);
-			$('#precoFipe').val(data.precoFipe);
+			$('#preco').val(formatGet(data.preco));
+			$('#precoFipe').val(formatGet(data.precoFipe));
 			$('#submitButton').html('Salvar');
 			$('#subPlaca').html('Placa: ' + data.placa);
 			$('#subPlaca').attr('style', 'display: inline; color: red;');
@@ -301,6 +304,28 @@ function remove(id) {
 			}
 		});
 	}
+}
+
+function formatAdd(input) {
+	input = input.toString();
+	for (i = 0; i < input.length/3; i++) {
+		input = input.replace('.', '');
+	}
+	input = input.replace(',', '.');
+	return input;
+}
+
+function formatGet(input) {
+	input = input.toString();
+	for (i = 0; i < input.length/3; i++) {
+		input = input.replace(',', '.');
+	}
+	finalStr = '';
+	for (i = 0; i < input.length; i++) {
+		char = input.length - 3 == i ? ',' : input[i];
+		finalStr += (finalStr, char); 
+	}
+	return finalStr;
 }
 
 function validate(dados) {

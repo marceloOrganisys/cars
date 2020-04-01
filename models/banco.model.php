@@ -13,8 +13,8 @@ CREATE TABLE car(
 	cor				text(20),
 	km				text(11),
 	marca			text(20),
-	preco			text(10),
-	precoFipe		text(10),
+	preco			decimal(10, 2),
+	precoFipe		decimal(10, 2),
     PRIMARY KEY(id)
 );
 

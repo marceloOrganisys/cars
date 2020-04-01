@@ -1,6 +1,6 @@
 $(document).ready(function() {
+	routie('list');
 	$('title').html('Accessórios');
-
 	$('#accFormName').submit(function(e) {
 		e.preventDefault();
 		searchEdit();
@@ -138,9 +138,9 @@ function addAcc(name) {
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: {operation: 'addAcc',name: name},
+		data: {operation: 'addAcc', name: name},
 		success: function(response) {
-			console.log(response);
+			routie('list');
 			if (response == 1) {
 				getComponents();
 				$('#accName').attr('alter', 'false');
@@ -157,6 +157,7 @@ function addAcc(name) {
 }
 
 function edit(id) {
+	routie('edit/'+id);
 	if ($('#accName').attr('alter') == 'true') {
 		alert('Uma edição já está em andamento');
 	} else {
@@ -178,6 +179,7 @@ function editAcc(name, id) {
 		data: {operation: 'updateAcc', name: name, id: id},
 		success: function(response) {
 			if (response == 1) {
+				routie('list');
 				getComponents();
 				$('#accName').attr('alter', 'false');
 				$('#accName').attr('accId', '');
