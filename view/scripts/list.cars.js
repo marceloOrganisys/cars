@@ -1,11 +1,20 @@
-$(document).ready(function() {
-	routie('list');
-	makeTable().done(function() {
-		$('#listCars').fadeIn();
-		$('#title').html('Home');
+$(document).ready(function () {
+	routie({
+		'': function () {
+			routie('list');
+		},
+		'edit/:id': function (id) {
+			edit(id);
+		},
+		'list': function () {
+			makeTable().done(function () {
+				$('#listCars').fadeIn();
+				$('#title').html('Home');
+			})
+		}
 	})
 
-	$('#submitButton').on('click', function(e) {
+	$('#submitButton').on('click', function (e) {
 		e.preventDefault();
 		carId = $('#carId').val();
 		descricao = $('#descricao').val();
@@ -20,25 +29,25 @@ $(document).ready(function() {
 		precoFipe = formatAdd($('#precoFipe').val());
 
 		dados = {
-			carId : carId, 
-			descricao : descricao, 
-			placa : placa, 
-			codRenavam : codRenavam, 
-			anoModelo : anoModelo, 
-			anoFabricacao : anoFabricacao, 
-			cor : cor, 
-			km : km, 
-			marca : marca, 
-			preco : preco, 
-			precoFipe : precoFipe
+			carId: carId,
+			descricao: descricao,
+			placa: placa,
+			codRenavam: codRenavam,
+			anoModelo: anoModelo,
+			anoFabricacao: anoFabricacao,
+			cor: cor,
+			km: km,
+			marca: marca,
+			preco: preco,
+			precoFipe: precoFipe
 		};
 
 		if (validate(dados)) {
 			cad(dados);
 		}
-	});	
+	});
 
-	$('#searchButton').click(function() { 
+	$('#searchButton').click(function () {
 		search = $('#searchInput').val();
 		if (search == '') {
 			makeTable();
@@ -53,13 +62,13 @@ function pesquisaCar(search, page) {
 	$.ajax({
 		type: 'GET',
 		url: '../services/car.services.php',
-		data: {operation: 'searchCar', search: search, page: page},
-		success: function(response) {
+		data: { operation: 'searchCar', search: search, page: page },
+		success: function (response) {
 			var carsData = JSON.parse(response);
 			mountTable(carsData.dados);
 			mountButtons(page, carsData.cars, search);
 		},
-		error: function(error) {
+		error: function (error) {
 			alert('Ocorreu um erro');
 			console.log(error);
 		}
@@ -75,7 +84,7 @@ function changeScreen(op) {
 		$('#formCadastro').fadeIn();
 	} else {
 		routie('list');
-		makeTable().done(function(){
+		makeTable().done(function () {
 			$('qwerty').html('');
 			$('#formCadastro').hide();
 			$('#listCars').fadeIn();
@@ -97,14 +106,14 @@ function mountButtons(page, number, search) {
 	number = number || null;
 	search = search || null;
 	$('#paginationButtons').empty();
-	for (i = 0; i < number/10; i++) {
-		$('#paginationButtons').append($('<li>', {class: 'page-item'}).append(
-			$('<li>', {class: 'page-item'}).append(
-				$('<button>', {class: 'page-link navItem', id: 'btn'+i, onclick: search == null ? "makeTable(" + i + ")" : "pesquisaCar('" + search + "', " + i + ")"}).append(i+1)
-				)
-			))
+	for (i = 0; i < number / 10; i++) {
+		$('#paginationButtons').append($('<li>', { class: 'page-item' }).append(
+			$('<li>', { class: 'page-item' }).append(
+				$('<button>', { class: 'page-link navItem', id: 'btn' + i, onclick: search == null ? "makeTable(" + i + ")" : "pesquisaCar('" + search + "', " + i + ")" }).append(i + 1)
+			)
+		))
 	}
-	$('#btn'+(page)).css({'background-color': 'grey', 'color': 'white'});
+	$('#btn' + (page)).css({ 'background-color': 'grey', 'color': 'white' });
 }
 
 function makeTable(page) {
@@ -113,15 +122,15 @@ function makeTable(page) {
 	$.ajax({
 		type: 'GET',
 		url: '../services/car.services.php',
-		data: {operation: 'getCars', page: page},
-		success: function(response) {
+		data: { operation: 'getCars', page: page },
+		success: function (response) {
 			var carsData = JSON.parse(response);
-			mountTable(carsData.dados).done(function() {
+			mountTable(carsData.dados).done(function () {
 				mountButtons(page, carsData.cars);
 				promise.resolve();
 			});
 		},
-		error: function(error) {
+		error: function (error) {
 			alert('Ocorreu um erro');
 			console.log(error);
 		}
@@ -146,7 +155,7 @@ function mountTable(data) {
 		data = null;
 	}
 
-	$(data).each(function(key, value) {
+	$(data).each(function (key, value) {
 		linha = document.createElement('tr');
 		linha.setAttribute('data-id', value['id']);
 		for (i = 0; i < 3; i++) {
@@ -157,12 +166,12 @@ function mountTable(data) {
 
 			if (i == 2) {
 				buttons = ['edit', 'remove', ['btn-outline-info', 'btn-outline-danger']];
-				for (i = 0; i < 2 ; i++) {
+				for (i = 0; i < 2; i++) {
 					cell = document.createElement('td');
 					cell.setAttribute('style', 'width:70px;');
 					button = document.createElement('button');
 					buttonImage = document.createElement('img');
-					buttonImage.setAttribute('src', '../icons/'+buttons[i]+'.png');
+					buttonImage.setAttribute('src', '../icons/' + buttons[i] + '.png');
 					button.appendChild(buttonImage);
 					button.setAttribute('onclick', buttons[i] + '(' + value['id'] + ')');
 					button.setAttribute('class', 'btn1 btn ' + buttons[2][i]);
@@ -203,39 +212,39 @@ function getComponents(op) {
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: {operation: 'getAcessories'},
-		success: function(data) {
+		data: { operation: 'getAcessories' },
+		success: function (data) {
 			if (op == 1) {
 				promise.resolve(data)
 			} else {
 				mountCheckboxes(data);
 			}
 		},
-		error: function(error) {
+		error: function (error) {
 			console.log(error);
 		}
-	});	
-	return op == 1 ?  promise : '';
+	});
+	return op == 1 ? promise : '';
 }
 
 function cad(dados) {
 	accessories = [];
 	size = 0;
-	getComponents(1).done(function(response) {
+	getComponents(1).done(function (response) {
 		data = response;
 		data = JSON.parse(data) || '';
 
 		for (x = 0, size = data.length; x < size; x++) {
-			accessories.push({id : data[x].id, checked : $('#cb' + data[x].id).prop('checked') ? 1 : 0});
+			accessories.push({ id: data[x].id, checked: $('#cb' + data[x].id).prop('checked') ? 1 : 0 });
 		}
 
-		data = {operation: 'cadastro', carData: dados, accessories: accessories}
+		data = { operation: 'cadastro', carData: dados, accessories: accessories }
 		console.log(data);
 		$.ajax({
 			type: 'POST',
 			url: '../services/car.services.php',
 			data: data,
-			error: function(error) {
+			error: function (error) {
 				alert('Ocorreu um erro');
 				console.log(error);
 			}
@@ -246,7 +255,7 @@ function cad(dados) {
 }
 
 function edit(id) {
-	routie('edit/'+id);
+	routie('edit/' + id);
 	getComponents();
 	$('#listCars').hide();
 	$('#formCadastro').fadeIn();
@@ -259,7 +268,7 @@ function edit(id) {
 		dataType: 'json',
 		url: '../services/car.services.php',
 		data: { operation: 'getCar', id: id },
-		success: function(data) {
+		success: function (data) {
 			$('#carId').val(data.id);
 			$('#descricao').val(data.descricao);
 			$('#placa').val(data.placa);
@@ -279,26 +288,26 @@ function edit(id) {
 				for (i = 0; i < data.accessories.length; i++) {
 					$('#cb' + data.accessories[i].accessorieId).prop('checked', true);
 				}
-			}		
+			}
 		},
-		error: function(error) {
-			console.log(error);
+		error: function (error) {
+			window.location.href = 'home.php';
 		}
 	});
 }
 
 function remove(id) {
-	data = {operation: 'remove', id: id}
+	data = { operation: 'remove', id: id }
 	if (confirm('Deseja mesmo apagar este registro?')) {
 		$.ajax({
 			type: 'POST',
 			url: '../services/car.services.php',
 			data: data,
-			success: function(response) {
+			success: function (response) {
 				console.log(response);
 				pesquisaCar($('#searchInput').val(), 0);
 			},
-			error: function(error) {
+			error: function (error) {
 				alert('Ocorreu um erro');
 				console.log(error);
 			}
@@ -308,7 +317,7 @@ function remove(id) {
 
 function formatAdd(input) {
 	input = input.toString();
-	for (i = 0; i < input.length/3; i++) {
+	for (i = 0; i < input.length / 3; i++) {
 		input = input.replace('.', '');
 	}
 	input = input.replace(',', '.');
@@ -317,13 +326,13 @@ function formatAdd(input) {
 
 function formatGet(input) {
 	input = input.toString();
-	for (i = 0; i < input.length/3; i++) {
+	for (i = 0; i < input.length / 3; i++) {
 		input = input.replace(',', '.');
 	}
 	finalStr = '';
 	for (i = 0; i < input.length; i++) {
 		char = input.length - 3 == i ? ',' : input[i];
-		finalStr += (finalStr, char); 
+		finalStr += (finalStr, char);
 	}
 	return finalStr;
 }
@@ -409,7 +418,7 @@ function validate(dados) {
 			error[6] = false;
 		}
 	}
-	
+
 	if (dados.km == '') {
 		$('label[for=kmError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
 		error[7] = true;
@@ -448,7 +457,7 @@ function validate(dados) {
 	}
 
 	send = true;
-	$.each(error, function(key, value) {
+	$.each(error, function (key, value) {
 		if (value === true) {
 			send = false;
 		}

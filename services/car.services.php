@@ -102,7 +102,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 			$data[0]['precoFipe'] = number_format($data[0]['precoFipe'], 2);
 			$data[0]['accessories'] = $car->accessories;
 			echo json_encode($data[0]);
-			http_response_code(200);
+			if (isset($data[0]['id'])) {
+				http_response_code(200);
+			} else {
+				http_response_code(404);
+			}
 			break;
 
 		case 'getCars':

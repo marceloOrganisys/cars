@@ -1,7 +1,15 @@
-$(document).ready(function() {
-	routie('list');
+$(document).ready(function () {
+	routie({
+		'': function () {
+			routie('list');
+		},
+		'list': function () {
+			getComponents();
+			$('#accForm').fadeIn();
+		}
+	});
 	$('title').html('Accessórios');
-	$('#accFormName').submit(function(e) {
+	$('#accFormName').submit(function (e) {
 		e.preventDefault();
 		searchEdit();
 	});
@@ -19,9 +27,7 @@ $(document).ready(function() {
 		}
 	}
 
-	getComponents();
-	$('#accForm').fadeIn();
-	$('#addButton').click(function() {
+	$('#addButton').click(function () {
 		searchEdit();
 	});
 })
@@ -30,16 +36,16 @@ function getComponents() {
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: {operation: 'getAcessories'},
-		success: function(data) {
+		data: { operation: 'getAcessories' },
+		success: function (data) {
 			console.log(data)
 			data = data != '' ? JSON.parse(data) : '';
 			mountTable(data);
 		},
-		error: function(error){
+		error: function (error) {
 			console.log(error);
 		}
-	});	
+	});
 }
 
 function mountTable(data) {
@@ -57,15 +63,15 @@ function mountTable(data) {
 		table.appendChild(linha);
 		data = null;
 	} else {
-		$(data).each(function(key, value) {
+		$(data).each(function (key, value) {
 			linha = document.createElement('tr');
 			linha.setAttribute('data-id', value['id']);
 			cell = document.createElement('td');
 			cellText = document.createTextNode(value['name']);
 			cell.appendChild(cellText);
 			linha.appendChild(cell);
-			buttons = ['edit', 'remove',['btn-outline-info', 'btn-outline-danger']];
-			for (i = 0; i < 2 ; i++) {
+			buttons = ['edit', 'remove', ['btn-outline-info', 'btn-outline-danger']];
+			for (i = 0; i < 2; i++) {
 				cell = document.createElement('td');
 				cell.setAttribute('style', 'width:70px;');
 				button = document.createElement('button');
@@ -88,34 +94,34 @@ function checkDelete(id) {
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: {operation: 'checkDelete',acc: id},
-		success: function(response) {
+		data: { operation: 'checkDelete', acc: id },
+		success: function (response) {
 			promise.resolve(JSON.parse(response).status);
 		},
-		error: function(error) {
+		error: function (error) {
 			promise.reject(error);
 		}
-	});	
+	});
 	return promise;
 }
 
 function remove(id) {
-	data  = null;
+	data = null;
 	checkDelete(id)
-	.done(function(response) {
-		if (response) {
-			if (confirm('Deseja excluir esse acessório?')) {
-				removeAcc(id).done(function(){
-					getComponents();
-				});
+		.done(function (response) {
+			if (response) {
+				if (confirm('Deseja excluir esse acessório?')) {
+					removeAcc(id).done(function () {
+						getComponents();
+					});
+				}
+			} else {
+				alert('Acessório não pode ser removido');
 			}
-		} else {
-			alert('Acessório não pode ser removido');
-		}
-	})
-	.fail(function(response) {
-		alert(response);
-	});
+		})
+		.fail(function (response) {
+			alert(response);
+		});
 }
 
 function removeAcc(id) {
@@ -123,14 +129,14 @@ function removeAcc(id) {
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: {operation: 'removeAcc', acc: id},
-		success: function() {
+		data: { operation: 'removeAcc', acc: id },
+		success: function () {
 			promise.resolve();
 		},
-		error: function(error) {
+		error: function (error) {
 			console.log(error);
 		}
-	});	
+	});
 	return promise;
 }
 
@@ -138,8 +144,8 @@ function addAcc(name) {
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: {operation: 'addAcc', name: name},
-		success: function(response) {
+		data: { operation: 'addAcc', name: name },
+		success: function (response) {
 			routie('list');
 			if (response == 1) {
 				getComponents();
@@ -150,14 +156,14 @@ function addAcc(name) {
 				$('label[for=inputPassword2]').text('Novo Acessório');
 			}
 		},
-		error: function(error) {
+		error: function (error) {
 			console.log(error);
 		}
-	});	
+	});
 }
 
 function edit(id) {
-	routie('edit/'+id);
+	routie('edit/' + id);
 	if ($('#accName').attr('alter') == 'true') {
 		alert('Uma edição já está em andamento');
 	} else {
@@ -176,8 +182,8 @@ function editAcc(name, id) {
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: {operation: 'updateAcc', name: name, id: id},
-		success: function(response) {
+		data: { operation: 'updateAcc', name: name, id: id },
+		success: function (response) {
 			if (response == 1) {
 				routie('list');
 				getComponents();
@@ -188,8 +194,8 @@ function editAcc(name, id) {
 				$('label[for=inputPassword2]').text('Novo Acessório');
 			}
 		},
-		error: function(error) {
+		error: function (error) {
 			console.log(error);
 		}
-	});	
+	});
 }
