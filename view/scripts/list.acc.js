@@ -163,7 +163,7 @@ function addAcc(name) {
 }
 
 function edit(id) {
-	routie('edit/' + id);
+	routie('edit');
 	if ($('#accName').attr('alter') == 'true') {
 		alert('Uma edição já está em andamento');
 	} else {
@@ -172,10 +172,23 @@ function edit(id) {
 		$('#accName').attr('accId', id);
 		$('#accName').val(name);
 		$('#addButton').text('Salvar');
+		$('#backButton').text('Cancelar');
+		$('#backButton').attr('onclick', 'cancelEdit()');
 		$('tr[data-id=' + id + ']').empty();
 		$('tr[data-id=' + id + ']').append("<td colspan='3' style='text-align:center'>Editando</td>");
 		$('label[for=inputPassword2]').text('Alterar Acessório');
 	}
+}
+
+function cancelEdit() {
+	getComponents();
+	routie('list');
+	$('#accName').val('');
+	$('#accName').attr('alter', 'false');
+	$('#accName').attr('accId', '');
+	$('#addButton').text('Cadastrar');
+	$('#backButton').text('Voltar');
+	$('#backButton').attr('onclick', 'window.location.href="home.php"');
 }
 
 function editAcc(name, id) {
