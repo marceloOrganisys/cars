@@ -3,6 +3,7 @@
 require_once('db.class.php');
 require_once('car.acc.class.php');
 require_once('accessorie.class.php');
+require_once('../models/listModels/carAccs.model.php');
 
 final class Car extends Db {
 	protected $carId;
@@ -18,6 +19,7 @@ final class Car extends Db {
 	private $precoFipe;
 	private $accessories;
 	private $accessorieClass;
+	private $carAccsModel;
 
 	public function __set($name, $value) {
 		$this->$name .= $value;
@@ -28,7 +30,8 @@ final class Car extends Db {
 	}
 
 	public function __construct($carData = null) {
-		$this->accessorieClass = new CarAcc();
+		$this->accessorieClass = new carAcc();
+		$this->carAccsModel = new carAccsModel();
 		$this->tabela = 'car';
 		parent::__construct();
 		if (!empty($carData)) {
@@ -47,10 +50,9 @@ final class Car extends Db {
 			} else {
 				if (isset($carData['carId'])) {
 					$params = array(
-						'rows' => 'accessorieId',
-						'complement' => 'WHERE carId = ' . $carData['carId']
+						'id' => $carData['carId']
 					);
-					$this->accessories = $this->accessorieClass->select($params);
+					$this->accessories = $this->carAccsModel->listCarAccs($params);
 				}
 			}
 		}
@@ -63,7 +65,6 @@ final class Car extends Db {
 
 	public function save() {
 		$params = array(
-			'carId' => $this->carId,
 			'dados' => array(
 				'descricao' => $this->descricao,
 				'placa' => $this->placa,
@@ -78,6 +79,7 @@ final class Car extends Db {
 			) 
 		);
 		if (!empty($this->carId)) {
+			$params['id'] = $this->carId;
 			return $this->update($params);
 		} else {
 			return $this->add($params);

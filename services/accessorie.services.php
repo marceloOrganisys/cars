@@ -1,21 +1,19 @@
 <?php 
 
-require_once("../classes/accessorie.class.php");
-require_once("../classes/car.acc.class.php");
-require_once("../classes/car.class.php");
+require_once('../classes/accessorie.class.php');
+require_once('../classes/car.acc.class.php');
+require_once('../classes/car.class.php');
+require_once('../models/listModels/accessories.model.php');
 
+$accessoriesModel = new accessoriesModel();
 $acc = new Accessorie();
 $carAcc = new CarAcc();
 
-switch ($_SERVER["REQUEST_METHOD"]) {
+switch ($_SERVER['REQUEST_METHOD']) {
 	case 'POST':
 	switch ($_POST['operation']) {
 		case 'getAcessories':
-			$params = array(
-				'rows' => '*',
-				'complement' => ""
-			);
-			$data = $acc->select($params);
+			$data = $accessoriesModel->listAccessories();
 			echo json_encode($data);
 			break;
 
@@ -38,7 +36,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 		case 'updateAcc':
 			$params = array(
-				'carId' => $_POST['id'],
+				'id' => $_POST['id'],
 				'dados' => array('name' => $_POST['name'])
 			);
 			echo $acc->update($params);

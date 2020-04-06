@@ -3,6 +3,7 @@
 require_once('config.php');
 require_once('../classes/car.class.php');
 require_once('../classes/accessorie.class.php');
+require_once('../models/listModels/cars.model.php');
 
 function execute($carId, $accessorie){
 	$carAcc = new CarAcc();
@@ -110,18 +111,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 			break;
 
 		case 'getCars':
-			$car = new Car();
+			$carsModel = new carsModel();
 			$params = array(
-				'rows' => '*',
-				'complement' => "ORDER BY id desc LIMIT " . $_GET['page']*10 . ", 10;"
+				'page' => $_GET['page']
 			);
-			$data['dados'] = $car->select($params);
-			$params = array(
-				'rows' => 'count(id) AS cars',
-				'complement' => ''
-			);
-			$data['cars'] = $car->select($params);
-			$data['cars'] = $data['cars'][0]['cars'];
+			$data = $carsModel->listCars($params);
 			echo json_encode($data);
 			http_response_code(200);
 			break;
@@ -130,7 +124,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 			$car = new Car();
 			$params = array(
 				'rows' => 'id',
-				'complement' => " ORDER BY id desc LIMIT 1;"
+				'complement' => " ORDER BY id DESC LIMIT 1;"
 			);
 			$data = $car->select($params);
 			echo json_encode($data);
@@ -139,18 +133,12 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
 		case 'searchCar':
 			$search = isset($_GET['search']) ? trim($_GET['search']) : '';
-			$car = new Car();
+			$carsModel = new carsModel();
 			$params = array(
-				'rows' => '*', 
-				'complement' => " WHERE descricao like '%" . $search . "%' or placa like '%" . $search . "%' ORDER BY id desc LIMIT ". ($_GET['page']*10) . ", 10"
+				'search' => $search,
+				'page' => $_GET['page']
 			);
-			$data['dados'] = $car->select($params);
-			$params = array(
-				'rows' => 'count(id) AS cars', 
-				'complement' => " WHERE descricao like '%" . $search . "%' or placa like '%" . $search . "%'"
-			);
-			$data['cars'] = $car->select($params);
-			$data['cars'] = $data['cars'][0]['cars'];
+			$data = $carsModel->listCars($params);
 			echo json_encode($data);
 			http_response_code(200);
 			break;

@@ -34,7 +34,7 @@ abstract class Db {
 	}
 
 	public function update(array $params) {
-		$query = 'UPDATE '.$this->tabela.' SET '.$this->prepareUpdate($params['dados']).' WHERE id = '.$params['carId'].';';
+		$query = 'UPDATE '.$this->tabela.' SET '.$this->prepareUpdate($params['dados']).' WHERE id = '.$params['id'].';';
 		echo $this->execute($query);
 	}
 
@@ -51,7 +51,7 @@ abstract class Db {
 				$dados[] = $result['dados']->fetch_assoc(); 
 			}
 			return $dados;
-		}else{
+		} else {
 			return $this->mysqli->error;
 		}
 	}

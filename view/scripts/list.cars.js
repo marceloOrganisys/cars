@@ -57,7 +57,7 @@ $(document).ready(function () {
 	});
 });
 
-function pesquisaCar(search, page) {
+function pesquisaCar (search, page) {
 	page = page || 0;
 	$.ajax({
 		type: 'GET',
@@ -75,7 +75,7 @@ function pesquisaCar(search, page) {
 	});
 }
 
-function changeScreen(op) {
+function changeScreen (op) {
 	if (op == 0) {
 		routie('new');
 		cleanForm();
@@ -94,7 +94,7 @@ function changeScreen(op) {
 	}
 }
 
-function cleanForm() {
+function cleanForm () {
 	$('#title').html('Adicionar registro');
 	$('#pageTitle').html('Incluir automóvel');
 	$('#submitButton').html('Cadastrar');
@@ -102,7 +102,7 @@ function cleanForm() {
 	$('#carId, #descricao, #placa, #codRenavam, #anoModelo, #anoFabricacao, #cor, #km, #marca, #preco, #precoFipe').val('');
 }
 
-function mountButtons(page, number, search) {
+function mountButtons (page, number, search) {
 	number = number || null;
 	search = search || null;
 	$('#paginationButtons').empty();
@@ -116,7 +116,7 @@ function mountButtons(page, number, search) {
 	$('#btn' + (page)).css({ 'background-color': 'grey', 'color': 'white' });
 }
 
-function makeTable(page) {
+function makeTable (page) {
 	var promise = $.Deferred();
 	page = page || 0;
 	$.ajax({
@@ -138,7 +138,7 @@ function makeTable(page) {
 	return promise;
 }
 
-function mountTable(data) {
+function mountTable (data) {
 	var promise = $.Deferred();
 	$('#table').empty();
 	table = document.getElementById('table');
@@ -186,7 +186,7 @@ function mountTable(data) {
 	return promise;
 }
 
-function mountCheckboxes(data) {
+function mountCheckboxes (data) {
 	$('#components').empty();
 	data = JSON.parse(data) || '';
 	div = document.getElementById('components');
@@ -207,7 +207,7 @@ function mountCheckboxes(data) {
 	}
 }
 
-function getComponents(op) {
+function getComponents (op) {
 	var promise = op == 1 ? $.Deferred() : null;
 	$.ajax({
 		method: 'POST',
@@ -238,8 +238,7 @@ function cad(dados) {
 			accessories.push({ id: data[x].id, checked: $('#cb' + data[x].id).prop('checked') ? 1 : 0 });
 		}
 
-		data = { operation: 'cadastro', carData: dados, accessories: accessories }
-		console.log(data);
+		data = {operation: 'cadastro', carData: dados, accessories: accessories}
 		$.ajax({
 			type: 'POST',
 			url: '../services/car.services.php',
@@ -291,7 +290,8 @@ function edit(id) {
 			}
 		},
 		error: function (error) {
-			window.location.href = 'home.php';
+			console.log(error);
+			// window.location.href = 'home.php';
 		}
 	});
 }
@@ -304,7 +304,6 @@ function remove(id) {
 			url: '../services/car.services.php',
 			data: data,
 			success: function (response) {
-				console.log(response);
 				pesquisaCar($('#searchInput').val(), 0);
 			},
 			error: function (error) {
