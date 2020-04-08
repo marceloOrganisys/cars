@@ -12,30 +12,20 @@ class carsModel extends Db {
 
     public function listCars($params) {
 
-        $query = "SELECT * FROM " . $this->tabela;
-        $countQuery = "SELECT count(id) AS cars FROM " . $this->tabela;
+        $queryWhere = isset($params['search']) ? " WHERE descricao LIKE '%" . $params['search'] . "%' OR placa LIKE '%" . $params['search'] . "%' " : '';
 
-        if (isset($params['search'])) {
-            $query .= " WHERE descricao LIKE '%" . $params['search'] . "%' OR placa LIKE '%" . $params['search'] . "%' ";
-            $countQuery .= " WHERE descricao LIKE '%" . $params['search'] . "%' OR placa LIKE '%" . $params['search'] . "%' "; 
+        $rows = array(
+            'dados' => '*',
+            'cars' => 'count(id) AS cars'
+        );
+
+        foreach ($rows as $key => $value) {
+            $query = 'SELECT ' . $value . ' FROM ' . $this->tabela . ' ' . $queryWhere . ' ORDER BY id DESC LIMIT ' . $params['page'] * 10 . ', 10';
+            $dados[$key] = $this->getData($query);
         }
 
-        $query .= " ORDER BY id DESC LIMIT " . $params['page'] * 10 . ", 10"; 
+        return $dados;  
 
-        if ($result = $this->execute($query, 1)) {
-            for ($i = 0; $i < $result['linhas']; $i++) {
-                $dados[] = $result['dados']->fetch_assoc(); 
-            }
-            $dados['dados'] = empty($dados) ? '': $dados;
-            $result = $this->execute($countQuery, 1);
-            for ($i = 0; $i < $result['linhas']; $i++) {
-                $dados['cars'] = $result['dados']->fetch_assoc(); 
-            }
-            $dados['cars'] = $dados['cars']['cars'];
-            return $dados;
-        } else {
-            return $this->mysqli->error;
-        }  
     }
     
 }

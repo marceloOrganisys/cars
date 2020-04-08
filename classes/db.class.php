@@ -83,6 +83,18 @@ abstract class Db {
 		return $str;
 	}
 
+	public function getData($query) {
+		if ($result = $this->execute($query, 1)) {
+			$dados = [];
+			for ($i = 0; $i < $result['linhas']; $i++) {
+				$dados[] = $result['dados']->fetch_assoc(); 
+			}
+			return $dados;
+		} else {
+			return $this->mysqli->error;
+		} 
+	}
+
 	public function execute(string $stmt, int $response = 0) {
 		if ($result = $this->mysqli->query($stmt)) {
 			return empty($response) ?  true : array('dados' => $result, 'linhas' => $result->num_rows); 

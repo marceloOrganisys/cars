@@ -33,7 +33,7 @@ function addCarAcc($carId, $accessories){
 	}
 }
 
-switch ($_SERVER["REQUEST_METHOD"]) {
+switch ($_SERVER['REQUEST_METHOD']) {
 	case 'POST':
 	switch ($_POST['operation']) {
 		case 'remove':
@@ -99,15 +99,15 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 				'complement' => " WHERE id = " . $_GET['id']
 			);
 			$data = $car->select($params);
-			$data[0]['preco'] = number_format($data[0]['preco'], 2);
-			$data[0]['precoFipe'] = number_format($data[0]['precoFipe'], 2);
-			$data[0]['accessories'] = $car->accessories;
-			echo json_encode($data[0]);
 			if (isset($data[0]['id'])) {
 				http_response_code(200);
 			} else {
 				http_response_code(404);
 			}
+			$data[0]['preco'] = number_format($data[0]['preco'], 2);
+			$data[0]['precoFipe'] = number_format($data[0]['precoFipe'], 2);
+			$data[0]['accessories'] = $car->accessories;
+			echo json_encode($data[0]);
 			break;
 
 		case 'getCars':

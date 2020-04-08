@@ -1,9 +1,9 @@
 $(document).ready(function () {
 	routie({
-		'': function () {
+		'': function() {
 			routie('list');
 		},
-		'list': function () {
+		'list': function() {
 			getComponents();
 			$('#accForm').fadeIn();
 		}
@@ -27,7 +27,7 @@ $(document).ready(function () {
 		}
 	}
 
-	$('#addButton').click(function () {
+	$('#addButton').click(function() {
 		searchEdit();
 	});
 })
@@ -107,20 +107,20 @@ function checkDelete(id) {
 function remove(id) {
 	data = null;
 	checkDelete(id)
-		.done(function (response) {
-			if (response) {
-				if (confirm('Deseja excluir esse acessório?')) {
-					removeAcc(id).done(function () {
-						getComponents();
-					});
-				}
-			} else {
-				alert('Acessório não pode ser removido');
+	.done(function (response) {
+		if (response) {
+			if (confirm('Deseja excluir esse acessório?')) {
+				removeAcc(id).done(function () {
+					getComponents();
+				});
 			}
-		})
-		.fail(function (response) {
-			alert(response);
-		});
+		} else {
+			alert('Acessório não pode ser removido');
+		}
+	})
+	.fail(function (response) {
+		alert(response);
+	});
 }
 
 function removeAcc(id) {

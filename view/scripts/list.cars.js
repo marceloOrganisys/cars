@@ -290,8 +290,7 @@ function edit(id) {
 			}
 		},
 		error: function (error) {
-			console.log(error);
-			// window.location.href = 'home.php';
+			window.location.href = 'home.php';
 		}
 	});
 }
