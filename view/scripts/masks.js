@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 	 $('#placa').mask('AAA-0000');
 	 $('#codRenavam').mask('00000000000');
 	 $('.ano').mask('0000');

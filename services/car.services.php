@@ -5,12 +5,12 @@ require_once('../classes/car.class.php');
 require_once('../classes/accessorie.class.php');
 require_once('../models/listModels/cars.model.php');
 
-function execute($carId, $accessorie){
+function execute($carId, $accessorieId){
 	$carAcc = new CarAcc();
 	$params = array(
 		'dados' => array(
 			'carId' => $carId,
-			'accessorieId' => $accessorie
+			'accessorieId' => $accessorieId
 		)
 	);
 	$carAcc->add($params);
@@ -176,4 +176,3 @@ function insert() {
 		echo json_encode($response);
 	}
 }
-?>
