@@ -9,24 +9,24 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="scripts/routieSource.js"></script>
-    <script src="scripts/list.acc.js"></script>
+    <script src="scripts/list.marca.js"></script>
     <title id="title"></title>
 </head>
 
-<body class="pagePadding">
-    <div id="accForm" style="display: none">
+<body  class="pagePadding">
+    <div id="marcaForm" style="display: none">
         <div class="d-flex justify-content-center">
             <div>
-                <h1 id="pageTitle"> Acessórios </h1>
+                <h1 id="pageTitle"> Marcas </h1>
                 <div id="menu">
                     <?php include('menu.php') ?>
                 </div>
-            </div>
+            </div><br>
         </div>
         <div class="d-flex justify-content-center" style="margin-top:20px;">
             <form class="form-inline" id="accFormName">
                 <div class="form-group">
-                    <label class=" margin_">Novo Acessório</label>
+                    <label class=" margin_">Nova marca</label>
                     <input type="text" class="form-control margin_" id="accName" placeholder="Nome">
                 </div>
                 <div class="form-group">

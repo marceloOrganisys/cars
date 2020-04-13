@@ -11,8 +11,22 @@ $(document).ready(function () {
 				$('#listCars').fadeIn();
 				$('#title').html('Home');
 			})
+		},
+		'new': function () {
+			changeScreen(0);
 		}
 	})
+
+	$('#addImage').mouseenter(function () {
+		document.getElementById("addImage").src = "../icons/add_hovered.png";
+		document.getElementById("addImage").style.cursor = "pointer";
+	});
+	$('#addImage').mouseleave(function () {
+		document.getElementById("addImage").src = "../icons/add.png";
+	});
+	$('#addImage').click(function () {
+		changeScreen(0);
+	});
 
 	$('#submitButton').on('click', function (e) {
 		e.preventDefault();
@@ -97,7 +111,7 @@ function changeScreen (op) {
 
 function cleanForm () {
 	$('#title').html('Adicionar registro');
-	$('#pageTitle').html('Incluir automóvel');
+	$('#pageTitle').html('Adicionar automóvel');
 	$('#submitButton').html('Cadastrar');
 	$('#subPlaca').hide();
 	$('#carId, #descricao, #placa, #codRenavam, #anoModelo, #anoFabricacao, #cor, #km, #marca, #preco, #precoFipe').val('');
@@ -192,16 +206,16 @@ function mountCheckboxes (data) {
 	$('#components').empty();
 	data = JSON.parse(data) || '';
 	div = document.getElementById('components');
-	for (i = 0; i < data.length; i++) {
+	for (i = 0; i < parseInt(data[1]); i++) {
 		unic = document.createElement('div');
 		unic.setAttribute('class', 'component');
 		input = document.createElement('input');
 		input.setAttribute('type', 'checkbox');
-		input.id = 'cb' + data[i].id;
+		input.id = 'cb' + data[0][i].id;
 		input.setAttribute('class', 'accessorie form-check-input');
 		input.class = 'accessorie';
 		label = document.createElement('label');
-		labelTxt = document.createTextNode(data[i]['name']);
+		labelTxt = document.createTextNode(data[0][i]['name']);
 		label.appendChild(labelTxt);
 		unic.appendChild(input);
 		unic.appendChild(label);
@@ -219,6 +233,7 @@ function getComponents (op) {
 			if (op == 1) {
 				promise.resolve(data)
 			} else {
+				console.log(data);
 				mountCheckboxes(data);
 			}
 		},
@@ -236,8 +251,8 @@ function cad(dados) {
 		data = response;
 		data = JSON.parse(data) || '';
 
-		for (x = 0, size = data.length; x < size; x++) {
-			accessories.push({ id: data[x].id, checked: $('#cb' + data[x].id).prop('checked') ? 1 : 0 });
+		for (x = 0; x < data[1]; x++) {
+			accessories.push({ id: data[0][x].id, checked: $('#cb' + data[0][x].id).prop('checked') ? 1 : 0 });
 		}
 
 		data = {operation: 'cadastro', carData: dados, accessories: accessories}

@@ -1,96 +1,123 @@
-.component{
+.component {
 	float:left;
 	padding-left:60px;
 	paddind-right:60px;
 }
-.accessorie{
+
+.accessorie {
 	margin:10px;
 }
-h4{
+
+h4 {
 	padding-bottom:30px;
 }
-#tableb{
+
+#tableb {
 	margin-top:10px;
 	width:70%;
 	text-aling:center;
 }
-#tablec{
+
+#tablec {
 	width:60%;
 	text-aling:center;
 }
-.btn1{
+
+.btn1 {
 	height:40px;
 	width:40px;
 }
-img{
+
+img {
 	height: 15px;
 	width:15px;
 }
-h1{
-	padding-top:15px;
-}
-#homeButtons{
+
+#menu {
 	position: absolute; 
 	top: 20px; 
 	right:15px;
 }
-.align{
+
+.align {
 	width:140px;
 	display: inline;
 }
-.backButton{
+
+.backButton {
 	width:100px;
 }
-#submitButton{
+
+#submitButton {
 	width:100px;
 }
-#formCadastro{
+
+#formCadastro {
 	width:100%;
 	text-align: center;
 }
-.alignCenter{
+
+.alignCenter {
 	width:80%;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
 }
-.errorMessage{
+
+.errorMessage {
 	padding:0;
 	margin-bottom:-5px;
 	margin-top:-20px;
 	font-size:15px;
 	color:red;
 }
-.errorBox{
+
+.errorBox {
 	text-align: left;
 }
-#navBar{
+
+#navBar {
 	margin-right: auto;
 	margin-legt: auto;
 }
-footer{
+
+footer {
 	margin-bottom:50px;
 }
-#marca{
+
+#marca {
 	font-size:15px;
 	height:38px;
 }
-#accForm{
+
+.pagePadding {
 	border:0px;
 	margin:0px;
 	padding: 20px;
 	width:100%;
 }
-.margin_{
+
+.margin_ {
 	margin-left:25px;
 	margin-right:25px;
 }
-#accName{
+
+#accName {
 	width:700px;
 }
-#searchInput{
+
+#searchInput {
 	width:700px;
 }
-#accTitle{
-	margin-top:-20px;
+
+#dropdownMenuButton {
+	margin-top:7px;
+	margin-right: 27px;
+}
+
+#addImage {
+	margin-left: 20px;
+	width: 35px;
+	height: 35px;
+	margin-bottom: 7px;
 }

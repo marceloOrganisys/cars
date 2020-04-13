@@ -6,6 +6,7 @@ abstract class Db {
 	public $result;
 	public $tabela;
 	private $data;
+	private $numRows;
 
 	function __construct() {
 		$this->connect();
@@ -88,6 +89,10 @@ abstract class Db {
 		return $this->data;
 	}
 
+	public function getNumRows() {
+		return $this->numRows;
+	}
+
 	public function execute(string $stmt, int $response = 0) {
 		if ($result = $this->mysqli->query($stmt)) {
 			if (empty($response)) {
@@ -98,6 +103,7 @@ abstract class Db {
 					$dados[] = $result->fetch_assoc();
 				}
 				$this->data = $dados;
+				$this->numRows = $result->num_rows;
 			}
 		} else {
 			return $this->mysqli->error;

@@ -13,7 +13,7 @@ class accessoriesModel extends Db {
     public function listAccessories() {
 
         $query = "SELECT * FROM " . $this->tabela;
-        return $this->getData($query);
+        return array($this->getData($query), $this->getNumRows());
         
     }
     

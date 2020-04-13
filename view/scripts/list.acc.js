@@ -39,7 +39,7 @@ function getComponents() {
 		data: { operation: 'getAcessories' },
 		success: function (data) {
 			data = data != '' ? JSON.parse(data) : '';
-			mountTable(data);
+			mountTable(data[0]);
 		},
 		error: function (error) {
 			console.log(error);
