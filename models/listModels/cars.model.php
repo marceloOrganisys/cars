@@ -20,7 +20,8 @@ class carsModel extends Db {
         );
 
         foreach ($rows as $key => $value) {
-            $query = 'SELECT ' . $value . ' FROM ' . $this->tabela . ' ' . $queryWhere . ' ORDER BY id DESC LIMIT ' . $params['page'] * 10 . ', 10';
+            $query = 'SELECT ' . $value . ' FROM ' . $this->tabela . ' ' . $queryWhere;
+            $query .= $key == 'dados' ? ' ORDER BY id DESC LIMIT ' . $params['page'] * 10 . ', 10' : '';
             $dados[$key] = $this->getData($query);
         }
 

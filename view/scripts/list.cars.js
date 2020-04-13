@@ -64,6 +64,7 @@ function pesquisaCar (search, page) {
 		url: '../services/car.services.php',
 		data: { operation: 'searchCar', search: search, page: page },
 		success: function (response) {
+			console.log(response);
 			var carsData = JSON.parse(response);
 			mountTable(carsData.dados);
 			mountButtons(page, carsData.cars, search);
@@ -106,7 +107,7 @@ function mountButtons (page, number, search) {
 	number = number || null;
 	search = search || null;
 	$('#paginationButtons').empty();
-	for (i = 0; i < number / 10; i++) {
+	for (i = 0; i < number[0].cars / 10; i++) {
 		$('#paginationButtons').append($('<li>', { class: 'page-item' }).append(
 			$('<li>', { class: 'page-item' }).append(
 				$('<button>', { class: 'page-link navItem', id: 'btn' + i, onclick: search == null ? "makeTable(" + i + ")" : "pesquisaCar('" + search + "', " + i + ")" }).append(i + 1)
@@ -122,8 +123,9 @@ function makeTable (page) {
 	$.ajax({
 		type: 'GET',
 		url: '../services/car.services.php',
-		data: { operation: 'getCars', page: page },
+		data: {operation: 'getCars', page: page},
 		success: function (response) {
+			// console.log(response);
 			var carsData = JSON.parse(response);
 			mountTable(carsData.dados).done(function () {
 				mountButtons(page, carsData.cars);

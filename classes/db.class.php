@@ -5,9 +5,18 @@ abstract class Db {
 	protected $mysqli;
 	public $result;
 	public $tabela;
+	private $data;
 
 	function __construct() {
 		$this->connect();
+	}
+	
+	public function __set($name, $value) {
+		$this->$name .= $value;
+	}
+
+	public function __get($name) {
+		return $this->$name;
 	}
 
 	private function connect() {
@@ -75,20 +84,21 @@ abstract class Db {
 	}
 
 	public function getData($query) {
-		$dados = [];
-		if ($result = $this->execute($query, 1)) {
-			for ($i = 0; $i < $result['linhas']; $i++) {
-				$dados[] = $result['dados']->fetch_assoc(); 
-			}
-			return $dados;
-		} else {
-			return $this->mysqli->error;
-		} 
+		$this->execute($query, 1);
+		return $this->data;
 	}
 
 	public function execute(string $stmt, int $response = 0) {
 		if ($result = $this->mysqli->query($stmt)) {
-			return empty($response) ?  true : array('dados' => $result, 'linhas' => $result->num_rows); 
+			if (empty($response)) {
+				return true;
+			} else {
+				$dados = [];
+				for ($i = 0; $i < $result->num_rows; $i++) {
+					$dados[] = $result->fetch_assoc();
+				}
+				$this->data = $dados;
+			}
 		} else {
 			return $this->mysqli->error;
 		}

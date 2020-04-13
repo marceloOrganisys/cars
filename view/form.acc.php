@@ -25,8 +25,10 @@
                     <label for="inputPassword2" class=" margin_">Novo Acessório</label>
                     <input type="text" class="form-control margin_" id="accName" placeholder="Nome">
                 </div>
-                <button class="btn btn-outline-success margin_" type="button" id="addButton">Cadastrar</button>
-                <button class="btn btn-outline-secondary" id="backButton" type="button" style="margin-left:-20px;" class="backButton" onclick="window.location.href='home.php'">Voltar</button>
+                <div class="form-group">
+                    <button class="btn btn-outline-success margin_" type="button" id="addButton">Cadastrar</button>
+                    <button class="btn btn-outline-secondary" id="backButton" type="button" style="margin-left:-20px;" class="backButton" onclick="window.location.href='home.php'">Voltar</button>
+                </div>
             </form>
         </div>
         <div class="d-flex justify-content-center" style="margin-top:20px;">
