@@ -9,27 +9,12 @@ $(document).ready(function () {
 		}
 	});
 	$('title').html('Accessórios');
+
 	$('#accFormName').submit(function (e) {
 		e.preventDefault();
 		searchEdit();
 	});
-
-	function searchEdit() {
-		name = $('#accName').val();
-		if (name != '' && name.length > 3) {
-			if ($('#accName').attr('alter') == 'true') {
-				editAcc(name, $('#accName').attr('accid'));
-			} else {
-				addAcc(name);
-			}
-		} else {
-			alert('O nome deve possuir mais de 3 caracteres');
-		}
-	}
-
-	$('#addButton').click(function() {
-		searchEdit();
-	});
+	
 })
 
 function getComponents() {
@@ -123,6 +108,19 @@ function remove(id) {
 	});
 }
 
+function searchEdit() {
+	name = $('#accName').val();
+	if (name != '' && name.length > 3) {
+		if ($('#accName').attr('alter') == 'true') {
+			editAcc(name, $('#accName').attr('accid'));
+		} else {
+			addAcc(name);
+		}
+	} else {
+		alert('O nome deve possuir mais de 3 caracteres');
+	}
+}
+
 function removeAcc(id) {
 	var promise = $.Deferred();
 	$.ajax({
@@ -152,6 +150,28 @@ function addAcc(name) {
 				$('#accName').attr('accId', '');
 				$('#accName').val('');
 				$('#addButton').text('Cadastrar');
+				$('label[for=inputText]').text('Novo Acessório');
+			}
+		},
+		error: function (error) {
+			console.log(error);
+		}
+	});
+}
+
+function editAcc(name, id) {
+	$.ajax({
+		method: 'POST',
+		url: '../services/accessorie.services.php',
+		data: { operation: 'updateAcc', name: name, id: id },
+		success: function (response) {
+			if (response == 1) {
+				routie('list');
+				getComponents();
+				$('#accName').attr('alter', 'false');
+				$('#accName').attr('accId', '');
+				$('#accName').val('');
+				$('#addButton').text('Cadastrar');
 				$('label[for=inputPassword2]').text('Novo Acessório');
 			}
 		},
@@ -159,6 +179,7 @@ function addAcc(name) {
 			console.log(error);
 		}
 	});
+	cancelEdit();
 }
 
 function edit(id) {
@@ -188,26 +209,4 @@ function cancelEdit() {
 	$('#addButton').text('Cadastrar');
 	$('#backButton').text('Voltar');
 	$('#backButton').attr('onclick', 'window.location.href="home.php"');
-}
-
-function editAcc(name, id) {
-	$.ajax({
-		method: 'POST',
-		url: '../services/accessorie.services.php',
-		data: { operation: 'updateAcc', name: name, id: id },
-		success: function (response) {
-			if (response == 1) {
-				routie('list');
-				getComponents();
-				$('#accName').attr('alter', 'false');
-				$('#accName').attr('accId', '');
-				$('#accName').val('');
-				$('#addButton').text('Cadastrar');
-				$('label[for=inputPassword2]').text('Novo Acessório');
-			}
-		},
-		error: function (error) {
-			console.log(error);
-		}
-	});
 }

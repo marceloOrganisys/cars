@@ -26,11 +26,11 @@
         <div class="d-flex justify-content-center" style="margin-top:20px;">
             <form class="form-inline" id="accFormName">
                 <div class="form-group">
-                    <label class=" margin_">Novo Acessório</label>
+                    <label for="inputText" class=" margin_">Novo Acessório</label>
                     <input type="text" class="form-control margin_" id="accName" placeholder="Nome">
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-outline-success margin_" type="button" id="addButton">Cadastrar</button>
+                    <button class="btn btn-outline-success margin_" type="submit" id="addButton">Cadastrar</button>
                     <button class="btn btn-outline-secondary" id="backButton" type="button" style="margin-left:-20px;" class="backButton" onclick="window.location.href='home.php'">Voltar</button>
                 </div>
             </form>

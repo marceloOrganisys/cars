@@ -5,7 +5,7 @@ require_once('car.acc.class.php');
 require_once('accessorie.class.php');
 require_once('../models/listModels/carAccs.model.php');
 
-final class Car extends Db {
+class Car extends Db {
 	protected $carId;
 	private $descricao;
 	private $placa;

@@ -1,15 +1,14 @@
-.component {
-	float:left;
-	padding-left:60px;
-	paddind-right:60px;
-}
-
-.accessorie {
-	margin:10px;
-}
-
 h4 {
 	padding-bottom:30px;
+}
+
+img {
+	height: 15px;
+	width:15px;
+}
+
+footer {
+	margin-bottom:50px;
 }
 
 #tableb {
@@ -23,20 +22,67 @@ h4 {
 	text-aling:center;
 }
 
-.btn1 {
-	height:40px;
-	width:40px;
-}
-
-img {
-	height: 15px;
-	width:15px;
-}
-
 #menu {
 	position: absolute; 
 	top: 20px; 
 	right:15px;
+}
+
+#submitButton {
+	width:100px;
+}
+
+#formCadastro {
+	width:100%;
+	text-align: center;
+}
+
+#navBar {
+	margin-right: auto;
+	margin-legt: auto;
+}
+
+#marca {
+	font-size:15px;
+	height:38px;
+}
+
+#accName, #marcaName, #searchInput {
+	width:700px;
+}
+
+#dropdownMenuButton {
+	margin-top:7px;
+	margin-right: 27px;
+}
+
+#addImage {
+	margin-left: 20px;
+	width: 35px;
+	height: 35px;
+	margin-bottom: 7px;
+}
+
+.component {
+	float:left;
+	padding-left:60px;
+	paddind-right:60px;
+}
+
+.accessorie {
+	margin:10px;
+}
+
+.pagePadding {
+	border:0px;
+	margin:0px;
+	padding: 20px;
+	width:100%;
+}
+
+.margin_ {
+	margin-left:25px;
+	margin-right:25px;
 }
 
 .align {
@@ -48,13 +94,9 @@ img {
 	width:100px;
 }
 
-#submitButton {
-	width:100px;
-}
-
-#formCadastro {
-	width:100%;
-	text-align: center;
+.btn1 {
+	height:40px;
+	width:40px;
 }
 
 .alignCenter {
@@ -74,50 +116,4 @@ img {
 
 .errorBox {
 	text-align: left;
-}
-
-#navBar {
-	margin-right: auto;
-	margin-legt: auto;
-}
-
-footer {
-	margin-bottom:50px;
-}
-
-#marca {
-	font-size:15px;
-	height:38px;
-}
-
-.pagePadding {
-	border:0px;
-	margin:0px;
-	padding: 20px;
-	width:100%;
-}
-
-.margin_ {
-	margin-left:25px;
-	margin-right:25px;
-}
-
-#accName {
-	width:700px;
-}
-
-#searchInput {
-	width:700px;
-}
-
-#dropdownMenuButton {
-	margin-top:7px;
-	margin-right: 27px;
-}
-
-#addImage {
-	margin-left: 20px;
-	width: 35px;
-	height: 35px;
-	margin-bottom: 7px;
 }

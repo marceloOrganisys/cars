@@ -1,10 +1,8 @@
 <?php
 
-require_once('../classes/db.class.php');
+require_once('../classes/car.class.php');
 
-class carsModel extends Db {
-
-    public $tabela = 'car';
+class carsModel extends Car {
 
     public function __construct() {
         parent::__construct();

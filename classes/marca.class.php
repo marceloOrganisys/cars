@@ -2,9 +2,9 @@
 
 require_once('db.class.php');
 
-class Accessorie extends Db {
+class Marca extends Db {
 
-	protected $accessorieId;
+	protected $marcaId;
 	private $name;
 
 	public function __set($name, $value) {
@@ -16,7 +16,7 @@ class Accessorie extends Db {
 	}
 
 	public function __construct() {
-		$this->tabela = 'accessorie';
+		$this->tabela = 'marca';
 		parent::__construct();
 	}
 }

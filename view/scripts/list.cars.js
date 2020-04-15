@@ -8,8 +8,11 @@ $(document).ready(function () {
 		},
 		'list': function () {
 			makeTable().done(function () {
+				$('qwerty').html('');
+				$('#formCadastro').hide();
 				$('#listCars').fadeIn();
 				$('#title').html('Home');
+				$('searchInput').val('');
 			})
 		},
 		'new': function () {
@@ -38,27 +41,35 @@ $(document).ready(function () {
 		anoFabricacao = $('#anoFabricacao').val();
 		cor = $('#cor').val();
 		km = $('#km').val();
-		marca = $('#marca').val();
 		preco = formatAdd($('#preco').val());
 		precoFipe = formatAdd($('#precoFipe').val());
 
-		dados = {
-			carId: carId,
-			descricao: descricao,
-			placa: placa,
-			codRenavam: codRenavam,
-			anoModelo: anoModelo,
-			anoFabricacao: anoFabricacao,
-			cor: cor,
-			km: km,
-			marca: marca,
-			preco: preco,
-			precoFipe: precoFipe
-		};
+		getMarcas().done(function (response) {
+			var marcas = response;
+			$(marcas[0]).each(function (key, value) {
+				if ($('#marca').val() == value.name) {
+					marca = value.id;
+				}
+			})
 
-		if (validate(dados)) {
-			cad(dados);
-		}
+			dados = {
+				carId: carId,
+				descricao: descricao,
+				placa: placa,
+				codRenavam: codRenavam,
+				anoModelo: anoModelo,
+				anoFabricacao: anoFabricacao,
+				cor: cor,
+				km: km,
+				marca: marca,
+				preco: preco,
+				precoFipe: precoFipe
+			};
+
+			if (validate(dados)) {
+				cad(dados);
+			}
+		});
 	});
 
 	$('#searchButton').click(function () {
@@ -94,18 +105,13 @@ function changeScreen (op) {
 	if (op == 0) {
 		routie('new');
 		cleanForm();
+		getMarcas(1);
 		getComponents();
 		$('#listCars').hide();
 		$('#formCadastro').fadeIn();
 	} else {
+		$('#table').empty();
 		routie('list');
-		makeTable().done(function () {
-			$('qwerty').html('');
-			$('#formCadastro').hide();
-			$('#listCars').fadeIn();
-			$('#title').html('Home');
-			$('searchInput').val('');
-		});
 	}
 }
 
@@ -114,7 +120,8 @@ function cleanForm () {
 	$('#pageTitle').html('Adicionar automóvel');
 	$('#submitButton').html('Cadastrar');
 	$('#subPlaca').hide();
-	$('#carId, #descricao, #placa, #codRenavam, #anoModelo, #anoFabricacao, #cor, #km, #marca, #preco, #precoFipe').val('');
+	$('#carId, #descricao, #placa, #codRenavam, #anoModelo, #anoFabricacao, #cor, #km, #preco, #precoFipe').val('');
+	$('#marca').val('');
 }
 
 function mountButtons (page, number, search) {
@@ -125,8 +132,8 @@ function mountButtons (page, number, search) {
 		$('#paginationButtons').append($('<li>', { class: 'page-item' }).append(
 			$('<li>', { class: 'page-item' }).append(
 				$('<button>', { class: 'page-link navItem', id: 'btn' + i, onclick: search == null ? "makeTable(" + i + ")" : "pesquisaCar('" + search + "', " + i + ")" }).append(i + 1)
-			)
-		))
+				)
+			))
 	}
 	$('#btn' + (page)).css({ 'background-color': 'grey', 'color': 'white' });
 }
@@ -139,7 +146,6 @@ function makeTable (page) {
 		url: '../services/car.services.php',
 		data: {operation: 'getCars', page: page},
 		success: function (response) {
-			// console.log(response);
 			var carsData = JSON.parse(response);
 			mountTable(carsData.dados).done(function () {
 				mountButtons(page, carsData.cars);
@@ -155,8 +161,8 @@ function makeTable (page) {
 }
 
 function mountTable (data) {
+	$('#table').html('');
 	var promise = $.Deferred();
-	$('#table').empty();
 	table = document.getElementById('table');
 	var positions = ['descricao', 'placa', 'marca'];
 	if (data.length == 0) {
@@ -171,34 +177,46 @@ function mountTable (data) {
 		data = null;
 	}
 
-	$(data).each(function (key, value) {
-		linha = document.createElement('tr');
-		linha.setAttribute('data-id', value['id']);
-		for (i = 0; i < 3; i++) {
-			cell = document.createElement('td');
-			cellText = document.createTextNode(value[positions[i]]);
-			cell.appendChild(cellText);
-			linha.appendChild(cell);
+	getMarcas().done(function (response) {
+		marcas = response[0];
+		$(data).each(function (key, value) {
+			linha = document.createElement('tr');
+			linha.setAttribute('data-id', value['id']);
+			for (i = 0; i < 3; i++) {
+				cell = document.createElement('td');
+				if (positions[i] == 'marca') {
+					$(marcas).each( function (secondKey, secondValue) {
+						if (secondValue.id == value[positions[i]]) {
+							cellText = document.createTextNode(secondValue.name);		
+						}
+					});
+				} else {
+					cellText = document.createTextNode(value[positions[i]]);
+				}
+				cell.appendChild(cellText);
+				linha.appendChild(cell);
 
-			if (i == 2) {
-				buttons = ['edit', 'remove', ['btn-outline-info', 'btn-outline-danger']];
-				for (i = 0; i < 2; i++) {
-					cell = document.createElement('td');
-					cell.setAttribute('style', 'width:70px;');
-					button = document.createElement('button');
-					buttonImage = document.createElement('img');
-					buttonImage.setAttribute('src', '../icons/' + buttons[i] + '.png');
-					button.appendChild(buttonImage);
-					button.setAttribute('onclick', buttons[i] + '(' + value['id'] + ')');
-					button.setAttribute('class', 'btn1 btn ' + buttons[2][i]);
-					cell.appendChild(button);
-					linha.appendChild(cell);
+				if (i == 2) {
+					buttons = ['edit', 'remove', ['btn-outline-info', 'btn-outline-danger']];
+					for (i = 0; i < 2; i++) {
+						cell = document.createElement('td');
+						cell.setAttribute('style', 'width:70px;');
+						button = document.createElement('button');
+						buttonImage = document.createElement('img');
+						buttonImage.setAttribute('src', '../icons/' + buttons[i] + '.png');
+						button.appendChild(buttonImage);
+						button.setAttribute('onclick', buttons[i] + '(' + value['id'] + ')');
+						button.setAttribute('class', 'btn1 btn ' + buttons[2][i]);
+						cell.appendChild(button);
+						linha.appendChild(cell);
+					}
 				}
 			}
-		}
-		table.appendChild(linha);
+			table.appendChild(linha);
+		});
+		promise.resolve();
+		return promise;
 	});
-	promise.resolve();
 	return promise;
 }
 
@@ -233,7 +251,6 @@ function getComponents (op) {
 			if (op == 1) {
 				promise.resolve(data)
 			} else {
-				console.log(data);
 				mountCheckboxes(data);
 			}
 		},
@@ -270,45 +287,85 @@ function cad(dados) {
 	});
 }
 
+function getMarcas(op) {
+	if (typeof(op) == 'undefined') {
+		op = 0;
+	}
+	var promise = $.Deferred();
+	$.ajax({
+		type: 'POST',
+		url: '../services/marca.services.php',
+		data: {operation: 'getMarcas'},
+		success: function (response) {
+			data = JSON.parse(response);
+			if (op == 1) {
+				$('#marca').empty();
+				for (i = 0; i < data[1]; i++) {
+					$('#marca').append("<option value='" + parseInt(data[0][i].id) + "'>" + data[0][i].name);
+				}
+				$('#marca').editableSelect({ effects: 'slide' });
+				promise.resolve();
+			} else {
+				promise.resolve(data);
+			}
+		},
+		error: function (error) {
+			alert('Ocorreu um erro');
+			console.log(error);
+			promise.resolve();
+		}
+	});
+	return promise;
+}
+
 function edit(id) {
-	routie('edit/' + id);
-	getComponents();
 	$('#listCars').hide();
 	$('#formCadastro').fadeIn();
 	$('#subPlaca').show();
 	$('#title').html('Alterar Registro');
 	$('#pageTitle').html('Alterar registro de automóvel');
 
-	$.ajax({
-		method: 'GET',
-		dataType: 'json',
-		url: '../services/car.services.php',
-		data: { operation: 'getCar', id: id },
-		success: function (data) {
-			$('#carId').val(data.id);
-			$('#descricao').val(data.descricao);
-			$('#placa').val(data.placa);
-			$('#codRenavam').val(data.codRenavam);
-			$('#anoModelo').val(data.anoModelo);
-			$('#anoFabricacao').val(data.anoFabricacao);
-			$('#cor').val(data.cor);
-			$('#km').val(data.km);
-			$('option[value=' + data.marca + ']').prop('selected', true);
-			$('#preco').val(formatGet(data.preco));
-			$('#precoFipe').val(formatGet(data.precoFipe));
-			$('#submitButton').html('Salvar');
-			$('#subPlaca').html('Placa: ' + data.placa);
-			$('#subPlaca').attr('style', 'display: inline; color: red;');
+	routie('edit/' + id);
+	getComponents();
+	getMarcas().done( function (response) {
+		var marcas = response;
+		getMarcas(1).done(function () {
+			$.ajax({
+				method: 'GET',
+				dataType: 'json',
+				url: '../services/car.services.php',
+				data: { operation: 'getCar', id: id },
+				success: function (data) {
+					$('#carId').val(data.id);
+					$('#descricao').val(data.descricao);
+					$('#placa').val(data.placa);
+					$('#codRenavam').val(data.codRenavam);
+					$('#anoModelo').val(data.anoModelo);
+					$('#anoFabricacao').val(data.anoFabricacao);
+					$('#cor').val(data.cor);
+					$('#km').val(data.km);
+					$(marcas[0]).each( function (key, value) {
+						if (data.marca == value.id) {
+							$('#marca').val(value.name);
+						}
+					});
+					$('#preco').val(formatGet(data.preco));
+					$('#precoFipe').val(formatGet(data.precoFipe));
+					$('#submitButton').html('Salvar');
+					$('#subPlaca').html('Placa: ' + data.placa);
+					$('#subPlaca').attr('style', 'display: inline; color: red;');
 
-			if (data.accessories[0] != null && data.accessories.length > 0) {
-				for (i = 0; i < data.accessories.length; i++) {
-					$('#cb' + data.accessories[i].accessorieId).prop('checked', true);
+					if (data.accessories[0] != null && data.accessories.length > 0) {
+						for (i = 0; i < data.accessories.length; i++) {
+							$('#cb' + data.accessories[i].accessorieId).prop('checked', true);
+						}
+					}
+				},
+				error: function (error) {
+					window.location.href = 'home.php';
 				}
-			}
-		},
-		error: function (error) {
-			window.location.href = 'home.php';
-		}
+			});
+		});
 	});
 }
 
@@ -443,16 +500,24 @@ function validate(dados) {
 	}
 
 	if (dados.marca == '' || dados.marca == null) {
-		$('label[for=marcaError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
+		$('label[for=marcaError]').html('<qwerty> O campo não pode ser nulo </qwerty>');
 		error[8] = true;
 	} else {
-		if (dados.marca.length > 20) {
-			$('label[for=marcaError]').html('<qwerty> O campo deve possuir menos de 20 caracteres</qwerty>');
-			error[8] = true;
-		} else {
-			$('label[for=marcaError]').html('');
-			error[8] = false;
-		}
+		getMarcas().done(function (response) {
+			var marcaError = true;
+			$(response[0]).each(function (key, value) {
+				if (dados.marca == value.name) {
+					marcaError = false;
+				}
+			});
+			if (marcaError) {
+				error[8] = true;
+				$('label[for=marcaError]').html('<qwerty> Marca inválida </qwerty>');
+			} else {
+				error[8] = false;
+				$('label[for=marcaError]').html('');
+			}
+		});
 	}
 
 	if (dados.preco == '') {

@@ -2,7 +2,7 @@
 
 include_once('db.class.php');
 
-final class CarAcc extends Db {
+class CarAcc extends Db {
 	
 	protected $carId;
 	protected $accessorieId;

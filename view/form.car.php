@@ -59,16 +59,8 @@
 			<div class="form-group col-md-2">
 				<label for="marca">Marca</label><br>
 				<select id="marca" name="marca" class="custom-select custom-select-lg mb-3">
-					<option value="Renault">Renault</option>
-					<option value="Mercedes">Mercedes</option>
-					<option value="Audi">Audi</option>
-					<option value="BMW">BMW</option>
-					<option value="Peugeot">Peugeot</option>
-					<option value="Volkswagen">Volkswagen</option>
-					<option value="Fiat">Fiat</option>
-					<option value="Jeep">Jeep</option>
-				</select>
-				<div class="errorBox">
+				</select><br>
+				<div class="errorBox" style="margin-top:7px;">
 					<label class="errorMessage" for="marcaError"></label>
 				</div>
 			</div>

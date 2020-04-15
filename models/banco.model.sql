@@ -12,9 +12,17 @@ CREATE TABLE car(
 	anoFabricacao	char(4),
 	cor				text(20),
 	km				text(11),
-	marca			text(20),
+	marca			int(11),
 	preco			decimal(10, 2),
 	precoFipe		decimal(10, 2),
+    PRIMARY KEY(id),
+    FOREIGN KEY(marca)
+    	REFERENCES marca(id)
+);
+
+CREATE TABLE marca(
+	id 				int(11) NOT NULL AUTO_INCREMENT,
+	name 			text(60),
     PRIMARY KEY(id)
 );
 

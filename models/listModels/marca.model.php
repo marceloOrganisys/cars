@@ -1,14 +1,14 @@
 <?php
 
-require_once('../classes/accessorie.class.php');
+require_once('../classes/marca.class.php');
 
-class accessoriesModel extends Accessorie {
-    
+class marcasModel extends Marca {
+
     public function __construct() {
         parent::__construct();
     }
 
-    public function listAccessories() {
+    public function listMarcas() {
 
         $query = "SELECT * FROM " . $this->tabela;
         return array($this->getData($query), $this->getNumRows());

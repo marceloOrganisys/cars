@@ -24,13 +24,13 @@
             </div><br>
         </div>
         <div class="d-flex justify-content-center" style="margin-top:20px;">
-            <form class="form-inline" id="accFormName">
+            <form class="form-inline" id="marcaFormName">
                 <div class="form-group">
-                    <label class=" margin_">Nova marca</label>
-                    <input type="text" class="form-control margin_" id="accName" placeholder="Nome">
+                    <label for="imputText" class=" margin_">Nova marca</label>
+                    <input type="text" class="form-control margin_" id="marcaName" placeholder="Nome">
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-outline-success margin_" type="button" id="addButton">Cadastrar</button>
+                    <button class="btn btn-outline-success margin_" type="submit" id="addButton">Cadastrar</button>
                     <button class="btn btn-outline-secondary" id="backButton" type="button" style="margin-left:-20px;" class="backButton" onclick="window.location.href='home.php'">Voltar</button>
                 </div>
             </form>
@@ -44,7 +44,7 @@
                         <th width="10%"></th>
                     </tr>
                 </thead>
-                <tbody id="tableAcc"></tbody>
+                <tbody id="tableMarca"></tbody>
             </table>
         </div>
     </div>
