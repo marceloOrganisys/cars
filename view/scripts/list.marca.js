@@ -106,13 +106,13 @@ function remove(id) {
 	checkDelete(id)
 	.done(function (response) {
 		if (response) {
-			if (confirm('Deseja excluir esse acessório?')) {
+			if (confirm('Deseja excluir essa marca?')) {
 				removeMarca(id).done(function () {
 					getComponents();
 				});
 			}
 		} else {
-			alert('Acessório não pode ser removido');
+			alert('Marca não pode ser removido');
 		}
 	})
 	.fail(function (response) {
