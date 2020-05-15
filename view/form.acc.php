@@ -17,7 +17,7 @@
     <div id="accForm" style="display: none">
         <div class="d-flex justify-content-center">
             <div>
-                <h1 id="pageTitle"> Acessórios </h1>
+                <h1 id="pageTitle">Acessórios</h1>
                 <div id="menu">
                     <?php include('menu.php') ?>
                 </div>

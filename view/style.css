@@ -14,12 +14,10 @@ footer {
 #tableb {
 	margin-top:10px;
 	width:70%;
-	text-aling:center;
 }
 
 #tablec {
 	width:60%;
-	text-aling:center;
 }
 
 #menu {
@@ -39,7 +37,7 @@ footer {
 
 #navBar {
 	margin-right: auto;
-	margin-legt: auto;
+	margin-left: auto;
 }
 
 #marca {
@@ -66,7 +64,7 @@ footer {
 .component {
 	float:left;
 	padding-left:60px;
-	paddind-right:60px;
+	padding-right:60px;
 }
 
 .accessorie {

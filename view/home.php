@@ -19,9 +19,7 @@
 </head>
 
 <body class="pagePadding">
-	<?php
-	include_once("form.car.php");
-	?>
+	<?php include_once("form.car.php"); ?>
 	<div align="center" id="listCars" style="display: none">
 		<h1> 
 			Automóveis
