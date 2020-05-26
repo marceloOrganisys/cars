@@ -20,12 +20,13 @@ $(document).ready(function () {
 		}
 	})
 
-	$('#addImage').mouseenter(function () {
-		document.getElementById("addImage").src = "../icons/add_hovered.png";
-		document.getElementById("addImage").style.cursor = "pointer";
+	$('#addCarImage').mouseenter(function () {
+		alert('alo')
+		document.getElementById("addCarIcon").src = "../icons/add_hovered.png";
+		document.getElementById("addCarIcon").style.cursor = "pointer";
 	});
 	$('#addImage').mouseleave(function () {
-		document.getElementById("addImage").src = "../icons/add.png";
+		document.getElementById("addCarIcon").src = "../icons/add.png";
 	});
 	$('#addImage').click(function () {
 		changeScreen(0);

@@ -13,29 +13,25 @@
     <title id="title"></title>
 </head>
 
-<body  class="pagePadding">
-    <div id="marcaForm" style="display: none">
-        <div class="d-flex justify-content-center">
-            <div>
-                <h1 id="pageTitle"> Marcas </h1>
-                <div id="menu">
-                    <?php include('menu.php') ?>
-                </div>
-            </div><br>
-        </div>
-        <div class="d-flex justify-content-center" style="margin-top:20px;">
-            <form class="form-inline" id="marcaFormName">
+<body>
+    <div class="list" id="marcaForm" style="display: none">
+        <section class="cabecalho">
+            <h1 id="pageTitle"> Marcas </h1>
+            <?php include('menu.php') ?>
+        </section>
+        <section class="pesquisa">
+            <form class="form-inline">
                 <div class="form-group">
-                    <label for="imputText" class=" margin_">Nova marca</label>
-                    <input type="text" class="form-control margin_" id="marcaName" placeholder="Nome">
+                    <label for="imputText" class="formLabel">Nova marca</label>
+                    <input type="text" class="form-control" id="marcaName" placeholder="Nome">
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-outline-success margin_" type="submit" id="addButton">Cadastrar</button>
-                    <button class="btn btn-outline-secondary" id="backButton" type="button" style="margin-left:-20px;" class="backButton" onclick="window.location.href='home.php'">Voltar</button>
+                    <button class="btn btn-outline-success formButton" type="submit" id="addButton">Cadastrar</button>
+                    <button class="btn btn-outline-secondary backButton" id="backButton" type="button" onclick="window.location.href='home.php'">Voltar</button>
                 </div>
             </form>
-        </div>
-        <div class="d-flex justify-content-center" style="margin-top:20px;">
+        </section>
+        <section class="tabela">
             <table class="table table-striped" id="tablec">
                 <thead class="thead-dark">
                     <tr>
@@ -46,7 +42,7 @@
                 </thead>
                 <tbody id="tableMarca"></tbody>
             </table>
-        </div>
+        </section>
     </div>
 </body>
 

@@ -1,2 +1,2 @@
 <?php
-	header('location: view/home.php');
+	header('location: template/home.php');

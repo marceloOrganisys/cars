@@ -1,3 +1,51 @@
+body {
+	height: 100%;
+}
+
+form {
+	margin: 0;
+}
+
+.list {
+	height: 100%;
+	display: grid;
+	grid-template-rows: 
+		[cabecalho] 70px
+		[pesquisa] 70px 
+		[tabela] 1fr
+		[footer] 70px;
+	grid-template-columns: 1fr;
+	}
+
+.cabecalho {
+	padding:0 15px 0 ;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.pesquisa {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.tabela {
+	display: flex;
+	justify-content: center;
+	padding: 20px; 
+}
+
+.formLabel {
+	margin-right: 10px;
+}
+
+.formButton {
+	margin-left: 15px;
+}
+
+/* _________ */
+
 h4 {
 	padding-bottom:30px;
 }
@@ -7,23 +55,12 @@ img {
 	width:15px;
 }
 
-footer {
-	margin-bottom:50px;
-}
-
-#tableb {
-	margin-top:10px;
+#tableCars {
 	width:70%;
 }
 
 #tablec {
 	width:60%;
-}
-
-#menu {
-	position: absolute; 
-	top: 20px; 
-	right:15px;
 }
 
 #submitButton {
@@ -35,11 +72,6 @@ footer {
 	text-align: center;
 }
 
-#navBar {
-	margin-right: auto;
-	margin-left: auto;
-}
-
 #marca {
 	font-size:15px;
 	height:38px;
@@ -49,16 +81,10 @@ footer {
 	width:700px;
 }
 
-#dropdownMenuButton {
-	margin-top:7px;
-	margin-right: 27px;
-}
-
-#addImage {
-	margin-left: 20px;
+#addCarIcon {
+	margin-left: 15px;
 	width: 35px;
 	height: 35px;
-	margin-bottom: 7px;
 }
 
 .component {
@@ -71,25 +97,13 @@ footer {
 	margin:10px;
 }
 
-.pagePadding {
-	border:0px;
-	margin:0px;
-	padding: 20px;
-	width:100%;
-}
-
-.margin_ {
-	margin-left:25px;
-	margin-right:25px;
-}
-
 .align {
 	width:140px;
 	display: inline;
 }
 
 .backButton {
-	width:100px;
+	margin-left: 5px;
 }
 
 .btn1 {

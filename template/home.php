@@ -18,45 +18,45 @@
 	<title id="title"></title>
 </head>
 
-<body class="pagePadding">
+<body>
 	<?php include_once("form.car.php"); ?>
-	<div align="center" id="listCars" style="display: none">
-		<h1> 
-			Automóveis
-			<img id="addImage" src="../icons/add.png"> 
-		</h1>
-		<div id="menu">
+	<div class="list" id="listCars" style="display: none">
+		<section class="cabecalho">
+			<section style="display:flex; align-items:center;">
+				<h1 class="title"> Automóveis </h1>
+				<img id="addCarIcon" src="../icons/add.png">
+			</section>
 			<?php include('menu.php') ?>
-		</div>
-		<div class="d-flex justify-content-center" style="margin-top:20px;">
+		</section>
+		<section class="pesquisa">
 			<form class="form-inline" id="search" onsubmit="event.preventDefault()">
+				<label for="pesquisaCarro" class="formLabel">Pesquisar</label>
+				<input type="text" class="form-control" id="searchInput" placeholder="Pesquisa...">
 				<div class="form-group">
-					<label for="inputPassword2" class="margin_">Pesquisar</label>
-					<input type="text" class="form-control margin_" id="searchInput" placeholder="Pesquisa...">
-					<button id="searchButton" class="btn btn-outline-success margin_">Pesquisar</button>
+					<button id="searchButton" class="btn btn-outline-success formButton">Pesquisar</button>
 				</div>
 			</form>
-		</div>
-		<table class="table table-striped" id="tableb">
-			<thead class="thead-dark">
-				<tr>
-					<th width="60%">DESCRIÇÃO</th>
-					<th width="15%">PLACA</th>
-					<th width="15%">MARCA</th>
-					<th width="5%"></th>
-					<th width="5%"></th>
-				</tr>
-			</thead>
-			<tbody id="table"></tbody>
-		</table>
-		<div>
-		</div>
-		<div id="containerFooter">
-			<nav class="navbar fixed-bottom navbar-light bg-light d-flex justify-content-center" id="navBar">
+		</section>
+		<section class="tabela">
+			<table class="table table-striped" id="tableCars">
+				<thead class="thead-dark">
+					<tr>
+						<th width="60%">DESCRIÇÃO</th>
+						<th width="15%">PLACA</th>
+						<th width="15%">MARCA</th>
+						<th width="5%"></th>
+						<th width="5%"></th>
+					</tr>
+				</thead>
+				<tbody id="table"></tbody>
+			</table>
+		</section>
+		<section class="footer">
+			<nav class="navbar navbar-light bg-light d-flex justify-content-center" id="navBar">
 				<ul class="pagination" id="paginationButtons">
 				</ul>
 			</nav>
-		</div>
+		</section>
 	</div>
 </body>
 
