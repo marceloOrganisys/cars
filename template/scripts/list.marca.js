@@ -1,15 +1,13 @@
-$(document).ready(function () {
+$(document).ready(() => {
 	routie({
-		'': function() {
-			routie('list');
-		},
-		'list': function() {
+		'': () => routie('list'),
+		'list': () => {
 			getComponents();
 			$('#marcaForm').fadeIn();
 		}
 	});
 
-	$('#marcaFormName').submit(function (e) {
+	$('#newMarcaForm').submit(e => {
 		e.preventDefault();
 		searchEdit();
 	});
@@ -20,45 +18,41 @@ function getComponents() {
 		method: 'POST',
 		url: '../services/marca.services.php',
 		data: { operation: 'getMarcas' },
-		success: function (data) {
-			console.log(data);
+		success: data => {
 			data = data != '' ? JSON.parse(data) : '';
 			mountTable(data[0]);
 		},
-		error: function (error) {
-			console.log(error);
-		}
+		error: e => alert('Ops, algo deu errado')
 	});
 }
 
 function mountTable(data) {
 	$('#tableMarca').empty();
-	var positions = ['id', 'name'];
+	const positions = ['id', 'name'];
 	if (data.length == 0) {
-		linha = document.createElement('tr');
-		cell = document.createElement('td');
+		let linha = document.createElement('tr');
+		let cell = document.createElement('td');
 		cell.setAttribute('colspan', '3')
-		cellText = document.createTextNode('Nenhum registro encontrado!');
+		cell.innerHTML = 'Nenhum registro enconstrado!'
 		cell.setAttribute('style', 'text-align:center; padding:25px;')
-		cell.appendChild(cellText);
 		linha.appendChild(cell);
-		table = document.getElementById('tableMarca');
+		let table = document.getElementById('tableMarca');
 		table.appendChild(linha);
 		data = null;
 	} else {
-		$(data).each(function (key, value) {
-			linha = document.createElement('tr');
+		$(data).each((key, value) => {
+			let linha = document.createElement('tr');
 			linha.setAttribute('data-id', value['id']);
-			cell = document.createElement('td');
+			let cell = document.createElement('td');
 			cellText = document.createTextNode(value['name']);
 			cell.appendChild(cellText);
 			linha.appendChild(cell);
-			buttons = ['edit', 'remove', ['btn-outline-info', 'btn-outline-danger']];
+			const buttons = ['edit', 'remove', ['btn-outline-info', 'btn-outline-danger']];
 			for (i = 0; i < 2; i++) {
 				cell = document.createElement('td');
 				cell.setAttribute('style', 'width:70px;');
-				button = document.createElement('button');
-				buttonImage = document.createElement('img');
+				let button = document.createElement('button');
+				let buttonImage = document.createElement('img');
 				buttonImage.setAttribute('src', '../icons/' + buttons[i] + '.png');
 				button.appendChild(buttonImage);
 				button.setAttribute('onclick', buttons[i] + '(' + value['id'] + ')');
@@ -66,7 +60,7 @@ function mountTable(data) {
 				cell.appendChild(button);
 				linha.appendChild(cell);
 			}
-			table = document.getElementById('tableMarca');
+			let table = document.getElementById('tableMarca');
 			table.appendChild(linha);
 		});
 	}
@@ -85,53 +79,40 @@ function searchEdit() {
 	}
 }
 
-function checkDelete(id) {
-	var promise = $.Deferred();
+function checkDelete(marca) {
+	const promise = $.Deferred();
 	$.ajax({
 		method: 'POST',
 		url: '../services/marca.services.php',
-		data: { operation: 'checkDelete', marca: id },
-		success: function (response) {
-			promise.resolve(JSON.parse(response).status);
-		},
-		error: function (error) {
-			promise.reject(error);
-		}
+		data: { operation: 'checkDelete', marca },
+		success: response => promise.resolve(JSON.parse(response).status),
+		error: e => promise.reject(e)
 	});
 	return promise;
 }
 
 function remove(id) {
-	data = null;
 	checkDelete(id)
-	.done(function (response) {
-		if (response) {
-			if (confirm('Deseja excluir essa marca?')) {
-				removeMarca(id).done(function () {
-					getComponents();
-				});
+		.done(response => {
+			if (response) {
+				if (confirm('Deseja excluir essa marca?')) {
+					removeMarca(id).done(() => getComponents());
+				}
+			} else {
+				alert('Marca não pode ser removido');
 			}
-		} else {
-			alert('Marca não pode ser removido');
-		}
-	})
-	.fail(function (response) {
-		alert(response);
-	});
+		})
+		.fail(e => alert('Ops, algo deu errado'));
 }
 
-function removeMarca(id) {
-	var promise = $.Deferred();
+function removeMarca(marca) {
+	const promise = $.Deferred();
 	$.ajax({
 		method: 'POST',
 		url: '../services/marca.services.php',
-		data: { operation: 'removeMarca', marca: id },
-		success: function () {
-			promise.resolve();
-		},
-		error: function (error) {
-			console.log(error);
-		}
+		data: { operation: 'removeMarca', marca },
+		success: () => promise.resolve(),
+		error: e => promise.reject(e)
 	});
 	return promise;
 }
@@ -140,8 +121,8 @@ function addMarca(name) {
 	$.ajax({
 		method: 'POST',
 		url: '../services/marca.services.php',
-		data: { operation: 'addMarca', name: name },
-		success: function (response) {
+		data: { operation: 'addMarca', name },
+		success: response => {
 			routie('list');
 			if (response == 1) {
 				getComponents();
@@ -152,9 +133,7 @@ function addMarca(name) {
 				$('label[for=inputText]').text('Novo Acessório');
 			}
 		},
-		error: function (error) {
-			console.log(error);
-		}
+		error: e => alert('Ops, algo deu errado!')
 	});
 }
 
@@ -163,7 +142,7 @@ function edit(id) {
 	if ($('#marcaName').attr('alter') == 'true') {
 		alert('Uma edição já está em andamento');
 	} else {
-		name = $('tr[data-id = ' + id + ']:first').text();
+		let name = $('tr[data-id = ' + id + ']:first').text();
 		$('#marcaName').attr('alter', 'true');
 		$('#marcaName').attr('marcaId', id);
 		$('#marcaName').val(name);
@@ -180,8 +159,8 @@ function editMarca(name, id) {
 	$.ajax({
 		method: 'POST',
 		url: '../services/marca.services.php',
-		data: { operation: 'updateMarca', name: name, id: id },
-		success: function (response) {
+		data: { operation: 'updateMarca', name, id },
+		success: response => {
 			if (response == 1) {
 				routie('list');
 				getComponents();
@@ -192,9 +171,7 @@ function editMarca(name, id) {
 				$('label[for=inputPassword2]').text('Nova Marca');
 			}
 		},
-		error: function (error) {
-			console.log(error);
-		}
+		error: e => alert('Ops, algo deu errado!')
 	});
 	cancelEdit();
 }

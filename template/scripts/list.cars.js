@@ -1,13 +1,13 @@
-$(document).ready(function () {
+$(document).ready(() => {
 	routie({
-		'': function () {
+		'': () => {
 			routie('list');
 		},
-		'edit/:id': function (id) {
+		'edit/:id': id => {
 			edit(id);
 		},
-		'list': function () {
-			makeTable().done(function () {
+		'list': () => {
+			makeTable().done(() => {
 				$('qwerty').html('');
 				$('#formCadastro').hide();
 				$('#listCars').fadeIn();
@@ -15,9 +15,7 @@ $(document).ready(function () {
 				$('searchInput').val('');
 			})
 		},
-		'new': function () {
-			changeScreen(0);
-		}
+		'new': () => changeScreen(0)
 	})
 
 	$('#addCarIcon').mouseenter(() => {
@@ -41,8 +39,7 @@ $(document).ready(function () {
 		preco = formatAdd($('#preco').val());
 		precoFipe = formatAdd($('#precoFipe').val());
 
-		getMarcas().done(response => {
-			var marcas = response;
+		getMarcas().done(marcas => {
 			$(marcas[0]).each((key, value) => {
 				if ($('#marca').val() == value.name) {
 					marca = value.id;
@@ -50,17 +47,17 @@ $(document).ready(function () {
 			})
 
 			dados = {
-				carId: carId,
-				descricao: descricao,
-				placa: placa,
-				codRenavam: codRenavam,
-				anoModelo: anoModelo,
-				anoFabricacao: anoFabricacao,
-				cor: cor,
-				km: km,
-				marca: marca,
-				preco: preco,
-				precoFipe: precoFipe
+				carId,
+				descricao,
+				placa,
+				codRenavam,
+				anoModelo,
+				anoFabricacao,
+				cor,
+				km,
+				marca,
+				preco,
+				precoFipe
 			};
 
 			if (validate(dados)) {
@@ -69,7 +66,7 @@ $(document).ready(function () {
 		});
 	});
 
-	$('#searchButton').click(function () {
+	$('#searchButton').click(() => {
 		search = $('#searchInput').val();
 		if (search == '') {
 			makeTable();
@@ -84,16 +81,15 @@ function pesquisaCar (search, page) {
 	$.ajax({
 		type: 'GET',
 		url: '../services/car.services.php',
-		data: { operation: 'searchCar', search: search, page: page },
-		success: function (response) {
-			console.log(response);
-			var carsData = JSON.parse(response);
+		data: { operation: 'searchCar', search, page },
+		success:  response => {
+			let carsData = JSON.parse(response);
 			mountTable(carsData.dados);
 			mountButtons(page, carsData.cars, search);
 		},
-		error: function (error) {
-			alert('Ocorreu um erro');
-			console.log(error);
+		error: e => {
+			alert('Ops, algo deu errado');
+			promise.reject(e);
 		}
 	});
 }
@@ -136,22 +132,22 @@ function mountButtons (page, number, search) {
 }
 
 function makeTable (page) {
-	var promise = $.Deferred();
+	const promise = $.Deferred();
 	page = page || 0;
 	$.ajax({
 		type: 'GET',
 		url: '../services/car.services.php',
 		data: {operation: 'getCars', page: page},
-		success: function (response) {
-			var carsData = JSON.parse(response);
-			mountTable(carsData.dados).done(function () {
+		success: response => {
+			let carsData = JSON.parse(response);
+			mountTable(carsData.dados).done(() => {
 				mountButtons(page, carsData.cars);
 				promise.resolve();
 			});
 		},
-		error: function (error) {
-			alert('Ocorreu um erro');
-			console.log(error);
+		error: e => {
+			alert('Ops, algo deu errado');
+			promise.reject(e);
 		}
 	});
 	return promise;
@@ -159,30 +155,30 @@ function makeTable (page) {
 
 function mountTable (data) {
 	$('#table').html('');
-	var promise = $.Deferred();
-	table = document.getElementById('table');
-	var positions = ['descricao', 'placa', 'marca'];
+	const promise = $.Deferred();
+	const table = document.getElementById('table');
+	const positions = ['descricao', 'placa', 'marca'];
 	if (data.length == 0) {
-		linha = document.createElement('tr');
-		cell = document.createElement('td');
-		cell.setAttribute('colspan', '5')
-		cellText = document.createTextNode('Nenhum registro encontrado!');
-		cell.setAttribute('style', 'text-align:center; padding:25px;')
+		let linha = document.createElement('tr');
+		let cell = document.createElement('td');
+		cell.setAttribute('colspan', '5');
+		cell.innerHTML = 'Nenhum registro encontrado!';
+		cell.setAttribute('style', 'text-align:center; padding:25px;');
 		cell.appendChild(cellText);
 		linha.appendChild(cell);
 		table.appendChild(linha);
 		data = null;
 	}
 
-	getMarcas().done(function (response) {
-		marcas = response[0];
-		$(data).each(function (key, value) {
-			linha = document.createElement('tr');
+	getMarcas().done(response => {
+		let marcas = response[0];
+		$(data).each((key, value) => {
+			let linha = document.createElement('tr');
 			linha.setAttribute('data-id', value['id']);
 			for (i = 0; i < 3; i++) {
-				cell = document.createElement('td');
+				let cell = document.createElement('td');
 				if (positions[i] == 'marca') {
-					$(marcas).each( function (secondKey, secondValue) {
+					$(marcas).each((secondKey, secondValue) => {
 						if (secondValue.id == value[positions[i]]) {
 							cellText = document.createTextNode(secondValue.name);		
 						}
@@ -198,8 +194,8 @@ function mountTable (data) {
 					for (i = 0; i < 2; i++) {
 						cell = document.createElement('td');
 						cell.setAttribute('style', 'width:70px;');
-						button = document.createElement('button');
-						buttonImage = document.createElement('img');
+						let button = document.createElement('button');
+						let buttonImage = document.createElement('img');
 						buttonImage.setAttribute('src', '../icons/' + buttons[i] + '.png');
 						button.appendChild(buttonImage);
 						button.setAttribute('onclick', buttons[i] + '(' + value['id'] + ')');
@@ -220,17 +216,17 @@ function mountTable (data) {
 function mountCheckboxes (data) {
 	$('#components').empty();
 	data = JSON.parse(data) || '';
-	div = document.getElementById('components');
+	const div = document.getElementById('components');
 	for (i = 0; i < parseInt(data[1]); i++) {
-		unic = document.createElement('div');
+		let unic = document.createElement('div');
 		unic.setAttribute('class', 'component');
-		input = document.createElement('input');
+		let input = document.createElement('input');
 		input.setAttribute('type', 'checkbox');
 		input.id = 'cb' + data[0][i].id;
 		input.setAttribute('class', 'accessorie form-check-input');
 		input.class = 'accessorie';
-		label = document.createElement('label');
-		labelTxt = document.createTextNode(data[0][i]['name']);
+		let label = document.createElement('label');
+		let labelTxt = document.createTextNode(data[0][i]['name']);
 		label.appendChild(labelTxt);
 		unic.appendChild(input);
 		unic.appendChild(label);
@@ -239,44 +235,44 @@ function mountCheckboxes (data) {
 }
 
 function getComponents (op) {
-	var promise = op == 1 ? $.Deferred() : null;
+	const promise = op == 1 ? $.Deferred() : null;
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
 		data: { operation: 'getAcessories' },
-		success: function (data) {
+		success: data => {
 			if (op == 1) {
 				promise.resolve(data)
 			} else {
 				mountCheckboxes(data);
 			}
 		},
-		error: function (error) {
-			console.log(error);
+		error: e => {
+			alert('Ops, algo deu errado');
+			promise.reject(e);
 		}
 	});
 	return op == 1 ? promise : '';
 }
 
-function cad(dados) {
-	accessories = [];
-	size = 0;
-	getComponents(1).done(function (response) {
-		data = response;
-		data = JSON.parse(data) || '';
+function cad(carData) {
+	let accessories = [];
+	let size = 0;
+	getComponents(1).done(response => {
+		let data = JSON.parse(response) || '';
 
 		for (x = 0; x < data[1]; x++) {
 			accessories.push({ id: data[0][x].id, checked: $('#cb' + data[0][x].id).prop('checked') ? 1 : 0 });
 		}
 
-		data = {operation: 'cadastro', carData: dados, accessories: accessories}
+		data = { operation: 'cadastro', carData, accessories}
 		$.ajax({
 			type: 'POST',
 			url: '../services/car.services.php',
 			data: data,
-			error: function (error) {
-				alert('Ocorreu um erro');
-				console.log(error);
+			error: e => {
+				alert('Ops, algo deu errado');
+				promise.reject(e);
 			}
 		});
 		changeScreen(1);
@@ -288,12 +284,12 @@ function getMarcas(op) {
 	if (typeof(op) == 'undefined') {
 		op = 0;
 	}
-	var promise = $.Deferred();
+	const promise = $.Deferred();
 	$.ajax({
 		type: 'POST',
 		url: '../services/marca.services.php',
 		data: {operation: 'getMarcas'},
-		success: function (response) {
+		success: response => {
 			data = JSON.parse(response);
 			if (op == 1) {
 				$('#marca').empty();
@@ -306,10 +302,9 @@ function getMarcas(op) {
 				promise.resolve(data);
 			}
 		},
-		error: function (error) {
-			alert('Ocorreu um erro');
-			console.log(error);
-			promise.resolve();
+		error: e => {
+			alert('Ops, algo deu errado');
+			promise.reject(e)
 		}
 	});
 	return promise;
@@ -324,15 +319,15 @@ function edit(id) {
 
 	routie('edit/' + id);
 	getComponents();
-	getMarcas().done( function (response) {
-		var marcas = response;
-		getMarcas(1).done(function () {
+	getMarcas().done(response => {
+		const marcas = response;
+		getMarcas(1).done(() => {
 			$.ajax({
 				method: 'GET',
 				dataType: 'json',
 				url: '../services/car.services.php',
-				data: { operation: 'getCar', id: id },
-				success: function (data) {
+				data: { operation: 'getCar', id },
+				success: data => {
 					$('#carId').val(data.id);
 					$('#descricao').val(data.descricao);
 					$('#placa').val(data.placa);
@@ -341,7 +336,7 @@ function edit(id) {
 					$('#anoFabricacao').val(data.anoFabricacao);
 					$('#cor').val(data.cor);
 					$('#km').val(data.km);
-					$(marcas[0]).each( function (key, value) {
+					$(marcas[0]).each((key, value) => {
 						if (data.marca == value.id) {
 							$('#marca').val(value.name);
 						}
@@ -358,8 +353,9 @@ function edit(id) {
 						}
 					}
 				},
-				error: function (error) {
-					window.location.href = 'home.php';
+				error: e => {
+					alert('Ops, algo deu errado');
+					window.location.href = 'home.php'
 				}
 			});
 		});
@@ -367,19 +363,16 @@ function edit(id) {
 }
 
 function remove(id) {
-	data = { operation: 'remove', id: id }
+	const data = { operation: 'remove', id }
 	if (confirm('Deseja mesmo apagar este registro?')) {
 		$.ajax({
 			type: 'POST',
 			url: '../services/car.services.php',
-			data: data,
-			success: function (response) {
+			data,
+			success: () => {
 				pesquisaCar($('#searchInput').val(), 0);
 			},
-			error: function (error) {
-				alert('Ocorreu um erro');
-				console.log(error);
-			}
+			error: e => alert('Ops, algo deu errado')
 		});
 	}
 }
@@ -398,16 +391,16 @@ function formatGet(input) {
 	for (i = 0; i < input.length / 3; i++) {
 		input = input.replace(',', '.');
 	}
-	finalStr = '';
+	let finalStr = '';
 	for (i = 0; i < input.length; i++) {
-		char = input.length - 3 == i ? ',' : input[i];
+		let char = input.length - 3 == i ? ',' : input[i];
 		finalStr += (finalStr, char);
 	}
 	return finalStr;
 }
 
 function validate(dados) {
-	error = [];
+	let error = [];
 	if (dados.descricao == '') {
 		$('label[for=descricaoError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
 		error[1] = true;

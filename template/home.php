@@ -8,7 +8,7 @@
 
 <body>
 	<?php include_once("form.car.php"); ?>
-	<div class="list" id="listCars" style="display: none">
+	<div class="list" id="listCars" style="display:none; width: 1000px;">
 		<section class="cabecalho">
 			<section style="display:flex; align-items:center;">
 				<h1 class="title"> Automóveis </h1>

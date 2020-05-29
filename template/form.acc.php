@@ -6,8 +6,8 @@
     <title id="title"></title>
 </head>
 
-<body class="pagePadding">
-    <div class="list" id="accForm" style="display: none">
+<body>
+    <div class="list" id="accForm" style="display: none; width:1000px;">
         <section class="cabecalho">
             <h1 id="pageTitle">Acessórios</h1>
             <?php include('menu.php') ?>

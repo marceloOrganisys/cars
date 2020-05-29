@@ -7,13 +7,13 @@
 </head>
 
 <body>
-    <div class="list" id="marcaForm" style="display: none">
+    <div class="list" id="marcaForm" style="display: none; width:1000px;">
         <section class="cabecalho">
             <h1 id="pageTitle"> Marcas </h1>
             <?php include('menu.php') ?>
         </section>
         <section class="inputText">
-            <form class="form-inline">
+            <form class="form-inline" id="newMarcaForm">
                 <div class="form-group">
                     <label for="imputText" class="formLabel">Nova marca</label>
                     <input type="text" class="form-control" id="marcaName" placeholder="Nome">

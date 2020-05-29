@@ -8,13 +8,12 @@ $(document).ready(() => {
 			$('#accForm').fadeIn();
 		}
 	});
-	$('title').html('Accessórios');
 
+	$('title').html('Accessórios');
 	$('#accFormName').submit(e => {
 		e.preventDefault();
 		searchEdit();
 	});
-	
 })
 
 function getComponents() {
@@ -23,18 +22,16 @@ function getComponents() {
 		url: '../services/accessorie.services.php',
 		data: { operation: 'getAcessories' },
 		success: data => {
-			let data = data != '' ? JSON.parse(data) : '';
+			data = data != '' ? JSON.parse(data) : '';
 			mountTable(data[0]);
 		},
-		error: e => {
-			console.log(e);
-		}
+		error: e => console.log(e)
 	});
 }
 
 function mountTable(data) {
 	$('#tableAcc').empty();
-	let positions = ['id', 'name'];
+	const positions = ['id', 'name'];
 	if (data.length == 0) {
 		linha = document.createElement('tr');
 		cell = document.createElement('td');
@@ -51,8 +48,7 @@ function mountTable(data) {
 			linha = document.createElement('tr');
 			linha.setAttribute('data-id', value['id']);
 			cell = document.createElement('td');
-			cellText = document.createTextNode(value['name']);
-			cell.appendChild(cellText);
+			cell.innerHTML = value['name'];
 			linha.appendChild(cell);
 			buttons = ['edit', 'remove', ['btn-outline-info', 'btn-outline-danger']];
 			for (let i = 0; i < 2; i++) {
@@ -73,12 +69,12 @@ function mountTable(data) {
 	}
 }
 
-function checkDelete(id) {
+function checkDelete(acc) {
 	var promise = $.Deferred();
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: { operation: 'checkDelete', acc: id },
+		data: { operation: 'checkDelete', acc },
 		success: response => {
 			promise.resolve(JSON.parse(response).status);
 		},
@@ -92,20 +88,20 @@ function checkDelete(id) {
 function remove(id) {
 	data = null;
 	checkDelete(id)
-	.done(response => {
-		if (response) {
-			if (confirm('Deseja excluir esse acessório?')) {
-				removeAcc(id).done(() => {
-					getComponents();
-				});
+		.done(response => {
+			if (response) {
+				if (confirm('Deseja excluir esse acessório?')) {
+					removeAcc(id).done(() => {
+						getComponents();
+					});
+				}
+			} else {
+				alert('Acessório não pode ser removido');
 			}
-		} else {
-			alert('Acessório não pode ser removido');
-		}
-	})
-	.fail(e => {
-		alert(e);
-	});
+		})
+		.fail(e => {
+			alert(e);
+		});
 }
 
 function searchEdit() {
@@ -121,12 +117,12 @@ function searchEdit() {
 	}
 }
 
-function removeAcc(id) {
+function removeAcc(acc) {
 	var promise = $.Deferred();
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: { operation: 'removeAcc', acc: id },
+		data: { operation: 'removeAcc', acc },
 		success: () => {
 			promise.resolve();
 		},
@@ -141,7 +137,7 @@ function addAcc(name) {
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: { operation: 'addAcc', name: name },
+		data: { operation: 'addAcc', name },
 		success: response => {
 			routie('list');
 			if (response == 1) {
@@ -163,7 +159,7 @@ function editAcc(name, id) {
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
-		data: { operation: 'updateAcc', name: name, id: id },
+		data: { operation: 'updateAcc', name, id },
 		success: response => {
 			if (response == 1) {
 				routie('list');
