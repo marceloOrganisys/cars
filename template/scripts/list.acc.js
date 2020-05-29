@@ -1,16 +1,16 @@
-$(document).ready(function () {
+$(document).ready(() => {
 	routie({
-		'': function() {
+		'': () => {
 			routie('list');
 		},
-		'list': function() {
+		'list': () => {
 			getComponents();
 			$('#accForm').fadeIn();
 		}
 	});
 	$('title').html('Accessórios');
 
-	$('#accFormName').submit(function (e) {
+	$('#accFormName').submit(e => {
 		e.preventDefault();
 		searchEdit();
 	});
@@ -22,19 +22,19 @@ function getComponents() {
 		method: 'POST',
 		url: '../services/accessorie.services.php',
 		data: { operation: 'getAcessories' },
-		success: function (data) {
-			data = data != '' ? JSON.parse(data) : '';
+		success: data => {
+			let data = data != '' ? JSON.parse(data) : '';
 			mountTable(data[0]);
 		},
-		error: function (error) {
-			console.log(error);
+		error: e => {
+			console.log(e);
 		}
 	});
 }
 
 function mountTable(data) {
 	$('#tableAcc').empty();
-	var positions = ['id', 'name'];
+	let positions = ['id', 'name'];
 	if (data.length == 0) {
 		linha = document.createElement('tr');
 		cell = document.createElement('td');
@@ -47,7 +47,7 @@ function mountTable(data) {
 		table.appendChild(linha);
 		data = null;
 	} else {
-		$(data).each(function (key, value) {
+		$(data).each((key, value) => {
 			linha = document.createElement('tr');
 			linha.setAttribute('data-id', value['id']);
 			cell = document.createElement('td');
@@ -55,7 +55,7 @@ function mountTable(data) {
 			cell.appendChild(cellText);
 			linha.appendChild(cell);
 			buttons = ['edit', 'remove', ['btn-outline-info', 'btn-outline-danger']];
-			for (i = 0; i < 2; i++) {
+			for (let i = 0; i < 2; i++) {
 				cell = document.createElement('td');
 				cell.setAttribute('style', 'width:70px;');
 				button = document.createElement('button');
@@ -79,11 +79,11 @@ function checkDelete(id) {
 		method: 'POST',
 		url: '../services/accessorie.services.php',
 		data: { operation: 'checkDelete', acc: id },
-		success: function (response) {
+		success: response => {
 			promise.resolve(JSON.parse(response).status);
 		},
-		error: function (error) {
-			promise.reject(error);
+		error: e => {
+			promise.reject(e);
 		}
 	});
 	return promise;
@@ -92,10 +92,10 @@ function checkDelete(id) {
 function remove(id) {
 	data = null;
 	checkDelete(id)
-	.done(function (response) {
+	.done(response => {
 		if (response) {
 			if (confirm('Deseja excluir esse acessório?')) {
-				removeAcc(id).done(function () {
+				removeAcc(id).done(() => {
 					getComponents();
 				});
 			}
@@ -103,8 +103,8 @@ function remove(id) {
 			alert('Acessório não pode ser removido');
 		}
 	})
-	.fail(function (response) {
-		alert(response);
+	.fail(e => {
+		alert(e);
 	});
 }
 
@@ -127,11 +127,11 @@ function removeAcc(id) {
 		method: 'POST',
 		url: '../services/accessorie.services.php',
 		data: { operation: 'removeAcc', acc: id },
-		success: function () {
+		success: () => {
 			promise.resolve();
 		},
-		error: function (error) {
-			console.log(error);
+		error: e => {
+			console.log(e);
 		}
 	});
 	return promise;
@@ -142,7 +142,7 @@ function addAcc(name) {
 		method: 'POST',
 		url: '../services/accessorie.services.php',
 		data: { operation: 'addAcc', name: name },
-		success: function (response) {
+		success: response => {
 			routie('list');
 			if (response == 1) {
 				getComponents();
@@ -153,8 +153,8 @@ function addAcc(name) {
 				$('label[for=inputText]').text('Novo Acessório');
 			}
 		},
-		error: function (error) {
-			console.log(error);
+		error: e => {
+			console.log(e);
 		}
 	});
 }
@@ -164,7 +164,7 @@ function editAcc(name, id) {
 		method: 'POST',
 		url: '../services/accessorie.services.php',
 		data: { operation: 'updateAcc', name: name, id: id },
-		success: function (response) {
+		success: response => {
 			if (response == 1) {
 				routie('list');
 				getComponents();
@@ -175,8 +175,8 @@ function editAcc(name, id) {
 				$('label[for=inputPassword2]').text('Novo Acessório');
 			}
 		},
-		error: function (error) {
-			console.log(error);
+		error: e => {
+			console.log(e);
 		}
 	});
 	cancelEdit();

@@ -20,19 +20,15 @@ $(document).ready(function () {
 		}
 	})
 
-	$('#addCarImage').mouseenter(function () {
-		alert('alo')
+	$('#addCarIcon').mouseenter(() => {
 		document.getElementById("addCarIcon").src = "../icons/add_hovered.png";
 		document.getElementById("addCarIcon").style.cursor = "pointer";
 	});
-	$('#addImage').mouseleave(function () {
-		document.getElementById("addCarIcon").src = "../icons/add.png";
-	});
-	$('#addImage').click(function () {
-		changeScreen(0);
-	});
+	
+	$('#addCarIcon').mouseleave(() => document.getElementById("addCarIcon").src = "../icons/add.png");
+	$('#addCarIcon').click(() => changeScreen(0));
 
-	$('#submitButton').on('click', function (e) {
+	$('#submitButton').on('click', e => {
 		e.preventDefault();
 		carId = $('#carId').val();
 		descricao = $('#descricao').val();
@@ -45,9 +41,9 @@ $(document).ready(function () {
 		preco = formatAdd($('#preco').val());
 		precoFipe = formatAdd($('#precoFipe').val());
 
-		getMarcas().done(function (response) {
+		getMarcas().done(response => {
 			var marcas = response;
-			$(marcas[0]).each(function (key, value) {
+			$(marcas[0]).each((key, value) => {
 				if ($('#marca').val() == value.name) {
 					marca = value.id;
 				}
@@ -539,12 +535,8 @@ function validate(dados) {
 
 	send = true;
 	$.each(error, function (key, value) {
-		if (value === true) {
-			send = false;
-		}
+		if (value === true) send = false
 	});
 
-	if (send) {
-		return true;
-	}
+	if (send) return true;
 }
