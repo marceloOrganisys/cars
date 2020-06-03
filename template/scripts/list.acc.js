@@ -33,14 +33,14 @@ function mountTable(data) {
 	$('#tableAcc').empty();
 	const positions = ['id', 'name'];
 	if (data.length == 0) {
-		linha = document.createElement('tr');
-		cell = document.createElement('td');
+		let linha = document.createElement('tr');
+		let cell = document.createElement('td');
 		cell.setAttribute('colspan', '3')
 		cellText = document.createTextNode('Nenhum registro encontrado!');
 		cell.setAttribute('style', 'text-align:center; padding:25px;')
 		cell.appendChild(cellText);
 		linha.appendChild(cell);
-		table = document.getElementById('tableAcc');
+		let table = document.getElementById('tableAcc');
 		table.appendChild(linha);
 		data = null;
 	} else {
@@ -50,12 +50,13 @@ function mountTable(data) {
 			cell = document.createElement('td');
 			cell.innerHTML = value['name'];
 			linha.appendChild(cell);
-			buttons = ['edit', 'remove', ['btn-outline-info', 'btn-outline-danger']];
+			const buttons = ['edit', 'remove', ['btn-outline-info', 'btn-outline-danger']];
 			for (let i = 0; i < 2; i++) {
 				cell = document.createElement('td');
 				cell.setAttribute('style', 'width:70px;');
-				button = document.createElement('button');
-				buttonImage = document.createElement('img');
+				let button = document.createElement('button');
+				let buttonImage = document.createElement('img');
+				buttonImage.classList.add('imgSize');
 				buttonImage.setAttribute('src', '../icons/' + buttons[i] + '.png');
 				button.appendChild(buttonImage);
 				button.setAttribute('onclick', buttons[i] + '(' + value['id'] + ')');
@@ -70,7 +71,7 @@ function mountTable(data) {
 }
 
 function checkDelete(acc) {
-	var promise = $.Deferred();
+	let promise = $.Deferred();
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',
@@ -86,7 +87,6 @@ function checkDelete(acc) {
 }
 
 function remove(id) {
-	data = null;
 	checkDelete(id)
 		.done(response => {
 			if (response) {
@@ -105,7 +105,7 @@ function remove(id) {
 }
 
 function searchEdit() {
-	name = $('#accName').val();
+	let name = $('#accName').val();
 	if (name != '' && name.length > 3) {
 		if ($('#accName').attr('alter') == 'true') {
 			editAcc(name, $('#accName').attr('accid'));
@@ -118,7 +118,7 @@ function searchEdit() {
 }
 
 function removeAcc(acc) {
-	var promise = $.Deferred();
+	let promise = $.Deferred();
 	$.ajax({
 		method: 'POST',
 		url: '../services/accessorie.services.php',

@@ -50,12 +50,14 @@ form {
 	padding:15px;
 }
 
-#accName, #marcaName, #searchInput {
-	width:50vw;
+.table {
+	width: 70vw;
+  	margin-bottom: 1rem;
+  	color: #212529;
 }
 
-#tableCars, #tableMarcas, #tableAcess {
-	width:70vw;
+.pageInput {
+	width: 50vw !important;
 }
 
 .formContainer {
@@ -68,11 +70,11 @@ form {
 }
 
 @media (min-width: 1000px) {
-	#accName, #marcaName, #searchInput {
-		width: 500px;
+	.pageInput {
+		width: 500px !important;
 	}
 
-	#tableCars, #tableMarcas, #tableAcess {
+	.table {
 		width:900px;
 	}
 }
@@ -83,33 +85,30 @@ form {
 	}
 }
 
-
-/* _________ */
-
-h4 {
+.textPadding {
 	padding-bottom:30px;
 }
 
-img {
+.imgSize {
 	height: 15px;
 	width:15px;
 }
 
-#submitButton {
+.submitButtonSize {
 	width:100px;
 }
 
-#formCadastro {
+.formularioCarros {
 	width:100%;
 	text-align: center;
 }
 
-#marca {
+.marca {
 	font-size:15px;
 	height:38px;
 }
 
-#addCarIcon {
+.addCarIcon {
 	margin-left: 15px;
 	width: 35px;
 	height: 35px;

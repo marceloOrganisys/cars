@@ -16,7 +16,7 @@
             <form class="form-inline" id="accFormName">
                 <div class="form-group">
                     <label for="inputText" class="formLabel">Novo Acessório</label>
-                    <input type="text" class="form-control" id="accName" placeholder="Nome">
+                    <input type="text" class="form-control pageInput" id="accName" placeholder="Nome">
                 </div>
                 <div class="form-group">
                     <button class="btn btn-outline-success formButton" type="submit" id="addButton">Cadastrar</button>
@@ -25,7 +25,7 @@
             </form>
         </section>
         <section class="tabela">
-            <table class="table table-striped tabelMarcasAcess" id="tableMarcas">
+            <table class="table table-striped tabelMarcasAcess tables" id="tableMarcas">
                 <thead class="thead-dark">
                     <tr>
                         <th width="80%">NOME</th>

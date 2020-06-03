@@ -53,6 +53,7 @@ function mountTable(data) {
 				cell.setAttribute('style', 'width:70px;');
 				let button = document.createElement('button');
 				let buttonImage = document.createElement('img');
+				buttonImage.classList.add('imgSize');
 				buttonImage.setAttribute('src', '../icons/' + buttons[i] + '.png');
 				button.appendChild(buttonImage);
 				button.setAttribute('onclick', buttons[i] + '(' + value['id'] + ')');

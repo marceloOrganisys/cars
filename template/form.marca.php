@@ -16,7 +16,7 @@
             <form class="form-inline" id="newMarcaForm">
                 <div class="form-group">
                     <label for="imputText" class="formLabel">Nova marca</label>
-                    <input type="text" class="form-control" id="marcaName" placeholder="Nome">
+                    <input type="text" class="form-control pageInput" id="marcaName" placeholder="Nome">
                 </div>
                 <div class="form-group">
                     <button class="btn btn-outline-success formButton" type="submit" id="addButton">Cadastrar</button>
@@ -25,7 +25,7 @@
             </form>
         </section>
         <section class="tabela">
-            <table class="table table-striped" id="tableAcess">
+            <table class="table table-striped tables" id="tableAcess">
                 <thead class="thead-dark">
                     <tr>
                         <th width="80%">NOME</th>

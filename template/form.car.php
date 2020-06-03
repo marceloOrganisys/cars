@@ -64,7 +64,7 @@
 					</div>
 					<div class="form-group col-md-2">
 						<label for="marca">Marca</label><br>
-						<select id="marca" name="marca" class="custom-select custom-select-lg mb-3">
+						<select id="marca" name="marca" class="custom-select custom-select-lg mb-3 marca">
 						</select><br>
 						<div class="errorBox" style="margin-top:7px;">
 							<label class="errorMessage" for="marcaError"></label>
@@ -92,14 +92,14 @@
 			</section>
 			<section class="componentes">
 				<div align="center">
-					<h4> Componentes do veículo</h4>
+					<h4 class="textPadding"> Componentes do veículo</h4>
 				</div>
 				<div class="form-row">
 					<div id="components" class="form-group"></div>
 				</div>
 			</section>
 			<section class="botoes">
-				<button id="submitButton" class="btn btn-outline-success">Cadastrar</button>
+				<button id="submitButton" class="btn btn-outline-success submitButtonSize">Cadastrar</button>
 				<button class="btn btn-outline-secondary" class="backButton" onclick="changeScreen(1);">Voltar</button>
 			</section>
 		</section>

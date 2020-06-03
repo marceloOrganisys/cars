@@ -12,21 +12,21 @@
 		<section class="cabecalho">
 			<section style="display:flex; align-items:center;">
 				<h1 class="title"> Automóveis </h1>
-				<img id="addCarIcon" src="../icons/add.png">
+				<img class="imgSize addCarIcon" id="addCarIcon" src="../icons/add.png">
 			</section>
 			<?php include('menu.php') ?>
 		</section>
 		<section class="inputText">
 			<form class="form-inline" id="search" onsubmit="event.preventDefault()">
 				<label for="pesquisaCarro" class="formLabel">Pesquisar</label>
-				<input type="text" class="form-control" id="searchInput" placeholder="Pesquisa...">
+				<input type="text" class="form-control pageInput" id="searchInput" placeholder="Pesquisa...">
 				<div class="form-group">
 					<button id="searchButton" class="btn btn-outline-success formButton">Pesquisar</button>
 				</div>
 			</form>
 		</section>
 		<section class="tabela">
-			<table class="table table-striped" id="tableCars">
+			<table class="table table-striped tables" id="tableCars">
 				<thead class="thead-dark">
 					<tr>
 						<th width="60%">DESCRIÇÃO</th>
