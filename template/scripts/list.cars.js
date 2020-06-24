@@ -60,9 +60,16 @@ $(document).ready(() => {
 				precoFipe
 			};
 
-			if (validate(dados)) {
-				cad(dados);
+			dados = {
+				nome: 'marcelo',
+				idade: 17
 			}
+
+			console.log(dados);
+			console.log(xajax_validate(dados));
+			// if (xajax_validate(xmlDados)) {
+			// 	cad(dados);
+			// }
 		});
 	});
 
@@ -411,137 +418,137 @@ function formatGet(input) {
 	return finalStr;
 }
 
-function validate(dados) {
-	let error = [];
-	if (dados.descricao == '') {
-		$('label[for=descricaoError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-		error[1] = true;
-	} else {
-		if (dados.descricao.length > 60) {
-			$('label[for=descricaoError]').html('<qwerty> A descrição deve ter no máximo 60 caracteres</qwerty>');
-			error[1] = true;
-		} else {
-			$('label[for=descricaoError]').html('');
-			error[1] = false;
-		}
-	}
+// function validate(dados) {
+// 	let error = [];
+// 	if (dados.descricao == '') {
+// 		$('label[for=descricaoError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
+// 		error[1] = true;
+// 	} else {
+// 		if (dados.descricao.length > 60) {
+// 			$('label[for=descricaoError]').html('<qwerty> A descrição deve ter no máximo 60 caracteres</qwerty>');
+// 			error[1] = true;
+// 		} else {
+// 			$('label[for=descricaoError]').html('');
+// 			error[1] = false;
+// 		}
+// 	}
 
-	if (dados.placa == '') {
-		$('label[for=placaError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-		error[2] = true;
-	} else {
-		var regex = /^[a-z]{3}\-[0-9]{4}$/i;
-		if (!regex.test(dados.placa)) {
-			$('label[for=placaError]').html('<qwerty> Placa inválida</qwerty>');
-			error[2] = true;
-		} else {
-			$('label[for=placaError]').html('');
-			error[2] = false;
-		}
-	}
+// 	if (dados.placa == '') {
+// 		$('label[for=placaError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
+// 		error[2] = true;
+// 	} else {
+// 		var regex = /^[a-z]{3}\-[0-9]{4}$/i;
+// 		if (!regex.test(dados.placa)) {
+// 			$('label[for=placaError]').html('<qwerty> Placa inválida</qwerty>');
+// 			error[2] = true;
+// 		} else {
+// 			$('label[for=placaError]').html('');
+// 			error[2] = false;
+// 		}
+// 	}
 
-	if (dados.codRenavam == '') {
-		$('label[for=codRenavamError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-		error[3] = true;
-	} else {
-		var regex = /^[0-9]{11}$/;
-		if (!regex.test(dados.codRenavam)) {
-			$('label[for=codRenavamError]').html('<qwerty> Código inválido</qwerty>');
-			error[3] = true;
-		} else {
-			$('label[for=codRenavamError]').html('');
-			error[3] = false;
-		}
-	}
+// 	if (dados.codRenavam == '') {
+// 		$('label[for=codRenavamError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
+// 		error[3] = true;
+// 	} else {
+// 		var regex = /^[0-9]{11}$/;
+// 		if (!regex.test(dados.codRenavam)) {
+// 			$('label[for=codRenavamError]').html('<qwerty> Código inválido</qwerty>');
+// 			error[3] = true;
+// 		} else {
+// 			$('label[for=codRenavamError]').html('');
+// 			error[3] = false;
+// 		}
+// 	}
 
-	if (dados.anoModelo == '') {
-		$('label[for=anoModeloError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-		error[4] = true;
-	} else {
-		if (dados.anoModelo.length != 4) {
-			$('label[for=anoModeloError]').html('<qwerty> Ano inválido</qwerty>');
-			error[4] = true;
-		} else {
-			$('label[for=anoModeloError]').html('');
-			error[4] = false;
-		}
-	}
+// 	if (dados.anoModelo == '') {
+// 		$('label[for=anoModeloError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
+// 		error[4] = true;
+// 	} else {
+// 		if (dados.anoModelo.length != 4) {
+// 			$('label[for=anoModeloError]').html('<qwerty> Ano inválido</qwerty>');
+// 			error[4] = true;
+// 		} else {
+// 			$('label[for=anoModeloError]').html('');
+// 			error[4] = false;
+// 		}
+// 	}
 
-	if (dados.anoFabricacao == '') {
-		$('label[for=anoFabricacaoError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-		error[5] = true;
-	} else {
-		if (dados.anoModelo < dados.anoFabricacao) {
-			$('label[for=anoFabricacaoError]').html('<qwerty> Ano inválido</qwerty>');
-			error[5] = true;
-		} else {
-			$('label[for=anoFabricacaoError]').html('');
-			error[5] = false;
-		}
-	}
+// 	if (dados.anoFabricacao == '') {
+// 		$('label[for=anoFabricacaoError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
+// 		error[5] = true;
+// 	} else {
+// 		if (dados.anoModelo < dados.anoFabricacao) {
+// 			$('label[for=anoFabricacaoError]').html('<qwerty> Ano inválido</qwerty>');
+// 			error[5] = true;
+// 		} else {
+// 			$('label[for=anoFabricacaoError]').html('');
+// 			error[5] = false;
+// 		}
+// 	}
 
-	if (dados.cor == '') {
-		$('label[for=corError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-		error[6] = true;
-	} else {
-		if (dados.cor.length > 20) {
-			$('label[for=corError]').html('<qwerty> O campo deve possuir menos de 20 caracteres</qwerty>');
-			error[6] = true;
-		} else {
-			$('label[for=corError]').html('');
-			error[6] = false;
-		}
-	}
+// 	if (dados.cor == '') {
+// 		$('label[for=corError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
+// 		error[6] = true;
+// 	} else {
+// 		if (dados.cor.length > 20) {
+// 			$('label[for=corError]').html('<qwerty> O campo deve possuir menos de 20 caracteres</qwerty>');
+// 			error[6] = true;
+// 		} else {
+// 			$('label[for=corError]').html('');
+// 			error[6] = false;
+// 		}
+// 	}
 
-	if (dados.km == '') {
-		$('label[for=kmError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-		error[7] = true;
-	} else {
-		$('label[for=kmError]').html('');
-		error[7] = false;
-	}
+// 	if (dados.km == '') {
+// 		$('label[for=kmError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
+// 		error[7] = true;
+// 	} else {
+// 		$('label[for=kmError]').html('');
+// 		error[7] = false;
+// 	}
 
-	if (dados.marca == '' || dados.marca == null) {
-		$('label[for=marcaError]').html('<qwerty> O campo não pode ser nulo </qwerty>');
-		error[8] = true;
-	} else {
-		getMarcas().done(function (response) {
-			var marcaError = true;
-			$(response[0]).each(function (key, value) {
-				if (dados.marca == value.name) {
-					marcaError = false;
-				}
-			});
-			if (marcaError) {
-				error[8] = true;
-				$('label[for=marcaError]').html('<qwerty> Marca inválida </qwerty>');
-			} else {
-				error[8] = false;
-				$('label[for=marcaError]').html('');
-			}
-		});
-	}
+// 	if (dados.marca == '' || dados.marca == null) {
+// 		$('label[for=marcaError]').html('<qwerty> O campo não pode ser nulo </qwerty>');
+// 		error[8] = true;
+// 	} else {
+// 		getMarcas().done(function (response) {
+// 			var marcaError = true;
+// 			$(response[0]).each(function (key, value) {
+// 				if (dados.marca == value.name) {
+// 					marcaError = false;
+// 				}
+// 			});
+// 			if (marcaError) {
+// 				error[8] = true;
+// 				$('label[for=marcaError]').html('<qwerty> Marca inválida </qwerty>');
+// 			} else {
+// 				error[8] = false;
+// 				$('label[for=marcaError]').html('');
+// 			}
+// 		});
+// 	}
 
-	if (dados.preco == '') {
-		$('label[for=precoError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-		error[9] = true;
-	} else {
-		$('label[for=precoError]').html('');
-		error[9] = false;
-	}
+// 	if (dados.preco == '') {
+// 		$('label[for=precoError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
+// 		error[9] = true;
+// 	} else {
+// 		$('label[for=precoError]').html('');
+// 		error[9] = false;
+// 	}
 
-	if (dados.precoFipe == '') {
-		$('label[for=precoFipeError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-		error[10] = true;
-	} else {
-		$('label[for=precoFipeError]').html('');
-		error[10] = false;
-	}
+// 	if (dados.precoFipe == '') {
+// 		$('label[for=precoFipeError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
+// 		error[10] = true;
+// 	} else {
+// 		$('label[for=precoFipeError]').html('');
+// 		error[10] = false;
+// 	}
 
-	send = true;
-	$.each(error, function (key, value) {
-		if (value === true) send = false
-	});
+// 	send = true;
+// 	$.each(error, function (key, value) {
+// 		if (value === true) send = false
+// 	});
 
-	if (send) return true;
-}
+// 	if (send) return true;
+// }
