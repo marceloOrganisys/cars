@@ -1,5 +1,8 @@
 <?php 
 
+$payload = file_get_contents('php://input');
+$data = json_decode($payload);
+
 require_once('config.php');
 require_once('../classes/car.class.php');
 require_once('../classes/accessorie.class.php');
@@ -33,9 +36,36 @@ function addCarAcc($carId, $accessories){
 	}
 }
 
+// CODIGOS PARA ADAPTAR DURANTE A MUDANCA PARA FETCH
+if (isset($data->operation) && !empty($data->operation)) {
+	$operation = $data->operation;
+} else {
+	if (isset($_POST['operation'])) {
+		$operation = $_POST['operation'];
+	}
+}
+
+if (isset($data->page)) {
+	$page = $data->page;
+} else {
+	if (isset($_POST['page'])) {
+		$page = $_POST['page'];
+	}
+}
+
 switch ($_SERVER['REQUEST_METHOD']) {
 	case 'POST':
-	switch ($_POST['operation']) {
+	switch ($operation) {
+		case 'getCars':
+			$carsModel = new carsModel();
+			$params = array(
+				'page' => $page
+			);
+			$data = $carsModel->listCars($params);
+			echo json_encode($data);
+			http_response_code(200);
+			break;
+			
 		case 'remove':
 			$params['carId'] = $_POST['id'];
 			$car = new Car($params);
@@ -110,15 +140,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
 			echo json_encode($data[0]);
 			break;
 
-		case 'getCars':
-			$carsModel = new carsModel();
-			$params = array(
-				'page' => $_GET['page']
-			);
-			$data = $carsModel->listCars($params);
-			echo json_encode($data);
-			http_response_code(200);
-			break;
+			case 'getCars':
+				$carsModel = new carsModel();
+				$params = array(
+					'page' => $_GET['page']
+				);
+				$data = $carsModel->listCars($params);
+				echo json_encode($data);
+				http_response_code(200);
+				break;
 
 		case 'getLastId':
 			$car = new Car();

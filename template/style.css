@@ -104,8 +104,8 @@ form {
 }
 
 .marca {
-	font-size:15px;
-	height:38px;
+	font-size: 15px !important;
+	height:38px !important;
 }
 
 .addCarIcon {

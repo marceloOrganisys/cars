@@ -132,24 +132,35 @@ function mountButtons (page, number, search) {
 }
 
 function makeTable (page) {
-	const promise = $.Deferred();
 	page = page || 0;
-	$.ajax({
-		type: 'GET',
-		url: '../services/car.services.php',
-		data: {operation: 'getCars', page: page},
-		success: response => {
-			let carsData = JSON.parse(response);
-			mountTable(carsData.dados).done(() => {
-				mountButtons(page, carsData.cars);
+	const promise = $.Deferred();
+	const info = {
+		operation: 'getCars',
+		page
+	};
+	const url = '../services/car.services.php';
+	// a
+	const options = {
+		method: 'POST',
+		headers: {
+			"Accept": "application/json",
+			"Content-type": "application/json"
+		},
+		body: JSON.stringify(info)
+	};
+
+	fetch(url, options)
+		.then(response => response.json())
+		.then(response => {
+			mountTable(response.dados).done(() => {
+				mountButtons(page, response.cars);
 				promise.resolve();
 			});
-		},
-		error: e => {
-			alert('Ops, algo deu errado');
+		})
+		.catch(e => {
+			alert(e);
 			promise.reject(e);
-		}
-	});
+		});
 	return promise;
 }
 
@@ -304,7 +315,7 @@ function getMarcas(op) {
 			}
 		},
 		error: e => {
-			alert('Ops, algo deu errado');
+			console.log(e);
 			promise.reject(e)
 		}
 	});
@@ -355,8 +366,8 @@ function edit(id) {
 					}
 				},
 				error: e => {
-					alert('Ops, algo deu errado');
-					window.location.href = 'home.php'
+					console.log(e);
+					// window.location.href = 'home.php'
 				}
 			});
 		});
