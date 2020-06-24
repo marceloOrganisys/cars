@@ -3,6 +3,18 @@ CREATE DATABASE cars
 CHARACTER SET utf8;
 USE cars;
 
+CREATE TABLE marca(
+	id 				int(11) NOT NULL AUTO_INCREMENT,
+	name 			text(60),
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE accessorie(
+	id 				int(11) NOT NULL AUTO_INCREMENT,
+	name 			text(60),
+    PRIMARY KEY(id)
+);
+
 CREATE TABLE car(
 	id			int(11) NOT NULL AUTO_INCREMENT, 
 	descricao		text(60),
@@ -18,18 +30,6 @@ CREATE TABLE car(
     PRIMARY KEY(id),
     FOREIGN KEY(marca)
     	REFERENCES marca(id)
-);
-
-CREATE TABLE marca(
-	id 				int(11) NOT NULL AUTO_INCREMENT,
-	name 			text(60),
-    PRIMARY KEY(id)
-);
-
-CREATE TABLE accessorie(
-	id 				int(11) NOT NULL AUTO_INCREMENT,
-	name 			text(60),
-    PRIMARY KEY(id)
 );
 
 CREATE TABLE carAccessorie(

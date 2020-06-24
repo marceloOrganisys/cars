@@ -139,35 +139,24 @@ function mountButtons (page, number, search) {
 }
 
 function makeTable (page) {
-	page = page || 0;
 	const promise = $.Deferred();
-	const info = {
-		operation: 'getCars',
-		page
-	};
-	const url = '../services/car.services.php';
-	// a
-	const options = {
-		method: 'POST',
-		headers: {
-			"Accept": "application/json",
-			"Content-type": "application/json"
-		},
-		body: JSON.stringify(info)
-	};
-
-	fetch(url, options)
-		.then(response => response.json())
-		.then(response => {
-			mountTable(response.dados).done(() => {
-				mountButtons(page, response.cars);
+	page = page || 0;
+	$.ajax({
+		type: 'GET',
+		url: '../services/car.services.php',
+		data: {operation: 'getCars', page: page},
+		success: response => {
+			let carsData = JSON.parse(response);
+			mountTable(carsData.dados).done(() => {
+				mountButtons(page, carsData.cars);
 				promise.resolve();
 			});
-		})
-		.catch(e => {
-			alert(e);
+		},
+		error: e => {
+			alert('Ops, algo deu errado');
 			promise.reject(e);
-		});
+		}
+	});
 	return promise;
 }
 
@@ -182,7 +171,6 @@ function mountTable (data) {
 		cell.setAttribute('colspan', '5');
 		cell.innerHTML = 'Nenhum registro encontrado!';
 		cell.setAttribute('style', 'text-align:center; padding:25px;');
-		cell.appendChild(cellText);
 		linha.appendChild(cell);
 		table.appendChild(linha);
 		data = null;
