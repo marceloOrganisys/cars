@@ -164,7 +164,6 @@ function mountTable (data) {
 		cell.setAttribute('colspan', '5');
 		cell.innerHTML = 'Nenhum registro encontrado!';
 		cell.setAttribute('style', 'text-align:center; padding:25px;');
-		cell.appendChild(cellText);
 		linha.appendChild(cell);
 		table.appendChild(linha);
 		data = null;
