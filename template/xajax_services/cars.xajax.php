@@ -53,10 +53,10 @@
 
 		if (empty($dados['anoModelo'])) {
 			$error['anoModelo'] = true;
-			$resp->assign('anoModeloError', 'innerHTML', 'O campo não pode ser nulo');
+			$resp->assign('anoModeloError', 'innerHTML', '<qwerty>O campo não pode ser nulo</qwerty>');
 		} elseif (strlen($dados['anoModelo']) != 4) {
 			$error['anoModelo'] = true;
-			$resp->assign('anoModeloError', 'innerHTML', 'Ano inválido');
+			$resp->assign('anoModeloError', 'innerHTML', '<qwerty>Ano inválido</qwerty>');
 		} else {
 			$error['anoModelo'] = false;
 			$resp->assign('anoModeloError', 'innerHTML', '');
@@ -64,24 +64,24 @@
 
 		if (empty($dados['anoFabricacao'])) {
 			$error['anoFabricacao'] = true;
-			$resp->assign('anoFabricacaoError', 'innerHTML', 'O campo não pode ser nulo');
+			$resp->assign('anoFabricacaoError', 'innerHTML', '<qwerty>O campo não pode ser nulo</qwerty>');
 		} elseif (strlen($dados['anoFabricacao']) != 4) {
 			$error['anoFabricacao'] = true;
-			$resp->assign('anoFabricacaoError', 'innerHTML', 'Ano inválido');
+			$resp->assign('anoFabricacaoError', 'innerHTML', '<qwerty>Ano inválido</qwerty>');
 		} else if ($dados['anoModelo'] < $dados['anoFabricacao']) {
 			$error['anoFabricacao'] = true;
-			$resp->assign('anoFabricacaoError', 'innerHTML', 'Ano inválido');
+			$resp->assign('anoFabricacaoError', 'innerHTML', '<qwerty>Ano inválido</qwerty>');
 		} else {
-			$error['anoFabricacao'] = true;
+			$error['anoFabricacao'] = false;
 			$resp->assign('anoFabricacaoError', 'innerHTML', '');
 		}
 
 		if (empty($dados['cor'])) {
 			$error['cor'] = true;
-			$resp->assign('corError', 'innerHTML', 'O campo não pode ser nulo');
+			$resp->assign('corError', 'innerHTML', '<qwerty>O campo não pode ser nulo</qwerty>');
 		} elseif (strlen($dados['cor']) > 20) {
 			$error['cor'] = true;
-			$resp->assign('corError', 'innerHTML', 'O campo deve possuir menos de 20 caracteres');
+			$resp->assign('corError', 'innerHTML', '<qwerty>O campo deve possuir menos de 20 caracteres</qwerty>');
 		} else {
 			$resp->assign('corError', 'innerHTML', '');
 			$error['cor'] = false;
@@ -89,7 +89,7 @@
 
 		if (empty($dados['km'])) {
 			$error['km'] = true;
-			$resp->assign('kmError', 'innerHTML', 'O campo não pode ser nulo');
+			$resp->assign('kmError', 'innerHTML', '<qwerty>O campo não pode ser nulo</qwerty>');
 		} else {
 			$error['km'] = false;
 			$resp->assign('kmError', 'innerHTML', '');
@@ -97,10 +97,10 @@
 
 		if (empty($dados['marca'])) {
 			$error['marca'] = true;
-			$resp->assign('marcaError', 'innerHTML', 'O campo não pode ser nulo');
+			$resp->assign('marcaError', 'innerHTML', '<qwerty>O campo não pode ser nulo</qwerty>');
 		} elseif ($dados['marca'] == 'error') {
 			$error['marca'] = true;
-			$resp->assign('marcaError', 'innerHTML', 'Marca inválida');
+			$resp->assign('marcaError', 'innerHTML', '<qwerty>Marca inválida</qwerty>');
 		} else {
 			$error['marca'] = false;
 			$resp->assign('marcaError', 'innerHTML', '');
@@ -108,7 +108,7 @@
 
 		if (empty($dados['preco'])) {
 			$error['preco'] = true;
-			$resp->assign('precoError', 'innerHTML', 'O campo não pode ser nulo');
+			$resp->assign('precoError', 'innerHTML', '<qwerty>O campo não pode ser nulo</qwerty>');
 		} else {
 			$error['preco'] = false;
 			$resp->assign('precoError', 'innerHTML', '');
@@ -116,7 +116,7 @@
 
 		if (empty($dados['precoFipe'])) {
 			$error['precoFipe'] = true;
-			$resp->assign('precoFipeError', 'innerHTML', 'O campo não pode ser nulo');
+			$resp->assign('precoFipeError', 'innerHTML', '<qwerty>O campo não pode ser nulo</qwerty>');
 		} else {
 			$error['precoFipe'] = false;
 			$resp->assign('precoFipeError', 'innerHTML', '');
@@ -130,7 +130,8 @@
 		}
 
 		// redireciona o usuário à pagina inicial, mas ainda nao realiza o cadastro
-		if (!$approved) {
+		if ($approved) {
+			cadastrar($dados, $acc);
 			$resp = new xajaxResponse();
 			$resp->call('changeScreen', 1);
 			$resp->call('cleanForm');
@@ -138,6 +139,10 @@
 		}
 
 		return $resp;
+	}
+
+	function cadastrar() {
+		// #...
 	}
 
     $xajax->processRequest();
