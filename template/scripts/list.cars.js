@@ -22,11 +22,14 @@ $(document).ready(() => {
 		document.getElementById("addCarIcon").src = "../icons/add_hovered.png";
 		document.getElementById("addCarIcon").style.cursor = "pointer";
 	});
-	
+
 	$('#addCarIcon').mouseleave(() => document.getElementById("addCarIcon").src = "../icons/add.png");
 	$('#addCarIcon').click(() => changeScreen(0));
 
 	$('#submitButton').on('click', e => {
+		if ($('#marca').val() == '') {
+			marca = '';
+		}
 		e.preventDefault();
 		carId = $('#carId').val();
 		descricao = $('#descricao').val();
@@ -43,6 +46,8 @@ $(document).ready(() => {
 			$(marcas[0]).each((key, value) => {
 				if ($('#marca').val() == value.name) {
 					marca = value.id;
+				} else {
+					marca = marca == '' ? '' : 'error';
 				}
 			})
 
@@ -60,16 +65,17 @@ $(document).ready(() => {
 				precoFipe
 			};
 
-			dados = {
-				nome: 'marcelo',
-				idade: 17
-			}
 
-			console.log(dados);
-			console.log(xajax_validate(dados));
-			// if (xajax_validate(xmlDados)) {
-			// 	cad(dados);
-			// }
+			let accessories = [];
+			getComponents(1).done(response => {
+				let data = JSON.parse(response) || '';
+
+				for (x = 0; x < data[1]; x++) {
+					accessories.push({ id: data[0][x].id, checked: $('#cb' + data[0][x].id).prop('checked') ? 1 : 0 });
+				}
+
+				xajax_validate(dados, accessories);
+			});
 		});
 	});
 
@@ -83,13 +89,13 @@ $(document).ready(() => {
 	});
 });
 
-function pesquisaCar (search, page) {
+function pesquisaCar(search, page) {
 	page = page || 0;
 	$.ajax({
 		type: 'GET',
 		url: '../services/car.services.php',
 		data: { operation: 'searchCar', search, page },
-		success:  response => {
+		success: response => {
 			let carsData = JSON.parse(response);
 			mountTable(carsData.dados);
 			mountButtons(page, carsData.cars, search);
@@ -101,7 +107,7 @@ function pesquisaCar (search, page) {
 	});
 }
 
-function changeScreen (op) {
+function changeScreen(op) {
 	if (op == 0) {
 		routie('new');
 		cleanForm();
@@ -115,7 +121,7 @@ function changeScreen (op) {
 	}
 }
 
-function cleanForm () {
+function cleanForm() {
 	$('#title').html('Adicionar registro');
 	$('#pageTitle').html('Adicionar automóvel');
 	$('#submitButton').html('Cadastrar');
@@ -124,7 +130,7 @@ function cleanForm () {
 	$('#marca').val('');
 }
 
-function mountButtons (page, number, search) {
+function mountButtons(page, number, search) {
 	number = number || null;
 	search = search || null;
 	$('#paginationButtons').empty();
@@ -132,19 +138,19 @@ function mountButtons (page, number, search) {
 		$('#paginationButtons').append($('<li>', { class: 'page-item' }).append(
 			$('<li>', { class: 'page-item' }).append(
 				$('<button>', { class: 'page-link navItem', id: 'btn' + i, onclick: search == null ? "makeTable(" + i + ")" : "pesquisaCar('" + search + "', " + i + ")" }).append(i + 1)
-				)
-			))
+			)
+		))
 	}
 	$('#btn' + (page)).css({ 'background-color': 'grey', 'color': 'white' });
 }
 
-function makeTable (page) {
+function makeTable(page) {
 	const promise = $.Deferred();
 	page = page || 0;
 	$.ajax({
 		type: 'GET',
 		url: '../services/car.services.php',
-		data: {operation: 'getCars', page: page},
+		data: { operation: 'getCars', page: page },
 		success: response => {
 			let carsData = JSON.parse(response);
 			mountTable(carsData.dados).done(() => {
@@ -160,7 +166,7 @@ function makeTable (page) {
 	return promise;
 }
 
-function mountTable (data) {
+function mountTable(data) {
 	$('#table').html('');
 	const promise = $.Deferred();
 	const table = document.getElementById('table');
@@ -186,7 +192,7 @@ function mountTable (data) {
 				if (positions[i] == 'marca') {
 					$(marcas).each((secondKey, secondValue) => {
 						if (secondValue.id == value[positions[i]]) {
-							cellText = document.createTextNode(secondValue.name);		
+							cellText = document.createTextNode(secondValue.name);
 						}
 					});
 				} else {
@@ -220,7 +226,7 @@ function mountTable (data) {
 	return promise;
 }
 
-function mountCheckboxes (data) {
+function mountCheckboxes(data) {
 	$('#components').empty();
 	data = JSON.parse(data) || '';
 	const div = document.getElementById('components');
@@ -241,7 +247,7 @@ function mountCheckboxes (data) {
 	}
 }
 
-function getComponents (op) {
+function getComponents(op) {
 	const promise = op == 1 ? $.Deferred() : null;
 	$.ajax({
 		method: 'POST',
@@ -262,40 +268,15 @@ function getComponents (op) {
 	return op == 1 ? promise : '';
 }
 
-function cad(carData) {
-	let accessories = [];
-	let size = 0;
-	getComponents(1).done(response => {
-		let data = JSON.parse(response) || '';
-
-		for (x = 0; x < data[1]; x++) {
-			accessories.push({ id: data[0][x].id, checked: $('#cb' + data[0][x].id).prop('checked') ? 1 : 0 });
-		}
-
-		data = { operation: 'cadastro', carData, accessories}
-		$.ajax({
-			type: 'POST',
-			url: '../services/car.services.php',
-			data: data,
-			error: e => {
-				alert('Ops, algo deu errado');
-				promise.reject(e);
-			}
-		});
-		changeScreen(1);
-		cleanForm();
-	});
-}
-
 function getMarcas(op) {
-	if (typeof(op) == 'undefined') {
+	if (typeof (op) == 'undefined') {
 		op = 0;
 	}
 	const promise = $.Deferred();
 	$.ajax({
 		type: 'POST',
 		url: '../services/marca.services.php',
-		data: {operation: 'getMarcas'},
+		data: { operation: 'getMarcas' },
 		success: response => {
 			data = JSON.parse(response);
 			if (op == 1) {
@@ -405,138 +386,3 @@ function formatGet(input) {
 	}
 	return finalStr;
 }
-
-// function validate(dados) {
-// 	let error = [];
-// 	if (dados.descricao == '') {
-// 		$('label[for=descricaoError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-// 		error[1] = true;
-// 	} else {
-// 		if (dados.descricao.length > 60) {
-// 			$('label[for=descricaoError]').html('<qwerty> A descrição deve ter no máximo 60 caracteres</qwerty>');
-// 			error[1] = true;
-// 		} else {
-// 			$('label[for=descricaoError]').html('');
-// 			error[1] = false;
-// 		}
-// 	}
-
-// 	if (dados.placa == '') {
-// 		$('label[for=placaError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-// 		error[2] = true;
-// 	} else {
-// 		var regex = /^[a-z]{3}\-[0-9]{4}$/i;
-// 		if (!regex.test(dados.placa)) {
-// 			$('label[for=placaError]').html('<qwerty> Placa inválida</qwerty>');
-// 			error[2] = true;
-// 		} else {
-// 			$('label[for=placaError]').html('');
-// 			error[2] = false;
-// 		}
-// 	}
-
-// 	if (dados.codRenavam == '') {
-// 		$('label[for=codRenavamError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-// 		error[3] = true;
-// 	} else {
-// 		var regex = /^[0-9]{11}$/;
-// 		if (!regex.test(dados.codRenavam)) {
-// 			$('label[for=codRenavamError]').html('<qwerty> Código inválido</qwerty>');
-// 			error[3] = true;
-// 		} else {
-// 			$('label[for=codRenavamError]').html('');
-// 			error[3] = false;
-// 		}
-// 	}
-
-// 	if (dados.anoModelo == '') {
-// 		$('label[for=anoModeloError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-// 		error[4] = true;
-// 	} else {
-// 		if (dados.anoModelo.length != 4) {
-// 			$('label[for=anoModeloError]').html('<qwerty> Ano inválido</qwerty>');
-// 			error[4] = true;
-// 		} else {
-// 			$('label[for=anoModeloError]').html('');
-// 			error[4] = false;
-// 		}
-// 	}
-
-// 	if (dados.anoFabricacao == '') {
-// 		$('label[for=anoFabricacaoError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-// 		error[5] = true;
-// 	} else {
-// 		if (dados.anoModelo < dados.anoFabricacao) {
-// 			$('label[for=anoFabricacaoError]').html('<qwerty> Ano inválido</qwerty>');
-// 			error[5] = true;
-// 		} else {
-// 			$('label[for=anoFabricacaoError]').html('');
-// 			error[5] = false;
-// 		}
-// 	}
-
-// 	if (dados.cor == '') {
-// 		$('label[for=corError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-// 		error[6] = true;
-// 	} else {
-// 		if (dados.cor.length > 20) {
-// 			$('label[for=corError]').html('<qwerty> O campo deve possuir menos de 20 caracteres</qwerty>');
-// 			error[6] = true;
-// 		} else {
-// 			$('label[for=corError]').html('');
-// 			error[6] = false;
-// 		}
-// 	}
-
-// 	if (dados.km == '') {
-// 		$('label[for=kmError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-// 		error[7] = true;
-// 	} else {
-// 		$('label[for=kmError]').html('');
-// 		error[7] = false;
-// 	}
-
-// 	if (dados.marca == '' || dados.marca == null) {
-// 		$('label[for=marcaError]').html('<qwerty> O campo não pode ser nulo </qwerty>');
-// 		error[8] = true;
-// 	} else {
-// 		getMarcas().done(function (response) {
-// 			var marcaError = true;
-// 			$(response[0]).each(function (key, value) {
-// 				if (dados.marca == value.name) {
-// 					marcaError = false;
-// 				}
-// 			});
-// 			if (marcaError) {
-// 				error[8] = true;
-// 				$('label[for=marcaError]').html('<qwerty> Marca inválida </qwerty>');
-// 			} else {
-// 				error[8] = false;
-// 				$('label[for=marcaError]').html('');
-// 			}
-// 		});
-// 	}
-
-// 	if (dados.preco == '') {
-// 		$('label[for=precoError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-// 		error[9] = true;
-// 	} else {
-// 		$('label[for=precoError]').html('');
-// 		error[9] = false;
-// 	}
-
-// 	if (dados.precoFipe == '') {
-// 		$('label[for=precoFipeError]').html('<qwerty> O campo não pode ser nulo</qwerty>');
-// 		error[10] = true;
-// 	} else {
-// 		$('label[for=precoFipeError]').html('');
-// 		error[10] = false;
-// 	}
-
-// 	send = true;
-// 	$.each(error, function (key, value) {
-// 		if (value === true) send = false
-// 	});
-
-// 	if (send) return true;
-// }

@@ -13,21 +13,21 @@
 						<label for="descricao">Descrição</label><br>
 						<input id="descricao" type="text" class="form-control" name="descricao"><br>
 						<div class="errorBox">
-							<label class="errorMessage" for="descricaoError"></label>
+							<label class="errorMessage" for="descricaoError" id="descricaoError"></label>
 						</div>
 					</div>
 					<div class="form-group col-md-3">
 						<label for="placa">Placa</label><br>
 						<input id="placa" type="text" class="form-control" name="placa"><br>
 						<div class="errorBox">
-							<label class="errorMessage" for="placaError"></label>
+							<label class="errorMessage" for="placaError" id="placaError"></label>
 						</div>
 					</div>
 					<div class="form-group col-md-3">
 						<label for="codRenavam">Código Renavam</label><br>
 						<input id="codRenavam" type="text" class="form-control" name="codRenavam"><br>
 						<div class="errorBox">
-							<label class="errorMessage" for="codRenavamError"></label>
+							<label class="errorMessage" for="codRenavamError" id="codRenavamError"></label>
 						</div>
 					</div>
 				</div>
@@ -38,28 +38,28 @@
 						<label for="anoModelo">Ano do Modelo</label><br>
 						<input id="anoModelo" type="text" class="form-control ano" name="anoModelo"><br>
 						<div class="errorBox">
-							<label class="errorMessage" for="anoModeloError"></label>
+							<label class="errorMessage" for="anoModeloError" id="anoModeloError"></label>
 						</div>
 					</div>
 					<div class="form-group col-md-2">
 						<label for="anoFabricacao">Ano de fabricação</label><br>
 						<input id="anoFabricacao" type="text" class="form-control ano" name="anoFabricacao"><br>
 						<div class="errorBox">
-							<label class="errorMessage" for="anoFabricacaoError"></label>
+							<label class="errorMessage" for="anoFabricacaoError" id="anoFabricacaoError"></label>
 						</div>
 					</div>
 					<div class="form-group col-md-3">
 						<label for="cor">Cor do carro</label><br>
 						<input id="cor" type="text" class="form-control" name="cor"><br>
 						<div class="errorBox">
-							<label class="errorMessage" for="corError"></label>
+							<label class="errorMessage" for="corError" id="corError"></label>
 						</div>
 					</div>
 					<div class="form-group col-md-2">
 						<label for="km">Quilometragem</label><br>
 						<input id="km" type="text" class="form-control" name="km"><br>
 						<div class="errorBox">
-							<label class="errorMessage" for="kmError"></label>
+							<label class="errorMessage" for="kmError" id="kmError"></label>
 						</div>
 					</div>
 					<div class="form-group col-md-2">
@@ -67,7 +67,7 @@
 						<select id="marca" name="marca" class="custom-select custom-select-lg mb-3 marca">
 						</select><br>
 						<div class="errorBox" style="margin-top:7px;">
-							<label class="errorMessage" for="marcaError"></label>
+							<label class="errorMessage" for="marcaError" id="marcaError"></label>
 						</div>
 					</div>
 				</div>
@@ -78,14 +78,14 @@
 						<label for="preco">Preço</label><br>
 						<input id="preco" type="text" class="form-control preco" name="preco"><br>
 						<div class="errorBox">
-							<label class="errorMessage" for="precoError"></label>
+							<label class="errorMessage" for="precoError" id="precoError"></label>
 						</div>
 					</div>
 					<div class="form-group col-md-3">
 						<label for="precoFipe">Preço Fipe</label><br>
 						<input id="precoFipe" type="text" class="form-control preco" name="precoFipe"><br><br>
 						<div class="errorBox" style="margin-top:-20px;">
-							<label class="errorMessage" for="precoFipeError"></label>
+							<label class="errorMessage" for="precoFipeError" id="precoFipeError"></label>
 						</div>
 					</div>
 				</div>
