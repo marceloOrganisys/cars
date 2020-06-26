@@ -59,8 +59,8 @@ class Car extends Db {
 	}
 
 	public function removeCar() {
-		$this->accessorieClass->remove(array('row' => 'carId', 'id' => $this->carId));
-		$this->remove(array('row' => 'id', 'id' => $this->carId));
+		if ($this->accessorieClass->remove(array('row' => 'carId', 'id' => $this->carId)));
+			return $this->remove(array('row' => 'id', 'id' => $this->carId));
 	}
 
 	public function save() {

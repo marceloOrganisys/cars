@@ -50,7 +50,7 @@ abstract class Db {
 
 	public function remove(array $params) {
 		$query = "DELETE FROM ".$this->tabela." WHERE ".$params['row']." = ".$params['id'];
-		$this->execute($query);
+		return $this->execute($query);
 	}
 
 	public function select(array $params) {

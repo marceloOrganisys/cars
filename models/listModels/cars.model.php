@@ -19,7 +19,7 @@ class carsModel extends Car {
 
         foreach ($rows as $key => $value) {
             $query = 'SELECT ' . $value . ' FROM ' . $this->tabela . ' ' . $queryWhere;
-            $query .= $key == 'dados' ? ' ORDER BY id DESC LIMIT ' . $params['page'] * 10 . ', 10' : '';
+            $query .= $key == 'dados' ? ' ORDER BY id DESC LIMIT ' . $params['page'] * 8 . ', 8' : '';
             $dados[$key] = $this->getData($query);
         }
 

@@ -42,13 +42,14 @@ $(document).ready(() => {
 		preco = formatAdd($('#preco').val());
 		precoFipe = formatAdd($('#precoFipe').val());
 
+		let counter = false;
 		getMarcas().done(marcas => {
 			$(marcas[0]).each((key, value) => {
 				if ($('#marca').val() == value.name) {
 					marca = value.id;
-				} else {
-					marca = marca == '' ? '' : 'error';
+					counter = true;
 				}
+				if (!counter) marca = marca == '' ? '' : 'error';
 			})
 
 			dados = {
@@ -116,6 +117,7 @@ function changeScreen(op) {
 		$('#listCars').hide();
 		$('#formCadastro').fadeIn();
 	} else {
+		cleanForm();
 		$('#table').empty();
 		routie('list');
 	}
@@ -134,7 +136,7 @@ function mountButtons(page, number, search) {
 	number = number || null;
 	search = search || null;
 	$('#paginationButtons').empty();
-	for (i = 0; i < number[0].cars / 10; i++) {
+	for (i = 0; i < number[0].cars / 8; i++) {
 		$('#paginationButtons').append($('<li>', { class: 'page-item' }).append(
 			$('<li>', { class: 'page-item' }).append(
 				$('<button>', { class: 'page-link navItem', id: 'btn' + i, onclick: search == null ? "makeTable(" + i + ")" : "pesquisaCar('" + search + "', " + i + ")" }).append(i + 1)
@@ -351,17 +353,10 @@ function edit(id) {
 }
 
 function remove(id) {
-	const data = { operation: 'remove', id }
+	// const data = { operation: 'remove', id }
 	if (confirm('Deseja mesmo apagar este registro?')) {
-		$.ajax({
-			type: 'POST',
-			url: '../services/car.services.php',
-			data,
-			success: () => {
-				pesquisaCar($('#searchInput').val(), 0);
-			},
-			error: e => alert('Ops, algo deu errado')
-		});
+		xajax_remove(id); 
+		// pesquisaCar($('#searchInput').val(), 0);
 	}
 }
 
