@@ -25,4 +25,4 @@ jobs:
     # Runs a single command using the runners shell
     - name: Docker build
       run: |
-        docker build ./cars -t cars/php:1.0
+        docker build ./node_modules -t cars/php:1.0
